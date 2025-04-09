@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 from util_prompt import prepare_data
 
 
-TOKEN = 'your_huggingface_token'
+TOKEN = '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'
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -28,6 +28,7 @@ def parse_args():
     parser.add_argument("--lang_alpa", type=str, default="ar")
     parser.add_argument("--lang_prompt", type=str, default="ar")
     parser.add_argument("--output_folder", type=str, default="output")
+    parser.add_argument("--chain_of_thought", action="store_true", help="Use chain-of-thought prompting")
     args = parser.parse_args()
     return args
 
