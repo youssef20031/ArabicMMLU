@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 from util_prompt import prepare_data
 
 
-TOKEN = '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'
+TOKEN = ''
 
 if torch.cuda.is_available():
     device = "cuda"
