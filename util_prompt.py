@@ -84,12 +84,20 @@ def prepare_data_en(args):
             "Correct option number is:"
         )
     else:
-        PROMPT = (
-            "You are an expert in {subject} at the {level} level.\n"
-            "Question:\n"
-            "{question}\n"
-            "{options}\n"
-            "Correct option number is:"
+        # --- DWM prompting style ---
+        # Setup prefix and final ask outside the loop.
+        prefix = (
+            "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. "
+            "At the end, I will give you a question you must answer. For each phrase, you must:\n"
+            "# 1. Write down a succinct description of what each agent knows about the environment and about the other agents. "
+            "Keep the description short and do not produce redundant information. \n"
+            "Here's the dialogue:\n"
+        )
+        final_ask = (
+            "This is the end of the dialogue. Now, answer the following question.\n"
+            "Question: {question}{options}\n"
+            "Think step by step, answer with one word and provide the answer between <answer></answer> tags.\n"
+            "For example, reply with <answer>vase</answer>."
         )
 
     alpa = alpa_ar
@@ -99,6 +107,7 @@ def prepare_data_en(args):
     inputs = []
     outputs = []
     outputs_options = []
+    # Use on_bad_lines to skip problematic rows
     data = pd.read_csv('data/ArabicMMLUSS.csv', engine='python', on_bad_lines='skip')
     data = data[data['is_few_shot'] == 0]
 
@@ -106,24 +115,54 @@ def prepare_data_en(args):
         subject = row['Subject']
         level = level_en[row['Level']] if not pd.isna(row['Level']) else 'unknown'
 
-        # Build BackStory and Context texts separately
-        backstory_text = f"BackStory: {str(row['BackStory']).strip()}\n\n" if not pd.isna(row['BackStory']) else ""
-        context_text = f"Context: {str(row['Context']).strip()}\n\n" if not pd.isna(row['Context']) else ""
-        question_text = f"{backstory_text}{context_text}Question: {str(row['Question']).strip()}"
+        if args.chain_of_thought:
+            # For chain-of-thought, build BackStory and Context texts separately.
+            backstory_text = f"BackStory: {str(row['BackStory']).strip()}\n\n" if not pd.isna(row['BackStory']) else ""
+            context_text = f"Context: {str(row['Context']).strip()}\n\n" if not pd.isna(row['Context']) else ""
+            question_text = f"{backstory_text}{context_text}Question: {str(row['Question']).strip()}"
+    
+            options_list = []
+            for i, opt in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
+                if pd.isna(row[opt]):
+                    break
+                options_list.append(f"{alpa[i]} {row[opt]}")
+            options_text = "\n".join(options_list)
+    
+            prompt_text = PROMPT.format(
+                subject=subject,
+                level=level,
+                question=question_text,
+                options=options_text
+            )
+        else:
+            # For DWM style, build task and context from the current row inside the loop.
+            if not pd.isna(row['BackStory']):
+                task_text = f"BackStory: {str(row['BackStory']).strip()}"
+            else:
+                task_text = ""
+            context_text = ""
+            if not pd.isna(row['Context']):
+                context_text = f"Context: {str(row['Context']).strip()}"
+            
+            # Build dialogue by concatenating task and context.
+            dialogue = task_text
+            if context_text:
+                dialogue += "\n" + context_text
 
-        options_list = []
-        for i, opt in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
-            if pd.isna(row[opt]):
-                break
-            options_list.append(f"{alpa[i]} {row[opt]}")
-        options_text = '\n'.join(options_list)
-
-        prompt_text = PROMPT.format(
-            subject=subject,
-            level=level,
-            question=question_text,
-            options=options_text
-        )
+            # Get question text from the row.
+            question_field = str(row['Question']).strip()
+            
+            options_list = []
+            for i, opt in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
+                if pd.isna(row[opt]):
+                    break
+                options_list.append(f"{alpa[i]} {row[opt]}")
+            options_text = ""
+            if options_list:
+                options_text = "\nOptions:\n" + "\n".join(options_list)
+    
+            prompt_text = prefix + "\n" + dialogue + "\n\n" + final_ask.format(question=question_field, options=options_text)
+    
         inputs.append(prompt_text)
         idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key']]
         outputs.append(idx_label)
