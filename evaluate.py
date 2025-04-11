@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 from util_prompt import prepare_data
 
 
-TOKEN = '***'
+TOKEN = ''
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -39,10 +39,12 @@ def main():
     os.makedirs(args.output_folder, exist_ok=True)
     tokenizer_class = LlamaTokenizer if 'llama' in args.base_model else AutoTokenizer
     model_class = LlamaForCausalLM if 'llama' in args.base_model else AutoModelForCausalLM
-
-    SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{args.base_model.split("/")[-1]}.csv'
-    tokenizer = tokenizer_class.from_pretrained(args.base_model, use_auth_token=TOKEN)
     
+    cot_suffix = "cot_" if args.chain_of_thought else ""
+    SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{cot_suffix}{args.base_model.split("/")[-1]}.csv'
+    base_model_str = str(args.base_model)
+    tokenizer = tokenizer_class.from_pretrained(base_model_str, trust_remote_code=True, use_auth_token=TOKEN)
+        
     if 'mt0' in args.base_model or 'arat5' in args.base_model.lower():
         model = AutoModelForSeq2SeqLM.from_pretrained(args.base_model, device_map="auto", load_in_8bit="xxl" in args.base_model)
         from util_compute import predict_classification_mt0_by_letter as predict_classification
@@ -69,7 +71,8 @@ def main():
     if torch.__version__ >= "2" and sys.platform != "win32":
         model = torch.compile(model)
     
-    inputs, golds, outputs_options = prepare_data(args)
+    # Assume prepare_data now returns subjects as well
+    inputs, golds, outputs_options, subjects = prepare_data(args)
     preds = []
     probs = []
     for idx in tqdm(range(len(inputs))):
@@ -83,6 +86,7 @@ def main():
     output_df['options'] = outputs_options
     output_df['preds'] = preds
     output_df['probs'] = probs
+    output_df['subject'] = subjects  # added subject column
     output_df.to_csv(SAVE_FILE, index=False)
 
 if __name__ == "__main__":

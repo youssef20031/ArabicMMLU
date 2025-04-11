@@ -84,8 +84,6 @@ def prepare_data_en(args):
             "Correct option number is:"
         )
     else:
-        # --- DWM prompting style ---
-        # Setup prefix and final ask outside the loop.
         prefix = (
             "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. "
             "At the end, I will give you a question you must answer. For each phrase, you must:\n"
@@ -107,16 +105,16 @@ def prepare_data_en(args):
     inputs = []
     outputs = []
     outputs_options = []
-    # Use on_bad_lines to skip problematic rows
+    subjects = []  # added subjects list
     data = pd.read_csv('data/ArabicMMLUSS.csv', engine='python', on_bad_lines='skip')
     data = data[data['is_few_shot'] == 0]
 
     for idx, row in data.iterrows():
         subject = row['Subject']
+        subjects.append(subject)  # store subject for each question
         level = level_en[row['Level']] if not pd.isna(row['Level']) else 'unknown'
 
         if args.chain_of_thought:
-            # For chain-of-thought, build BackStory and Context texts separately.
             backstory_text = f"BackStory: {str(row['BackStory']).strip()}\n\n" if not pd.isna(row['BackStory']) else ""
             context_text = f"Context: {str(row['Context']).strip()}\n\n" if not pd.isna(row['Context']) else ""
             question_text = f"{backstory_text}{context_text}Question: {str(row['Question']).strip()}"
@@ -135,7 +133,6 @@ def prepare_data_en(args):
                 options=options_text
             )
         else:
-            # For DWM style, build task and context from the current row inside the loop.
             if not pd.isna(row['BackStory']):
                 task_text = f"BackStory: {str(row['BackStory']).strip()}"
             else:
@@ -144,12 +141,10 @@ def prepare_data_en(args):
             if not pd.isna(row['Context']):
                 context_text = f"Context: {str(row['Context']).strip()}"
             
-            # Build dialogue by concatenating task and context.
             dialogue = task_text
             if context_text:
                 dialogue += "\n" + context_text
 
-            # Get question text from the row.
             question_field = str(row['Question']).strip()
             
             options_list = []
@@ -167,7 +162,7 @@ def prepare_data_en(args):
         idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key']]
         outputs.append(idx_label)
         outputs_options.append(options_list)
-    return inputs, outputs, outputs_options
+    return inputs, outputs, outputs_options, subjects
 
 
 def prepare_data_ar(args):
@@ -184,16 +179,18 @@ def prepare_data_ar(args):
     inputs = []
     outputs = []
     outputs_options = []
+    subjects = []  # added subjects list
     data = pd.read_csv('data/ArabicMMLUSS.csv')
     data = data[data['is_few_shot'] == 0]
 
     for idx, row in data.iterrows():
-        subject = subject_ar[row['Subject']]
+        # Get subject for each question and store it
+        subject_value = subject_ar[row['Subject']]
+        subjects.append(subject_value)
         level = "" if pd.isna(row['Level']) else ' ' + level_ar[row['Level']]
         country = "" if pd.isna(row['Country']) else ' ' + country_ar[row['Country']]
-        main_meta_data = f"{subject}{level}{country}"
+        main_meta_data = f"{subject_value}{level}{country}"
         
-        # Build BackStory and Context texts separately (labels can be adjusted for Arabic as needed)
         backstory_text = f"الخلفية: {str(row['BackStory']).strip()}\n\n" if not pd.isna(row['BackStory']) else ""
         context_text = f"السياق: {str(row['Context']).strip()}\n\n" if not pd.isna(row['Context']) else ""
         question_text = f"{backstory_text}{context_text}السؤال: {str(row['Question']).strip()}"
@@ -211,7 +208,7 @@ def prepare_data_ar(args):
         idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key']]
         outputs.append(idx_label)
         outputs_options.append(options)
-    return inputs, outputs, outputs_options
+    return inputs, outputs, outputs_options, subjects
 
 
 def prepare_data(args):
@@ -219,4 +216,3 @@ def prepare_data(args):
         return prepare_data_en(args)
     elif args.lang_prompt == 'ar':
         return prepare_data_ar(args)
-

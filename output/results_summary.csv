@@ -1,0 +1,129 @@
+filename,total_questions,correct_predictions,percentage_correct
+result_prompt_en_alpa_ar_mt0-small.csv,overall,194,63,32.47%
+result_prompt_en_alpa_ar_mt0-small.csv,Driving Test,29,7,24.14%
+result_prompt_en_alpa_ar_mt0-small.csv,Accounting,24,9,37.50%
+result_prompt_en_alpa_ar_mt0-small.csv,Biology,26,10,38.46%
+result_prompt_en_alpa_ar_mt0-small.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_mt0-small.csv,History,32,10,31.25%
+result_prompt_en_alpa_ar_mt0-small.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_mt0-small.csv,Philosophy,26,12,46.15%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,overall,194,64,32.99%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Driving Test,29,10,34.48%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Accounting,24,8,33.33%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Biology,26,10,38.46%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Geography,31,7,22.58%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,History,32,8,25.00%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_cot_mt0-small.csv,Philosophy,26,12,46.15%
+result_prompt_en_alpa_ar_mt0-base.csv,overall,194,61,31.44%
+result_prompt_en_alpa_ar_mt0-base.csv,Driving Test,29,7,24.14%
+result_prompt_en_alpa_ar_mt0-base.csv,Accounting,24,9,37.50%
+result_prompt_en_alpa_ar_mt0-base.csv,Biology,26,10,38.46%
+result_prompt_en_alpa_ar_mt0-base.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_mt0-base.csv,History,32,9,28.12%
+result_prompt_en_alpa_ar_mt0-base.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_mt0-base.csv,Philosophy,26,11,42.31%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,overall,194,49,25.26%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Driving Test,29,9,31.03%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Accounting,24,5,20.83%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Biology,26,6,23.08%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,History,32,9,28.12%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Economics,26,6,23.08%
+result_prompt_en_alpa_ar_cot_mt0-base.csv,Philosophy,26,8,30.77%
+result_prompt_en_alpa_ar_bloomz-560m.csv,overall,194,61,31.44%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Driving Test,29,9,31.03%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Accounting,24,7,29.17%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Biology,26,9,34.62%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Geography,31,11,35.48%
+result_prompt_en_alpa_ar_bloomz-560m.csv,History,32,8,25.00%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Economics,26,10,38.46%
+result_prompt_en_alpa_ar_bloomz-560m.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,overall,194,77,39.69%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Driving Test,29,18,62.07%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Accounting,24,7,29.17%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Biology,26,10,38.46%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Geography,31,11,35.48%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,History,32,11,34.38%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Philosophy,26,11,42.31%
+result_prompt_en_alpa_ar_AraT5-base.csv,overall,194,56,28.87%
+result_prompt_en_alpa_ar_AraT5-base.csv,Driving Test,29,8,27.59%
+result_prompt_en_alpa_ar_AraT5-base.csv,Accounting,24,10,41.67%
+result_prompt_en_alpa_ar_AraT5-base.csv,Biology,26,12,46.15%
+result_prompt_en_alpa_ar_AraT5-base.csv,Geography,31,7,22.58%
+result_prompt_en_alpa_ar_AraT5-base.csv,History,32,8,25.00%
+result_prompt_en_alpa_ar_AraT5-base.csv,Economics,26,5,19.23%
+result_prompt_en_alpa_ar_AraT5-base.csv,Philosophy,26,6,23.08%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,overall,194,57,29.38%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Driving Test,29,8,27.59%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Accounting,24,9,37.50%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Biology,26,9,34.62%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,History,32,9,28.12%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_cot_AraT5-base.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_aragpt2-base.csv,overall,194,51,26.29%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Driving Test,29,20,68.97%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Accounting,24,3,12.50%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Biology,26,3,11.54%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Geography,31,5,16.13%
+result_prompt_en_alpa_ar_aragpt2-base.csv,History,32,7,21.88%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Economics,26,6,23.08%
+result_prompt_en_alpa_ar_aragpt2-base.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,overall,194,51,26.29%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Driving Test,29,20,68.97%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Accounting,24,3,12.50%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Biology,26,3,11.54%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Geography,31,5,16.13%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,History,32,7,21.88%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Economics,26,6,23.08%
+result_prompt_en_alpa_ar_cot_aragpt2-base.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_mt0-large.csv,overall,194,63,32.47%
+result_prompt_en_alpa_ar_mt0-large.csv,Driving Test,29,20,68.97%
+result_prompt_en_alpa_ar_mt0-large.csv,Accounting,24,4,16.67%
+result_prompt_en_alpa_ar_mt0-large.csv,Biology,26,4,15.38%
+result_prompt_en_alpa_ar_mt0-large.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_mt0-large.csv,History,32,14,43.75%
+result_prompt_en_alpa_ar_mt0-large.csv,Economics,26,7,26.92%
+result_prompt_en_alpa_ar_mt0-large.csv,Philosophy,26,8,30.77%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,overall,194,66,34.02%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Driving Test,29,20,68.97%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Accounting,24,3,12.50%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Biology,26,8,30.77%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,History,32,14,43.75%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Economics,26,7,26.92%
+result_prompt_en_alpa_ar_cot_mt0-large.csv,Philosophy,26,8,30.77%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,overall,194,52,26.80%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Driving Test,29,20,68.97%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Accounting,24,3,12.50%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Biology,26,3,11.54%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Geography,31,5,16.13%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,History,32,8,25.00%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Economics,26,6,23.08%
+result_prompt_en_alpa_ar_xglm-1.7B.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,overall,194,54,27.84%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Driving Test,29,16,55.17%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Accounting,24,6,25.00%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Biology,26,7,26.92%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Geography,31,8,25.81%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,History,32,10,31.25%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Economics,26,3,11.54%
+result_prompt_en_alpa_ar_cot_xglm-1.7B.csv,Philosophy,26,4,15.38%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,overall,194,66,34.02%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Driving Test,29,16,55.17%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Accounting,24,7,29.17%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Biology,26,7,26.92%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Geography,31,11,35.48%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,History,32,11,34.38%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Economics,26,7,26.92%
+result_prompt_en_alpa_ar_AraT5v2-base-1024.csv,Philosophy,26,7,26.92%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,overall,194,50,25.77%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Driving Test,29,14,48.28%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Accounting,24,7,29.17%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Biology,26,5,19.23%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Geography,31,8,25.81%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,History,32,8,25.00%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Economics,26,4,15.38%
+result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Philosophy,26,4,15.38%

@@ -12,7 +12,7 @@ Options:
 ب- ضعف المساعدين بالسيارة
 ج- حاجة العجلات الى الترصيص
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- ضرورة ضبط مستويات ضغط الهواء بالاطارات', 'ب- ضعف المساعدين بالسيارة', 'ج- حاجة العجلات الى الترصيص']",ج,[0.21130414 0.2043755  0.58432037],Driving Test
+For example, reply with <answer>vase</answer>.",2,"['أ- ضرورة ضبط مستويات ضغط الهواء بالاطارات', 'ب- ضعف المساعدين بالسيارة', 'ج- حاجة العجلات الى الترصيص']",أ,[0.5493977  0.3154233  0.13517898],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -25,7 +25,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.08132103 0.91867894],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.62378037 0.37621963],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -38,7 +38,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.13880572 0.8611943 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7108055  0.28919452],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -51,7 +51,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.10168968 0.89831036],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.6944782  0.30552173],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -65,7 +65,7 @@ Options:
 ب- حالة الزيت في المحرك
 ج- منسوب الزيت في المحرك
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- ضغط الزيت في المحرك', 'ب- حالة الزيت في المحرك', 'ج- منسوب الزيت في المحرك']",ب,[0.10715574 0.88593644 0.00690787],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- ضغط الزيت في المحرك', 'ب- حالة الزيت في المحرك', 'ج- منسوب الزيت في المحرك']",أ,[0.85133386 0.09537265 0.05329353],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -78,7 +78,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.11231045 0.8876896 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7859538  0.21404615],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -91,7 +91,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.07652278 0.9234773 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.58960754 0.41039252],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -104,7 +104,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.05023312 0.9497669 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.64359754 0.35640246],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -117,7 +117,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.06595113 0.9340489 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.6299833  0.37001675],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -131,7 +131,7 @@ Options:
 ب- ادخل في المناطق الزراعية والخالية
 ج- استخدم الغيار العكسي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- اشد فرامل اليد بسرعة', 'ب- ادخل في المناطق الزراعية والخالية', 'ج- استخدم الغيار العكسي']",ج,[0.1575896 0.2980588 0.5443516],Driving Test
+For example, reply with <answer>vase</answer>.",2,"['أ- اشد فرامل اليد بسرعة', 'ب- ادخل في المناطق الزراعية والخالية', 'ج- استخدم الغيار العكسي']",أ,[0.6995266  0.18603225 0.11444114],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -144,7 +144,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.1121248  0.88787526],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.6057454 0.3942546],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -157,7 +157,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.1513885  0.84861153],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7619975  0.23800254],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -170,7 +170,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.10261185 0.89738816],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7614137  0.23858632],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -184,7 +184,7 @@ Options:
 ب- زيادة السرعة لملاحقة السيارة التي امامي حتى تكون دليلي في الطريق
 ج- اقوم بفتح النوافذ واستخدام المساحات والسير بالسرعة العادية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- اقوم بتهدأة السرعة مع استخدام صفارة الانتظار', 'ب- زيادة السرعة لملاحقة السيارة التي امامي حتى تكون دليلي في الطريق', 'ج- اقوم بفتح النوافذ واستخدام المساحات والسير بالسرعة العادية']",ب,[0.10327059 0.68118113 0.21554829],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- اقوم بتهدأة السرعة مع استخدام صفارة الانتظار', 'ب- زيادة السرعة لملاحقة السيارة التي امامي حتى تكون دليلي في الطريق', 'ج- اقوم بفتح النوافذ واستخدام المساحات والسير بالسرعة العادية']",أ,[0.5967428  0.33492276 0.0683345 ],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -197,7 +197,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.14247711 0.8575229 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7549595  0.24504052],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -210,7 +210,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.12889937 0.87110066],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.6174871  0.38251293],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -223,7 +223,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.0607525 0.9392475],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.7099069  0.29009312],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -236,7 +236,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.12286864 0.87713134],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.5281074  0.47189257],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -250,7 +250,7 @@ Options:
 ب- انزل من فوق الكبري واغيرها في مكان اخر
 ج- اقف مكاني واحاول تغيير الاطارات بسرعة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- اقوم بوضع علامة ارشادية واقوم بتغيير العجلة فوق الكبري', 'ب- انزل من فوق الكبري واغيرها في مكان اخر', 'ج- اقف مكاني واحاول تغيير الاطارات بسرعة']",ب,[0.07829627 0.6612505  0.26045322],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- اقوم بوضع علامة ارشادية واقوم بتغيير العجلة فوق الكبري', 'ب- انزل من فوق الكبري واغيرها في مكان اخر', 'ج- اقف مكاني واحاول تغيير الاطارات بسرعة']",أ,[0.5776526  0.30453235 0.11781512],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -265,7 +265,7 @@ Options:
 ج- المراجعة
 د- المحاسبة االجتماعٌة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- المحاسبة الحكومٌة', 'ب- المحاسبة الدولٌة', 'ج- المراجعة', 'د- المحاسبة االجتماعٌة']",د,[0.26329485 0.13250436 0.29124045 0.3129603 ],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- المحاسبة الحكومٌة', 'ب- المحاسبة الدولٌة', 'ج- المراجعة', 'د- المحاسبة االجتماعٌة']",أ,[0.43231174 0.12008675 0.14752004 0.30008152],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -280,7 +280,7 @@ Options:
 ج- القابلٌة للمقارنة
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المالءمة', 'ب- المصداقٌة', 'ج- القابلٌة للمقارنة', 'د- كل ما سبق']",ج,[0.2804186  0.22267063 0.35026497 0.14664586],Accounting
+For example, reply with <answer>vase</answer>.",3,"['أ- المالءمة', 'ب- المصداقٌة', 'ج- القابلٌة للمقارنة', 'د- كل ما سبق']",أ,[0.46960202 0.14417467 0.07339884 0.3128245 ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -295,7 +295,7 @@ Options:
 ج- مٌزان المراجعة
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- دفتر الٌومٌة', 'ب- دفتر األستاذ', 'ج- مٌزان المراجعة', 'د- الشىء مما سبق']",ب,[0.05706555 0.6040971  0.29181516 0.04702221],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- دفتر الٌومٌة', 'ب- دفتر األستاذ', 'ج- مٌزان المراجعة', 'د- الشىء مما سبق']",أ,[0.39983183 0.16358395 0.15174288 0.2848413 ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -310,7 +310,7 @@ Options:
 ج- الفترٌة
 د- القٌاس النقدي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- االستمرارٌة', 'ب- الشخصٌة المعنوٌة', 'ج- الفترٌة', 'د- القٌاس النقدي']",أ,[0.46692154 0.2313275  0.24197343 0.05977752],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- االستمرارٌة', 'ب- الشخصٌة المعنوٌة', 'ج- الفترٌة', 'د- القٌاس النقدي']",أ,[0.37114805 0.20582    0.10436593 0.31866598],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -325,7 +325,7 @@ Options:
 ج- المقابلة
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- التكلفة التارٌخٌة', 'ب- تحقق اإلٌراد', 'ج- المقابلة', 'د- الشىء مما سبق']",ب,[0.04855186 0.5072845  0.17605558 0.26810804],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- التكلفة التارٌخٌة', 'ب- تحقق اإلٌراد', 'ج- المقابلة', 'د- الشىء مما سبق']",أ,[0.39584112 0.19249372 0.13454175 0.27712342],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -340,7 +340,7 @@ Options:
 ج- المحاسبة اإلدارٌة
 د- ال شىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- المحاسبة المالٌة', 'ب- محاسبة التكالٌف', 'ج- المحاسبة اإلدارٌة', 'د- ال شىء مما سبق']",ج,[0.1255851  0.1528036  0.41453537 0.30707595],Accounting
+For example, reply with <answer>vase</answer>.",0,"['أ- المحاسبة المالٌة', 'ب- محاسبة التكالٌف', 'ج- المحاسبة اإلدارٌة', 'د- ال شىء مما سبق']",أ,[0.50386703 0.15428728 0.08395874 0.257887  ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -355,7 +355,7 @@ Options:
 ج- اإللتزامات طوٌلة األجل
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- األصول الثابتة', 'ب- األصول المتداولة', 'ج- اإللتزامات طوٌلة األجل', 'د- الشىء مما سبق']",أ,[0.79153544 0.13392466 0.04683178 0.02770812],Accounting
+For example, reply with <answer>vase</answer>.",0,"['أ- األصول الثابتة', 'ب- األصول المتداولة', 'ج- اإللتزامات طوٌلة األجل', 'د- الشىء مما سبق']",أ,[0.7790009  0.08243924 0.03897814 0.09958177],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -370,7 +370,7 @@ Options:
 ج- األخطاء العوضٌة أو التكافإٌة
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- أخطاء الحذف الكلً', 'ب- األخطاء العوضٌة أو التكافإٌة', 'ج- األخطاء العوضٌة أو التكافإٌة', 'د- كل ما سبق']",أ,[0.5875547  0.21774405 0.10340519 0.09129602],Accounting
+For example, reply with <answer>vase</answer>.",3,"['أ- أخطاء الحذف الكلً', 'ب- األخطاء العوضٌة أو التكافإٌة', 'ج- األخطاء العوضٌة أو التكافإٌة', 'د- كل ما سبق']",أ,[0.8141879  0.06540979 0.03538789 0.08501437],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -385,7 +385,7 @@ Options:
 ج- الخصم النقدى
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الخصم التجارى', 'ب- خصم الكمٌة', 'ج- الخصم النقدى', 'د- كل ما سبق']",ج,[0.16193376 0.24728999 0.3705047  0.2202715 ],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- الخصم التجارى', 'ب- خصم الكمٌة', 'ج- الخصم النقدى', 'د- كل ما سبق']",أ,[0.39782965 0.23707724 0.1002674  0.26482567],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -400,7 +400,7 @@ Options:
 ج- اإلفصاح الكامل
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التكلفة والعائد', 'ب- التكلفة والعائد', 'ج- اإلفصاح الكامل', 'د- الشىء مما سبق']",ب,[0.28607634 0.36876312 0.2604325  0.08472804],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- التكلفة والعائد', 'ب- التكلفة والعائد', 'ج- اإلفصاح الكامل', 'د- الشىء مما سبق']",أ,[0.45668685 0.18821494 0.08359936 0.27149883],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -415,7 +415,7 @@ Options:
 ج- المصروفات
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- اإلٌرادات', 'ب- اإللتزامات', 'ج- المصروفات', 'د- الشىء مما سبق']",أ,[0.40015155 0.20291422 0.10444063 0.29249364],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- اإلٌرادات', 'ب- اإللتزامات', 'ج- المصروفات', 'د- الشىء مما سبق']",أ,[0.4919448  0.1630139  0.0770694  0.26797193],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -430,7 +430,7 @@ Options:
 ج- الكمبٌالة
 د- ال شىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الشٌك', 'ب- السند األذنى', 'ج- الكمبٌالة', 'د- ال شىء مما سبق']",ج,[0.17663135 0.16980639 0.44284925 0.21071307],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- الشٌك', 'ب- السند األذنى', 'ج- الكمبٌالة', 'د- ال شىء مما سبق']",أ,[0.44326466 0.19637154 0.10851663 0.25184715],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -445,7 +445,7 @@ Options:
 ج- مجمل الربح أو الخسارة
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- بضاعة أول المدة', 'ب- بضاعة أخر المدة', 'ج- مجمل الربح أو الخسارة', 'د- الشىء مما سبق']",ج,[0.19142586 0.04981228 0.7009456  0.05781621],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- بضاعة أول المدة', 'ب- بضاعة أخر المدة', 'ج- مجمل الربح أو الخسارة', 'د- الشىء مما سبق']",أ,[0.5479058  0.1638759  0.08653443 0.20168385],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -460,7 +460,7 @@ Options:
 ج- أوراق القبض
 د- أوراق الدفع
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- األثاث', 'ب- العمالء', 'ج- أوراق القبض', 'د- أوراق الدفع']",ب,[0.34134826 0.37684664 0.16552868 0.1162763 ],Accounting
+For example, reply with <answer>vase</answer>.",3,"['أ- األثاث', 'ب- العمالء', 'ج- أوراق القبض', 'د- أوراق الدفع']",أ,[0.60122484 0.15138607 0.10407005 0.143319  ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -475,7 +475,7 @@ Options:
 ج- أتعاب التخلٌص الجمركى
 د- نفقات الزٌوت والوقود
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- نفقات تجدٌد رخصة السٌارة', 'ب- نفقات الصٌانة الدورٌة', 'ج- أتعاب التخلٌص الجمركى', 'د- نفقات الزٌوت والوقود']",ب,[0.31737122 0.41246578 0.19921628 0.07094671],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- نفقات تجدٌد رخصة السٌارة', 'ب- نفقات الصٌانة الدورٌة', 'ج- أتعاب التخلٌص الجمركى', 'د- نفقات الزٌوت والوقود']",أ,[0.46558526 0.21505643 0.06622654 0.25313178],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -490,7 +490,7 @@ Options:
 ج- خصم مسموح به
 د- مسموحات المبٌعات
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- مردودات المشترٌات', 'ب- مسموحات المشترٌات', 'ج- خصم مسموح به', 'د- مسموحات المبٌعات']",ب,[0.24026082 0.2707298  0.26631987 0.22268946],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- مردودات المشترٌات', 'ب- مسموحات المشترٌات', 'ج- خصم مسموح به', 'د- مسموحات المبٌعات']",د,[0.22944738 0.22179584 0.05561199 0.4931448 ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -505,7 +505,7 @@ Options:
 ج- خصم الكمٌة
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الخصم النقدي', 'ب- الخصم التجاري', 'ج- خصم الكمٌة', 'د- كل ما سبق']",ج,[0.17154218 0.08634044 0.46194988 0.28016752],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- الخصم النقدي', 'ب- الخصم التجاري', 'ج- خصم الكمٌة', 'د- كل ما سبق']",أ,[0.6339029  0.162614   0.05660701 0.14687602],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -520,7 +520,7 @@ Options:
 ج- الموضوعٌة
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الثبات', 'ب- األهمٌة النسبٌة', 'ج- الموضوعٌة', 'د- الشىء مما سبق']",ب,[0.21083027 0.50137    0.20351325 0.0842864 ],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- الثبات', 'ب- األهمٌة النسبٌة', 'ج- الموضوعٌة', 'د- الشىء مما سبق']",أ,[0.40709886 0.15706591 0.11492092 0.3209143 ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -535,7 +535,7 @@ Options:
 ج- التكلفة
 د- الشىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- األهمٌة النسبٌة', 'ب- اإلفصاح الكامل', 'ج- التكلفة', 'د- الشىء مما سبق']",ب,[0.20306711 0.4059005  0.21780142 0.17323095],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- األهمٌة النسبٌة', 'ب- اإلفصاح الكامل', 'ج- التكلفة', 'د- الشىء مما سبق']",أ,[0.51144016 0.16692173 0.07407093 0.24756713],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -550,7 +550,7 @@ Options:
 ج- اإللتزامات الخارجٌة = األصول – حقوق الملكٌة
 د- األصول= اإللتزامات الخارجٌة – حقوق الملكٌة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- األصول = اإللتزامات الخارجٌة + حقوق الملكٌة', 'ب- حقوق الملكٌة = األصول – اإللتزامات الخارجٌة', 'ج- اإللتزامات الخارجٌة = األصول – حقوق الملكٌة', 'د- األصول= اإللتزامات الخارجٌة – حقوق الملكٌة']",ب,[0.30468452 0.39435124 0.19603741 0.10492687],Accounting
+For example, reply with <answer>vase</answer>.",3,"['أ- األصول = اإللتزامات الخارجٌة + حقوق الملكٌة', 'ب- حقوق الملكٌة = األصول – اإللتزامات الخارجٌة', 'ج- اإللتزامات الخارجٌة = األصول – حقوق الملكٌة', 'د- األصول= اإللتزامات الخارجٌة – حقوق الملكٌة']",أ,[0.6475996  0.11636223 0.06516677 0.17087144],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -565,7 +565,7 @@ Options:
 ج- زٌادة فى أحد األصول مع نقص فى أحد اإللتزامات .
 د- ال تإثر هذه العملٌة على معادلة المٌزانٌة .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- نقص فً أحد األصول مع نقص فى حقوق الملكٌة .', 'ب- نقص فً أحد األصول مع زٌادة فى حقوق الملكٌة .', 'ج- زٌادة فى أحد األصول مع نقص فى أحد اإللتزامات .', 'د- ال تإثر هذه العملٌة على معادلة المٌزانٌة .']",د,[0.1624649  0.15474208 0.23658958 0.44620344],Accounting
+For example, reply with <answer>vase</answer>.",3,"['أ- نقص فً أحد األصول مع نقص فى حقوق الملكٌة .', 'ب- نقص فً أحد األصول مع زٌادة فى حقوق الملكٌة .', 'ج- زٌادة فى أحد األصول مع نقص فى أحد اإللتزامات .', 'د- ال تإثر هذه العملٌة على معادلة المٌزانٌة .']",أ,[0.37625098 0.22478032 0.1261223  0.2728464 ],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -580,7 +580,7 @@ Options:
 ج- حـ / الموردون
 د- حـ / المرتبات
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- حـ / الخزٌنة', 'ب- حـ / البنك', 'ج- حـ / الموردون', 'د- حـ / المرتبات']",ب,[0.0917667  0.55192137 0.22163206 0.13467982],Accounting
+For example, reply with <answer>vase</answer>.",1,"['أ- حـ / الخزٌنة', 'ب- حـ / البنك', 'ج- حـ / الموردون', 'د- حـ / المرتبات']",ب,[0.29399437 0.37288845 0.08383383 0.24928334],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -595,7 +595,7 @@ Options:
 ج- مٌزان المراجعة
 د- ال شىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- المستندات', 'ب- القوائم المالٌة', 'ج- مٌزان المراجعة', 'د- ال شىء مما سبق']",ج,[0.31367746 0.11285391 0.38789594 0.1855727 ],Accounting
+For example, reply with <answer>vase</answer>.",0,"['أ- المستندات', 'ب- القوائم المالٌة', 'ج- مٌزان المراجعة', 'د- ال شىء مما سبق']",أ,[0.39623377 0.1426098  0.08193052 0.37922594],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -610,7 +610,7 @@ Options:
 ج- الدٌون المستحقة على المنشؤة للمساهمٌن
 د- ال شىء مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الدٌون المستحقة على المنشؤة للبنوك', 'ب- الدٌون المستحقة على المنشؤة للموردٌن', 'ج- الدٌون المستحقة على المنشؤة للمساهمٌن', 'د- ال شىء مما سبق']",ج,[0.0600737  0.13264024 0.43587562 0.37141037],Accounting
+For example, reply with <answer>vase</answer>.",2,"['أ- الدٌون المستحقة على المنشؤة للبنوك', 'ب- الدٌون المستحقة على المنشؤة للموردٌن', 'ج- الدٌون المستحقة على المنشؤة للمساهمٌن', 'د- ال شىء مما سبق']",د,[0.30815586 0.04165296 0.02031433 0.62987685],Accounting
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -625,7 +625,7 @@ Options:
 ج- الرمان
 د- القرع
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الباذنجان', 'ب- البلح', 'ج- الرمان', 'د- القرع']",ب,[0.32666424 0.4995811  0.12099552 0.05275921],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- الباذنجان', 'ب- البلح', 'ج- الرمان', 'د- القرع']",أ,[0.3649185  0.22117849 0.18217745 0.23172556],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -640,7 +640,7 @@ Options:
 ج- الطرف السفلى للزنو
 د- عظام راحة اليو
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الطرف العلو للكعبرة', 'ب- الطرف السفلى للكعبرة', 'ج- الطرف السفلى للزنو', 'د- عظام راحة اليو']",أ,[0.53622925 0.08440718 0.24530704 0.13405655],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- الطرف العلو للكعبرة', 'ب- الطرف السفلى للكعبرة', 'ج- الطرف السفلى للزنو', 'د- عظام راحة اليو']",أ,[0.3993008  0.2883087  0.09085472 0.22153579],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -655,7 +655,7 @@ Options:
 ج- الاسبوع السادس
 د- الاسبوع الثانى عشر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الاسبوع األول ', 'ب- الشهر الاول', 'ج- الاسبوع السادس', 'د- الاسبوع الثانى عشر']",أ,[0.6288063  0.10171199 0.1242032  0.14527847],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- الاسبوع األول ', 'ب- الشهر الاول', 'ج- الاسبوع السادس', 'د- الاسبوع الثانى عشر']",أ,[0.42730844 0.1981241  0.10866321 0.26590425],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -670,7 +670,7 @@ Options:
 ج- AA
 د- AB
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- AO', 'ب- OO', 'ج- AA', 'د- AB']",ب,[0.13423277 0.69268566 0.13744289 0.03563867],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- AO', 'ب- OO', 'ج- AA', 'د- AB']",أ,[0.48452285 0.09770457 0.05958502 0.35818756],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -685,7 +685,7 @@ Options:
 ج- البلمرة
 د- دى أكسى ريبونيوكليز
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الربط', 'ب- اللولب', 'ج- البلمرة', 'د- دى أكسى ريبونيوكليز']",ب,[0.1591629  0.54301566 0.11886612 0.17895539],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- الربط', 'ب- اللولب', 'ج- البلمرة', 'د- دى أكسى ريبونيوكليز']",أ,[0.3306768  0.21794337 0.12928092 0.32209888],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -700,7 +700,7 @@ Options:
 ج- الرحم
 د- المهبل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- المبيض', 'ب- قناة فالوب', 'ج- الرحم', 'د- المهبل']",ب,[0.0975734  0.43323356 0.31770885 0.1514842 ],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- المبيض', 'ب- قناة فالوب', 'ج- الرحم', 'د- المهبل']",أ,[0.3345255  0.31271335 0.12261768 0.2301435 ],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -715,7 +715,7 @@ Options:
 ج- النيوكليوتيدات فى الجين
 د-  النيوكليوتيدات فى مقابل الكودون فى tRNA
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الاحماض األمينية فى البروتين', 'ب- الكودونات فى DNA', 'ج- النيوكليوتيدات فى الجين', 'د-  النيوكليوتيدات فى مقابل الكودون فى tRNA']",ب,[0.37485564 0.40746114 0.17362574 0.0440575 ],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- الاحماض األمينية فى البروتين', 'ب- الكودونات فى DNA', 'ج- النيوكليوتيدات فى الجين', 'د-  النيوكليوتيدات فى مقابل الكودون فى tRNA']",أ,[0.6753843  0.08901693 0.0650961  0.17050268],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -730,7 +730,7 @@ Options:
 ج- الحشرات
 د- الاسفنجيات
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- القشريات', 'ب- الديدان', 'ج- الحشرات', 'د- الاسفنجيات']",ج,[0.27632016 0.04470265 0.39453804 0.28443918],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- القشريات', 'ب- الديدان', 'ج- الحشرات', 'د- الاسفنجيات']",د,[0.3606277  0.1820233  0.07513218 0.38221678],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -745,7 +745,7 @@ Options:
 ج- خيوط األكتين
 د-  خيوط الميوسين واألكتين
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الروابط المستعرضة', 'ب- خيوط الميوسين', 'ج- خيوط األكتين', 'د-  خيوط الميوسين واألكتين']",ج,[0.22405781 0.24074715 0.49352103 0.04167395],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- الروابط المستعرضة', 'ب- خيوط الميوسين', 'ج- خيوط األكتين', 'د-  خيوط الميوسين واألكتين']",أ,[0.46849427 0.21306588 0.08900034 0.22943953],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -760,7 +760,7 @@ Options:
 ج- الجمجمة
 د- الحزام الحوضى
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- القفص الصدرى', 'ب- الفقرة', 'ج- الجمجمة', 'د- الحزام الحوضى']",ب,[0.08589612 0.70069253 0.19458918 0.01882217],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- القفص الصدرى', 'ب- الفقرة', 'ج- الجمجمة', 'د- الحزام الحوضى']",أ,[0.5141828  0.21298295 0.08494675 0.18788752],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -775,7 +775,7 @@ Options:
 ج- غلاف البذرة
 د- بذرة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- غالف الثمرة ', 'ب- ثمرة', 'ج- غلاف البذرة', 'د- بذرة']",ب,[0.07337023 0.6555565  0.1197715  0.15130174],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- غالف الثمرة ', 'ب- ثمرة', 'ج- غلاف البذرة', 'د- بذرة']",أ,[0.3753754  0.20012729 0.30242836 0.122069  ],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -790,7 +790,7 @@ Options:
 ج- O-
 د- A+
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- B+', 'ب- O-', 'ج- O-', 'د- A+']",أ,[0.50716925 0.19121802 0.27082685 0.03078592],Biology
+For example, reply with <answer>vase</answer>.",0,"['أ- B+', 'ب- O-', 'ج- O-', 'د- A+']",أ,[0.5453012  0.18917137 0.0845283  0.18099917],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -805,7 +805,7 @@ Options:
 ج- ليسين
 د- أرجنين
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- فالين', 'ب- جاليسين', 'ج- ليسين', 'د- أرجنين']",أ,[0.48640117 0.05776506 0.33671725 0.1191165 ],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- فالين', 'ب- جاليسين', 'ج- ليسين', 'د- أرجنين']",أ,[0.61126816 0.13641344 0.05146232 0.20085604],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -820,7 +820,7 @@ Options:
 ج- بعض الديدان
 د- نجوم البحر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- القشريات', 'ب- الاسفنجيات', 'ج- بعض الديدان', 'د- نجوم البحر']",أ,[0.44710228 0.17669035 0.3062845  0.06992282],Biology
+For example, reply with <answer>vase</answer>.",0,"['أ- القشريات', 'ب- الاسفنجيات', 'ج- بعض الديدان', 'د- نجوم البحر']",أ,[0.45774448 0.23653236 0.08826091 0.21746226],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -835,7 +835,7 @@ Options:
 ج- احتوائه على سليلوز
 د- طبقة كيوتين تحيطه من الخارج و احتوائه على سليلوز
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- ماده شمعيه تحيطه من الخارج', 'ب- طبقة كيوتين تحيطه من الخارج', 'ج- احتوائه على سليلوز', 'د- طبقة كيوتين تحيطه من الخارج و احتوائه على سليلوز']",ب,[0.35045055 0.366464   0.2614074  0.02167802],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- ماده شمعيه تحيطه من الخارج', 'ب- طبقة كيوتين تحيطه من الخارج', 'ج- احتوائه على سليلوز', 'د- طبقة كيوتين تحيطه من الخارج و احتوائه على سليلوز']",أ,[0.35514292 0.1674014  0.15088433 0.32657138],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -850,7 +850,7 @@ Options:
 ج- طرديه ثم تثبت
 د- لا شئ من ذلك
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- طرديه', 'ب- عكسيه', 'ج- طرديه ثم تثبت', 'د- لا شئ من ذلك']",ج,[0.06333911 0.18696037 0.63185483 0.11784574],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- طرديه', 'ب- عكسيه', 'ج- طرديه ثم تثبت', 'د- لا شئ من ذلك']",د,[0.35798284 0.11869414 0.11259095 0.4107321 ],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -865,7 +865,7 @@ Options:
 ج- سوازيلاند و جنوب افريقيا
 د- جنوب افريقيا و ليسوتو
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الهند و كشمير', 'ب- كشمير و باكستان', 'ج- سوازيلاند و جنوب افريقيا', 'د- جنوب افريقيا و ليسوتو']",د,[0.06019939 0.2963115  0.2105777  0.4329114 ],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- الهند و كشمير', 'ب- كشمير و باكستان', 'ج- سوازيلاند و جنوب افريقيا', 'د- جنوب افريقيا و ليسوتو']",أ,[0.3853296  0.23465095 0.06414294 0.3158765 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -880,7 +880,7 @@ Options:
 ج- إنزال شخص مخالف لقوانين الدولة الساحلية
 د- حرية النقل والتجارة مع الدولة الساحلية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- مناورة أو تدريب بأسلحة من أي نوع', 'ب- جمع معلومات عن الدولة الساحلية', 'ج- إنزال شخص مخالف لقوانين الدولة الساحلية', 'د- حرية النقل والتجارة مع الدولة الساحلية']",ج,[0.08199063 0.05579317 0.52053505 0.3416811 ],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- مناورة أو تدريب بأسلحة من أي نوع', 'ب- جمع معلومات عن الدولة الساحلية', 'ج- إنزال شخص مخالف لقوانين الدولة الساحلية', 'د- حرية النقل والتجارة مع الدولة الساحلية']",أ,[0.38872612 0.17296201 0.08766321 0.35064867],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -895,7 +895,7 @@ Options:
 ج- تحول بحيرة متشجن إلي دولة جيبية محتواة
 د-  قلة عدد الدول المجاورة لدولة كندا
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ-  تشابه عدد الدول المجاورة البحرية متشجن مع عددالدول المجاورة لتونس', 'ب- زيادة الجبهات الساحلية لدولة الولايات المتحدة', 'ج- تحول بحيرة متشجن إلي دولة جيبية محتواة', 'د-  قلة عدد الدول المجاورة لدولة كندا']",ب,[0.25727156 0.5201352  0.17034754 0.05224566],Geography
+For example, reply with <answer>vase</answer>.",0,"['أ-  تشابه عدد الدول المجاورة البحرية متشجن مع عددالدول المجاورة لتونس', 'ب- زيادة الجبهات الساحلية لدولة الولايات المتحدة', 'ج- تحول بحيرة متشجن إلي دولة جيبية محتواة', 'د-  قلة عدد الدول المجاورة لدولة كندا']",أ,[0.3959915  0.21124592 0.15129283 0.24146971],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -910,7 +910,7 @@ Options:
 ج- كيوجا و البرت
 د- البرت و ادوارد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- ادوارد و فيكتوريا', 'ب- فيكتوريا و كيوجا', 'ج- كيوجا و البرت', 'د- البرت و ادوارد']",د,[0.23227899 0.04659685 0.1659135  0.55521065],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- ادوارد و فيكتوريا', 'ب- فيكتوريا و كيوجا', 'ج- كيوجا و البرت', 'د- البرت و ادوارد']",أ,[0.50546014 0.19658199 0.12942427 0.1685336 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -925,7 +925,7 @@ Options:
 ج- تعزيز التواصل الحضاري بين البلدين
 د- الثبات والاستاتيكية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- ارتفاع الكثافة السكانية', 'ب- تأثير عوامل التعرية عليها', 'ج- تعزيز التواصل الحضاري بين البلدين', 'د- الثبات والاستاتيكية']",أ,[0.48348597 0.36781737 0.10305709 0.04563951],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- ارتفاع الكثافة السكانية', 'ب- تأثير عوامل التعرية عليها', 'ج- تعزيز التواصل الحضاري بين البلدين', 'د- الثبات والاستاتيكية']",أ,[0.49216443 0.14106849 0.08096758 0.2857996 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -940,7 +940,7 @@ Options:
 ج- التكوين المورفولوجي و الغزو الثقافي
 د- الغزو الثقافي و الاحتكاك الحضاري
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الاحتكاك الحضاري و الامن المائي و الغذائي', 'ب- الامن المائي و الغذائي و التكوين المورفولوجي', 'ج- التكوين المورفولوجي و الغزو الثقافي', 'د- الغزو الثقافي و الاحتكاك الحضاري']",أ,[0.6617847  0.17285316 0.07444012 0.09092205],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- الاحتكاك الحضاري و الامن المائي و الغذائي', 'ب- الامن المائي و الغذائي و التكوين المورفولوجي', 'ج- التكوين المورفولوجي و الغزو الثقافي', 'د- الغزو الثقافي و الاحتكاك الحضاري']",أ,[0.5067347  0.20975228 0.14532529 0.1381877 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -955,7 +955,7 @@ Options:
 ج- اسلوب التحديد
 د- الاهميه للعسكيرين
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- مستوي السياده', 'ب- الاهميه الاقتصادية', 'ج- اسلوب التحديد', 'د- الاهميه للعسكيرين']",د,[0.14488903 0.25373465 0.2826595  0.31871682],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- مستوي السياده', 'ب- الاهميه الاقتصادية', 'ج- اسلوب التحديد', 'د- الاهميه للعسكيرين']",أ,[0.433526   0.13218603 0.20037733 0.23391058],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -970,7 +970,7 @@ Options:
 ج- البرازيل
 د- باكستان
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المغرب', 'ب- الجزائر', 'ج- البرازيل', 'د- باكستان']",ج,[0.20451124 0.1007961  0.61634785 0.07834481],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- المغرب', 'ب- الجزائر', 'ج- البرازيل', 'د- باكستان']",أ,[0.5839301  0.09527544 0.07320406 0.24759038],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -985,7 +985,7 @@ Options:
 ج- فرنسا و الهند و تشاد
 د- بريطانيا و فرنسا و الصين
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الصين و الهند و افغانستان', 'ب- روسيا و السنغال و بريطانيا', 'ج- فرنسا و الهند و تشاد', 'د- بريطانيا و فرنسا و الصين']",ج,[0.04961453 0.44576326 0.47436997 0.03025217],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- الصين و الهند و افغانستان', 'ب- روسيا و السنغال و بريطانيا', 'ج- فرنسا و الهند و تشاد', 'د- بريطانيا و فرنسا و الصين']",د,[0.2831387  0.17003809 0.11692569 0.4298975 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1000,7 +1000,7 @@ Options:
 ج- البحريه
 د- البحيريه
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الجبليه', 'ب- النهريه', 'ج- البحريه', 'د- البحيريه']",ج,[0.11432375 0.24502811 0.43675902 0.20388907],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- الجبليه', 'ب- النهريه', 'ج- البحريه', 'د- البحيريه']",أ,[0.41104367 0.12454198 0.23961382 0.22480051],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1015,7 +1015,7 @@ Options:
 ج- فيكتوريا
 د-  المنزلة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- سوبرييور', 'ب- متشجن', 'ج- فيكتوريا', 'د-  المنزلة']",ب,[0.02841198 0.48302782 0.24886775 0.23969239],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- سوبرييور', 'ب- متشجن', 'ج- فيكتوريا', 'د-  المنزلة']",أ,[0.46291733 0.23539507 0.09409955 0.20758805],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1030,7 +1030,7 @@ Options:
 ج- الخط الاوسط في البحيرات
 د- خط إحدي ضفتي النهر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- خط العمق الملاحي', 'ب- خط تقسيم المياه', 'ج- الخط الاوسط في البحيرات', 'د- خط إحدي ضفتي النهر']",ب,[0.21018521 0.34151    0.19158109 0.2567237 ],Geography
+For example, reply with <answer>vase</answer>.",0,"['أ- خط العمق الملاحي', 'ب- خط تقسيم المياه', 'ج- الخط الاوسط في البحيرات', 'د- خط إحدي ضفتي النهر']",أ,[0.54082006 0.28267735 0.06432842 0.11217411],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1045,7 +1045,7 @@ Options:
 ج- تأجير موانئ في منطقة الرصيف القاري
 د- الملاحه النهريه في بعض الانهار الدوليه
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- تسيير سفن تجارية في منطقة اعالي البحار', 'ب- استغلال مصادر الطاقه من المياه الداخليه', 'ج- تأجير موانئ في منطقة الرصيف القاري', 'د- الملاحه النهريه في بعض الانهار الدوليه']",ج,[0.20147355 0.1708241  0.44476894 0.18293345],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- تسيير سفن تجارية في منطقة اعالي البحار', 'ب- استغلال مصادر الطاقه من المياه الداخليه', 'ج- تأجير موانئ في منطقة الرصيف القاري', 'د- الملاحه النهريه في بعض الانهار الدوليه']",أ,[0.4058928  0.2132149  0.07417889 0.3067134 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1060,7 +1060,7 @@ Options:
 ج- ان المنطقة ممنوع اجراء فيها المناورات العسكرية
 د- هذه المنطقة مشاع للبشرية و ليست حكراً لاحد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- ان المنطقة  تابعه للمياه الاقليمية لدولة اليابان', 'ب- احتمال وجود نسبة تلوث اشعاع نووي بهذة المنطقة', 'ج- ان المنطقة ممنوع اجراء فيها المناورات العسكرية', 'د- هذه المنطقة مشاع للبشرية و ليست حكراً لاحد']",ب,[0.30672738 0.5236811  0.09602927 0.07356222],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- ان المنطقة  تابعه للمياه الاقليمية لدولة اليابان', 'ب- احتمال وجود نسبة تلوث اشعاع نووي بهذة المنطقة', 'ج- ان المنطقة ممنوع اجراء فيها المناورات العسكرية', 'د- هذه المنطقة مشاع للبشرية و ليست حكراً لاحد']",أ,[0.42942867 0.23678449 0.10000105 0.2337858 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1075,7 +1075,7 @@ Options:
 ج- الاقتراب من حدود أوروبية
 د-  كثرة عدد الدول التي تشرف عليها
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- استخدامها في الملاحة الدولية', 'ب- استخدامها كحدود سياسية', 'ج- الاقتراب من حدود أوروبية', 'د-  كثرة عدد الدول التي تشرف عليها']",ج,[0.13935615 0.37468854 0.39959326 0.086362  ],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- استخدامها في الملاحة الدولية', 'ب- استخدامها كحدود سياسية', 'ج- الاقتراب من حدود أوروبية', 'د-  كثرة عدد الدول التي تشرف عليها']",أ,[0.40083894 0.23143224 0.12059225 0.24713652],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1090,7 +1090,7 @@ Options:
 ج-  التكميلية
 د- المحايدة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الداخلية', 'ب- الاقليمية', 'ج-  التكميلية', 'د- المحايدة']",ب,[0.14847305 0.43073606 0.1447678  0.27602303],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- الداخلية', 'ب- الاقليمية', 'ج-  التكميلية', 'د- المحايدة']",أ,[0.5566676  0.1778857  0.11350199 0.15194468],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1105,7 +1105,7 @@ Options:
 ج- مطروح
 د- البحرالاحمر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- شمال سيناء', 'ب- الوادي الجديد', 'ج- مطروح', 'د- البحرالاحمر']",د,[0.17117617 0.2793829  0.0881015  0.46133938],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- شمال سيناء', 'ب- الوادي الجديد', 'ج- مطروح', 'د- البحرالاحمر']",أ,[0.4755203  0.14061877 0.10019942 0.28366148],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1120,7 +1120,7 @@ Options:
 ج- غياب فكرة العدالة الحدودية
 د- رسم الحدود مع أقدام الجبال
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- تبعية الجبال لدولة شيلي', 'ب-  رسم الحدود مع خط تقسيم المياة', 'ج- غياب فكرة العدالة الحدودية', 'د- رسم الحدود مع أقدام الجبال']",ب,[0.04502446 0.45644936 0.34575075 0.15277536],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- تبعية الجبال لدولة شيلي', 'ب-  رسم الحدود مع خط تقسيم المياة', 'ج- غياب فكرة العدالة الحدودية', 'د- رسم الحدود مع أقدام الجبال']",أ,[0.46599224 0.10379604 0.14225347 0.28795823],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1136,7 +1136,7 @@ Options:
 ج- الوظيفة الاقتصادية والمياة الاقليمية
 د- الوظيفة السياسية والمياة الدولية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- وظيفة الفصل بين الدول والمياة الداخلية', 'ب- وظيفة الحماية وألامن والمياه الاقليمية', 'ج- الوظيفة الاقتصادية والمياة الاقليمية', 'د- الوظيفة السياسية والمياة الدولية']",ج,[0.16038737 0.30311677 0.3200223  0.2164735 ],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- وظيفة الفصل بين الدول والمياة الداخلية', 'ب- وظيفة الحماية وألامن والمياه الاقليمية', 'ج- الوظيفة الاقتصادية والمياة الاقليمية', 'د- الوظيفة السياسية والمياة الدولية']",أ,[0.5599642  0.0964534  0.0960999  0.24748248],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1151,7 +1151,7 @@ Options:
 ج-  الحد البحري
 د- أعالي البحار
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- خط الساحل', 'ب- خط تقسيم المياة', 'ج-  الحد البحري', 'د- أعالي البحار']",ج,[0.20906782 0.3050576  0.42858142 0.05729326],Geography
+For example, reply with <answer>vase</answer>.",0,"['أ- خط الساحل', 'ب- خط تقسيم المياة', 'ج-  الحد البحري', 'د- أعالي البحار']",أ,[0.5990029  0.17981051 0.09713051 0.12405606],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1166,7 +1166,7 @@ Options:
 ج- المياة الملاصقة
 د- خط الساحل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المياة المحايدة', 'ب- الحد البحري', 'ج- المياة الملاصقة', 'د- خط الساحل']",ج,[0.02849934 0.24978699 0.40629587 0.31541783],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- المياة المحايدة', 'ب- الحد البحري', 'ج- المياة الملاصقة', 'د- خط الساحل']",أ,[0.46244407 0.14295831 0.11813974 0.27645794],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1181,7 +1181,7 @@ Options:
 ج- صعوبة الاتصال بالعالم الخارجي
 د- النظام السياسي والاداري
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المساحة الارضية', 'ب- توزيع الهيمنة والسيطرة', 'ج- صعوبة الاتصال بالعالم الخارجي', 'د- النظام السياسي والاداري']",ج,[0.16764529 0.1579947  0.4196066  0.2547534 ],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- المساحة الارضية', 'ب- توزيع الهيمنة والسيطرة', 'ج- صعوبة الاتصال بالعالم الخارجي', 'د- النظام السياسي والاداري']",أ,[0.44128588 0.13848557 0.10301032 0.3172183 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1196,7 +1196,7 @@ Options:
 ج- متشجن
 د- مالاوى
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- سوبريور', 'ب- فيكتوريا ', 'ج- متشجن', 'د- مالاوى']",ب,[0.12284763 0.44959715 0.22407971 0.20347545],Geography
+For example, reply with <answer>vase</answer>.",0,"['أ- سوبريور', 'ب- فيكتوريا ', 'ج- متشجن', 'د- مالاوى']",أ,[0.46058834 0.2418787  0.07858676 0.21894622],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1211,7 +1211,7 @@ Options:
 ج- إقامة التحصينات عليها
 د-  ارتفاع الكثافة السكانية بها
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- عدم الثبات والحركة', 'ب- سهولة تحقيق التنمية الشاملة بقربها', 'ج- إقامة التحصينات عليها', 'د-  ارتفاع الكثافة السكانية بها']",ج,[0.25788587 0.21865483 0.38931957 0.13413973],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- عدم الثبات والحركة', 'ب- سهولة تحقيق التنمية الشاملة بقربها', 'ج- إقامة التحصينات عليها', 'د-  ارتفاع الكثافة السكانية بها']",أ,[0.40494424 0.16928674 0.108539   0.31722993],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1226,7 +1226,7 @@ Options:
 ج- البحيرات العظمي
 د- مضيق صقلية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- جبال الهملايا', 'ب- مضيق برينج', 'ج- البحيرات العظمي', 'د- مضيق صقلية']",ب,[0.10088442 0.38419893 0.3728435  0.14207311],Geography
+For example, reply with <answer>vase</answer>.",0,"['أ- جبال الهملايا', 'ب- مضيق برينج', 'ج- البحيرات العظمي', 'د- مضيق صقلية']",أ,[0.41021875 0.14804967 0.10834339 0.33338824],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1241,7 +1241,7 @@ Options:
 ج- الرصيف القاري
 د- المياه الداخليه
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المياه الاقليميه', 'ب- المياه التكميليه', 'ج- الرصيف القاري', 'د- المياه الداخليه']",د,[0.2041754  0.16226868 0.272207   0.36134893],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- المياه الاقليميه', 'ب- المياه التكميليه', 'ج- الرصيف القاري', 'د- المياه الداخليه']",أ,[0.55746907 0.13404031 0.1370786  0.17141204],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1256,7 +1256,7 @@ Options:
 ج- ثورة الصعيد
 د- تولى كليبر القيادة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- ثورة القاهرة الاولى', 'ب- عودة نابليون من عكا', 'ج- ثورة الصعيد', 'د- تولى كليبر القيادة']",د,[0.16183497 0.28593135 0.26140878 0.29082495],History
+For example, reply with <answer>vase</answer>.",1,"['أ- ثورة القاهرة الاولى', 'ب- عودة نابليون من عكا', 'ج- ثورة الصعيد', 'د- تولى كليبر القيادة']",أ,[0.35140988 0.22621174 0.10405533 0.31832308],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1271,7 +1271,7 @@ Options:
 ج- قناة السويس
 د- بحر المتوسط
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- فرع رشيد', 'ب- فرع دمياط', 'ج- قناة السويس', 'د- بحر المتوسط']",د,[0.03366149 0.18988252 0.13176268 0.6446934 ],History
+For example, reply with <answer>vase</answer>.",0,"['أ- فرع رشيد', 'ب- فرع دمياط', 'ج- قناة السويس', 'د- بحر المتوسط']",أ,[0.42517683 0.28325045 0.08781356 0.20375913],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1286,7 +1286,7 @@ Options:
 ج- الامتيازات
 د- الاحتكار
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الالتزام', 'ب- الانتفاع', 'ج- الامتيازات', 'د- الاحتكار']",د,[0.08551349 0.36674258 0.04053074 0.5072132 ],History
+For example, reply with <answer>vase</answer>.",2,"['أ- الالتزام', 'ب- الانتفاع', 'ج- الامتيازات', 'د- الاحتكار']",د,[0.31235105 0.1527965  0.12721355 0.40763897],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1301,7 +1301,7 @@ Options:
 ج- الجامعات
 د- الأزهر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الكتاتيب', 'ب- المدارس', 'ج- الجامعات', 'د- الأزهر']",د,[0.29067543 0.0431805  0.03820552 0.62793857],History
+For example, reply with <answer>vase</answer>.",3,"['أ- الكتاتيب', 'ب- المدارس', 'ج- الجامعات', 'د- الأزهر']",أ,[0.5346398  0.1548801  0.07379587 0.23668426],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1316,7 +1316,7 @@ Options:
 ج- الكشوف الجغرافية
 د- الحياد الإيجابي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الثورة الصناعية', 'ب- التوازن الدولي', 'ج- الكشوف الجغرافية', 'د- الحياد الإيجابي']",ب,[0.21430632 0.48600215 0.2646393  0.03505224],History
+For example, reply with <answer>vase</answer>.",2,"['أ- الثورة الصناعية', 'ب- التوازن الدولي', 'ج- الكشوف الجغرافية', 'د- الحياد الإيجابي']",ج,[0.1871725  0.11861987 0.5515588  0.14264886],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1331,7 +1331,7 @@ Options:
 ج- مصر الوسطى
 د- الصعيد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- سيناء', 'ب- الدلتا', 'ج- مصر الوسطى', 'د- الصعيد']",د,[0.06186401 0.01935906 0.25981098 0.658966  ],History
+For example, reply with <answer>vase</answer>.",3,"['أ- سيناء', 'ب- الدلتا', 'ج- مصر الوسطى', 'د- الصعيد']",د,[0.3816277  0.14423664 0.07915366 0.39498195],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1346,7 +1346,7 @@ Options:
 ج- لقوى الاستعمارية
 د- التحالفات الدولية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- ضعف الجيش', 'ب- انقسام الداخلي', 'ج- لقوى الاستعمارية', 'د- التحالفات الدولية']",ب,[0.03199    0.76446915 0.04657669 0.15696415],History
+For example, reply with <answer>vase</answer>.",1,"['أ- ضعف الجيش', 'ب- انقسام الداخلي', 'ج- لقوى الاستعمارية', 'د- التحالفات الدولية']",ب,[0.24551277 0.37903363 0.11345876 0.26199487],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1361,7 +1361,7 @@ Options:
 ج- النمسا
 د- انجلترا
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- روسيا', 'ب- تركيا', 'ج- النمسا', 'د- انجلترا']",ج,[0.03740933 0.16917105 0.6171971  0.17622253],History
+For example, reply with <answer>vase</answer>.",3,"['أ- روسيا', 'ب- تركيا', 'ج- النمسا', 'د- انجلترا']",د,[0.33205613 0.14180434 0.09717141 0.42896816],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1376,7 +1376,7 @@ Options:
 ج- ديبوى
 د- مينو
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- نابليون', 'ب- كليبر', 'ج- ديبوى', 'د- مينو']",د,[0.1850285  0.27614397 0.08349828 0.45532918],History
+For example, reply with <answer>vase</answer>.",0,"['أ- نابليون', 'ب- كليبر', 'ج- ديبوى', 'د- مينو']",ب,[0.30432343 0.42314383 0.07022415 0.20230864],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1391,7 +1391,7 @@ Options:
 ج- الوطنى
 د- القاهرة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العام', 'ب- الاقاليم', 'ج- الوطنى', 'د- القاهرة']",د,[0.1516885  0.15755112 0.29481512 0.3959453 ],History
+For example, reply with <answer>vase</answer>.",1,"['أ- العام', 'ب- الاقاليم', 'ج- الوطنى', 'د- القاهرة']",د,[0.38041297 0.13078718 0.0594241  0.42937577],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1406,7 +1406,7 @@ Options:
 ج- إخضاع الصعيد
 د- معركة أبي قير البحرية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- الحملة الفرنسية على الشام', 'ب- معركة إمبابة', 'ج- إخضاع الصعيد', 'د- معركة أبي قير البحرية']",ب,[0.08806883 0.8120314  0.03478358 0.06511624],History
+For example, reply with <answer>vase</answer>.",0,"['أ- الحملة الفرنسية على الشام', 'ب- معركة إمبابة', 'ج- إخضاع الصعيد', 'د- معركة أبي قير البحرية']",أ,[0.5131582  0.2014869  0.08081006 0.20454483],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1421,7 +1421,7 @@ Options:
 ج- مجاملة الإنجليز
 د- ترهيب المماليك
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- صدق نابليون', 'ب- خداع المصريين', 'ج- مجاملة الإنجليز', 'د- ترهيب المماليك']",د,[0.04824049 0.07681516 0.16009761 0.71484673],History
+For example, reply with <answer>vase</answer>.",1,"['أ- صدق نابليون', 'ب- خداع المصريين', 'ج- مجاملة الإنجليز', 'د- ترهيب المماليك']",أ,[0.41960102 0.25268307 0.06408795 0.26362804],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1436,7 +1436,7 @@ Options:
 ج- الزراعة
 د- النقل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الصناعة', 'ب- تجارة', 'ج- الزراعة', 'د- النقل']",ب,[0.06833775 0.68678766 0.2062498  0.03862476],History
+For example, reply with <answer>vase</answer>.",2,"['أ- الصناعة', 'ب- تجارة', 'ج- الزراعة', 'د- النقل']",أ,[0.41538405 0.15762246 0.14250797 0.28448558],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1451,7 +1451,7 @@ Options:
 ج- المماليك
 د- الانجليز
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العثمانيون', 'ب- الفرنسييون', 'ج- المماليك', 'د- الانجليز']",ج,[0.0978403  0.12274579 0.7094534  0.06996046],History
+For example, reply with <answer>vase</answer>.",1,"['أ- العثمانيون', 'ب- الفرنسييون', 'ج- المماليك', 'د- الانجليز']",أ,[0.45529312 0.23798044 0.11771297 0.18901345],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1466,7 +1466,7 @@ Options:
 ج- الأتراك
 د- المماليك
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- علماء الأزهر', 'ب- التجار الاجانب', 'ج- الأتراك', 'د- المماليك']",ج,[0.36463058 0.13096017 0.41181    0.09259927],History
+For example, reply with <answer>vase</answer>.",3,"['أ- علماء الأزهر', 'ب- التجار الاجانب', 'ج- الأتراك', 'د- المماليك']",أ,[0.48300028 0.11100505 0.11089905 0.29509565],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1481,7 +1481,7 @@ Options:
 ج- كليبر
 د- ديبوى
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- نابليون', 'ب- مينو', 'ج- كليبر', 'د- ديبوى']",ب,[0.22755262 0.44464225 0.22189356 0.10591155],History
+For example, reply with <answer>vase</answer>.",3,"['أ- نابليون', 'ب- مينو', 'ج- كليبر', 'د- ديبوى']",د,[0.27637094 0.26309103 0.06257103 0.397967  ],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1496,7 +1496,7 @@ Options:
 ج- حجر رشيد
 د- سليمان الحلبي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- كليبر', 'ب- ثورة القاهرة الثانية', 'ج- حجر رشيد', 'د- سليمان الحلبي']",أ,[0.44188258 0.2203375  0.27922633 0.05855358],History
+For example, reply with <answer>vase</answer>.",2,"['أ- كليبر', 'ب- ثورة القاهرة الثانية', 'ج- حجر رشيد', 'د- سليمان الحلبي']",أ,[0.3795011  0.2067358  0.11230595 0.30145714],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1511,7 +1511,7 @@ Options:
 ج- فرض الضرائب
 د- التحريض الخارجي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الانقسام الداخلي', 'ب- الصراع على الحكم', 'ج- فرض الضرائب', 'د- التحريض الخارجي']",د,[0.20418707 0.06630894 0.33772027 0.3917837 ],History
+For example, reply with <answer>vase</answer>.",2,"['أ- الانقسام الداخلي', 'ب- الصراع على الحكم', 'ج- فرض الضرائب', 'د- التحريض الخارجي']",أ,[0.3696783  0.1891918  0.11248614 0.32864383],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1526,7 +1526,7 @@ Options:
 ج- الترغيب
 د- التهديد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- التفريق', 'ب- التحذير', 'ج- الترغيب', 'د- التهديد']",ب,[0.2569716  0.58277094 0.09135567 0.06890174],History
+For example, reply with <answer>vase</answer>.",0,"['أ- التفريق', 'ب- التحذير', 'ج- الترغيب', 'د- التهديد']",أ,[0.5701322  0.14569186 0.10983292 0.17434303],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1541,7 +1541,7 @@ Options:
 ج- الرفاهية الاجتماعية
 د- تعدد الولاة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الرواج الاقتصادي', 'ب- الاستقرار السياسي', 'ج- الرفاهية الاجتماعية', 'د- تعدد الولاة']",ب,[0.29848057 0.41302705 0.10656294 0.18192948],History
+For example, reply with <answer>vase</answer>.",3,"['أ- الرواج الاقتصادي', 'ب- الاستقرار السياسي', 'ج- الرفاهية الاجتماعية', 'د- تعدد الولاة']",د,[0.40968063 0.11122528 0.06428119 0.41481295],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1556,7 +1556,7 @@ Options:
 ج- الخداع السياسي للمصريين
 د- الولاء لتركيا
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- حب المصريين', 'ب- الاصل العربي', 'ج- الخداع السياسي للمصريين', 'د- الولاء لتركيا']",د,[0.0989013  0.22771752 0.10509071 0.56829053],History
+For example, reply with <answer>vase</answer>.",2,"['أ- حب المصريين', 'ب- الاصل العربي', 'ج- الخداع السياسي للمصريين', 'د- الولاء لتركيا']",أ,[0.5054365  0.11312468 0.08295929 0.29847962],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1571,7 +1571,7 @@ Options:
 ج- مراد
 د- خورشيد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- طاهر', 'ب- خسرو', 'ج- مراد', 'د- خورشيد']",د,[0.19463363 0.22742544 0.00260524 0.5753357 ],History
+For example, reply with <answer>vase</answer>.",3,"['أ- طاهر', 'ب- خسرو', 'ج- مراد', 'د- خورشيد']",د,[0.22828715 0.10610698 0.0681008  0.5975051 ],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1586,7 +1586,7 @@ Options:
 ج- الفلاحون
 د- الصناع
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التجار', 'ب- العلماء', 'ج- الفلاحون', 'د- الصناع']",ج,[0.32792208 0.03429674 0.5438199  0.09396128],History
+For example, reply with <answer>vase</answer>.",1,"['أ- التجار', 'ب- العلماء', 'ج- الفلاحون', 'د- الصناع']",د,[0.3350694  0.16094124 0.09019191 0.4137974 ],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1601,7 +1601,7 @@ Options:
 ج- محمد على
 د- اسماعيل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- سعيد', 'ب- عباس', 'ج- محمد على', 'د- اسماعيل']",أ,[0.5174096  0.14373153 0.05450696 0.28435192],History
+For example, reply with <answer>vase</answer>.",0,"['أ- سعيد', 'ب- عباس', 'ج- محمد على', 'د- اسماعيل']",أ,[0.5675811  0.13780169 0.08429593 0.21032129],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1616,7 +1616,7 @@ Options:
 ج- سعيد
 د- عباس
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- محمد على', 'ب- اسماعيل', 'ج- سعيد', 'د- عباس']",د,[0.25569755 0.04389054 0.02370055 0.6767114 ],History
+For example, reply with <answer>vase</answer>.",1,"['أ- محمد على', 'ب- اسماعيل', 'ج- سعيد', 'د- عباس']",أ,[0.6096222  0.11858833 0.06138152 0.21040791],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1631,7 +1631,7 @@ Options:
 ج- معارضة الثورة الفرنسية
 د- لمنع ظهور قوة جديدة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- حماية السطان العثماني', 'ب- حماية للسلطة المصرية', 'ج- معارضة الثورة الفرنسية', 'د- لمنع ظهور قوة جديدة']",د,[0.07971482 0.24679254 0.2551699  0.41832277],History
+For example, reply with <answer>vase</answer>.",3,"['أ- حماية السطان العثماني', 'ب- حماية للسلطة المصرية', 'ج- معارضة الثورة الفرنسية', 'د- لمنع ظهور قوة جديدة']",د,[0.31807253 0.2322836  0.06974404 0.37989977],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1646,7 +1646,7 @@ Options:
 ج- الاقتصاد المعيارى
 د- الاقتصاد الواقعى
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- الاقتصاد الجزئي', 'ب- الاقتصاد الجزئي', 'ج- الاقتصاد المعيارى', 'د- الاقتصاد الواقعى']",ب,[0.09270407 0.6730046  0.09233005 0.14196125],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- الاقتصاد الجزئي', 'ب- الاقتصاد الجزئي', 'ج- الاقتصاد المعيارى', 'د- الاقتصاد الواقعى']",أ,[0.41782525 0.21077442 0.1374389  0.23396143],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1661,7 +1661,7 @@ Options:
 ج- هل يجب علي الدولة رفع الضرائب الجمركية علي السيارات أم خفضها
 د- جميع ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- هل يجب علينا رفع الضرائب علي أصحاب الدخول المرتفعة', 'ب- هل يجب علي الدولة زيادة الإعفاءات الضريبية', 'ج- هل يجب علي الدولة رفع الضرائب الجمركية علي السيارات أم خفضها', 'د- جميع ما سبق']",ج,[0.13661584 0.33411035 0.34027085 0.18900295],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- هل يجب علينا رفع الضرائب علي أصحاب الدخول المرتفعة', 'ب- هل يجب علي الدولة زيادة الإعفاءات الضريبية', 'ج- هل يجب علي الدولة رفع الضرائب الجمركية علي السيارات أم خفضها', 'د- جميع ما سبق']",أ,[0.46499065 0.18482578 0.10200658 0.24817698],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1674,7 +1674,7 @@ Options:
 أ- عبارة صحيحة
 ب- عبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- عبارة صحيحة', 'ب- عبارة خاطئة']",ب,[0.07131033 0.9286897 ],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- عبارة صحيحة', 'ب- عبارة خاطئة']",أ,[0.6831596  0.31684044],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1689,7 +1689,7 @@ Options:
 ج- ما هو تأثير رفع السعر علي الكمية المستهلكة من السلعة
 د- هل يجب علينا رفع الضرائب
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- ما هى الآثار الاقتصادية لرفع الضرائب أو نقص النفقات العامة', 'ب- ما هي آثار تحرير التجارة علي اقتصادات الدول النامية', 'ج- ما هو تأثير رفع السعر علي الكمية المستهلكة من السلعة', 'د- هل يجب علينا رفع الضرائب']",ب,[0.20963854 0.4509601  0.14184433 0.197557  ],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- ما هى الآثار الاقتصادية لرفع الضرائب أو نقص النفقات العامة', 'ب- ما هي آثار تحرير التجارة علي اقتصادات الدول النامية', 'ج- ما هو تأثير رفع السعر علي الكمية المستهلكة من السلعة', 'د- هل يجب علينا رفع الضرائب']",أ,[0.44213566 0.19992676 0.11358115 0.24435641],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1704,7 +1704,7 @@ Options:
 ج- راس المال
 د- التنظيم
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الأرض( الموارد الطبيعية)', 'ب- العمل', 'ج- راس المال', 'د- التنظيم']",أ,[0.35896814 0.22028996 0.33858827 0.08215362],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- الأرض( الموارد الطبيعية)', 'ب- العمل', 'ج- راس المال', 'د- التنظيم']",د,[0.3794749  0.12182844 0.08638494 0.4123117 ],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1717,7 +1717,7 @@ Options:
 أ- عبارة صحيحة
 ب- عبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- عبارة صحيحة', 'ب- عبارة خاطئة']",ب,[0.10940082 0.8905992 ],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- عبارة صحيحة', 'ب- عبارة خاطئة']",أ,[0.64439887 0.35560113],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1732,7 +1732,7 @@ Options:
 ج- خارج الامكانات
 د- لا توجد إجابة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- إنتاج غير مثلى', 'ب- إنتاج مثلى', 'ج- خارج الامكانات', 'د- لا توجد إجابة']",ب,[0.21896043 0.3282719  0.19538553 0.2573821 ],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- إنتاج غير مثلى', 'ب- إنتاج مثلى', 'ج- خارج الامكانات', 'د- لا توجد إجابة']",أ,[0.56900066 0.15088215 0.09487779 0.18523934],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1747,7 +1747,7 @@ Options:
 ج- توافر الرغبة والقوة الشرائية معا
 د- لا توجد اجابة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الرغبة في الشراء فقط', 'ب- توافر القوة الشرائية فقط', 'ج- توافر الرغبة والقوة الشرائية معا', 'د- لا توجد اجابة']",ج,[0.20628583 0.19284292 0.49173352 0.10913773],Economics
+For example, reply with <answer>vase</answer>.",2,"['أ- الرغبة في الشراء فقط', 'ب- توافر القوة الشرائية فقط', 'ج- توافر الرغبة والقوة الشرائية معا', 'د- لا توجد اجابة']",د,[0.35924596 0.12254448 0.13872753 0.37948203],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1762,7 +1762,7 @@ Options:
 ج- ثابتة
 د- لا توجد علاقة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- طردية', 'ب- عكسية', 'ج- ثابتة', 'د- لا توجد علاقة']",ب,[0.05854839 0.7455862  0.12714063 0.06872479],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- طردية', 'ب- عكسية', 'ج- ثابتة', 'د- لا توجد علاقة']",د,[0.3624186  0.13911255 0.09032021 0.40814868],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1777,7 +1777,7 @@ Options:
 ج- عدد السكان
 د- اذواق المستهلكين
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- دخل المستهلك', 'ب- سعر السلعة', 'ج- عدد السكان', 'د- اذواق المستهلكين']",د,[0.17700748 0.06000443 0.03677969 0.7262084 ],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- دخل المستهلك', 'ب- سعر السلعة', 'ج- عدد السكان', 'د- اذواق المستهلكين']",أ,[0.50342876 0.2736217  0.07099892 0.15195063],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1792,7 +1792,7 @@ Options:
 ج- تكاليف الانتاج
 د- ثمن السلعة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الضرائب علي الانتاجه', 'ب- اسعار السلع الاخري (مكملة وبديلة).', 'ج- تكاليف الانتاج', 'د- ثمن السلعة']",د,[0.17297648 0.28795934 0.08558018 0.45348397],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- الضرائب علي الانتاجه', 'ب- اسعار السلع الاخري (مكملة وبديلة).', 'ج- تكاليف الانتاج', 'د- ثمن السلعة']",أ,[0.46367317 0.17788416 0.11707322 0.24136947],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1807,7 +1807,7 @@ Options:
 ج- التحقق المادى لظاهرة معینة.
 د- لیس أیا مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- حالة من عدم التأكد تلازم متخذ القرا فتسبب له القلق و الخوف', 'ب- الخسارة الناتجة من تحقق حادث معین', 'ج- التحقق المادى لظاهرة معینة.', 'د- لیس أیا مما سبق']",أ,[0.42551458 0.29847407 0.09753654 0.17847481],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- حالة من عدم التأكد تلازم متخذ القرا فتسبب له القلق و الخوف', 'ب- الخسارة الناتجة من تحقق حادث معین', 'ج- التحقق المادى لظاهرة معینة.', 'د- لیس أیا مما سبق']",أ,[0.37072995 0.23800896 0.10362563 0.28763542],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1822,7 +1822,7 @@ Options:
 ج- الخسارة
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الاحتمالیة', 'ب- المفاجأة', 'ج- الخسارة', 'د- كل ما سبق']",أ,[0.474345   0.36625153 0.11121295 0.04819046],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- الاحتمالیة', 'ب- المفاجأة', 'ج- الخسارة', 'د- كل ما سبق']",أ,[0.38890442 0.20596911 0.10004248 0.30508396],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1837,7 +1837,7 @@ Options:
 ج- الزیادة في الدخل أو في قیمة الممتلكات
 د- كل مت سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الحزن والألم', 'ب- النقص في الدخل أو في قیمة الممتلكات نتیجة تحقق حادث طارئ', 'ج- الزیادة في الدخل أو في قیمة الممتلكات', 'د- كل مت سبق']",أ,[0.41337994 0.3671649  0.15468726 0.06476793],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- الحزن والألم', 'ب- النقص في الدخل أو في قیمة الممتلكات نتیجة تحقق حادث طارئ', 'ج- الزیادة في الدخل أو في قیمة الممتلكات', 'د- كل مت سبق']",أ,[0.4030244  0.21270041 0.09810983 0.28616536],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1852,7 +1852,7 @@ Options:
 ج- الحزن والألم
 د- الزلازل و البراكین
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- الحریق والانفجار', 'ب- الوفاة وطول البقاء على فید الحیاة', 'ج- الحزن والألم', 'د- الزلازل و البراكین']",أ,[0.56629664 0.2094241  0.12694752 0.09733173],Economics
+For example, reply with <answer>vase</answer>.",2,"['أ- الحریق والانفجار', 'ب- الوفاة وطول البقاء على فید الحیاة', 'ج- الحزن والألم', 'د- الزلازل و البراكین']",أ,[0.37412983 0.21214132 0.116507   0.29722187],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1867,7 +1867,7 @@ Options:
 ج- الزلازل والبراكین
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الحریق والانفجار', 'ب- الوفاة وطول البقاء على فید الحیاة', 'ج- الزلازل والبراكین', 'د- كل ما سبق']",أ,[0.7480417  0.08841594 0.1321609  0.03138163],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- الحریق والانفجار', 'ب- الوفاة وطول البقاء على فید الحیاة', 'ج- الزلازل والبراكین', 'د- كل ما سبق']",أ,[0.4369394  0.18222682 0.09610701 0.2847268 ],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1882,7 +1882,7 @@ Options:
 ج- هى النقص الكلي أو الجزئي في الدخل أو في قیمة الممتلكات
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- هى التى یتعرض لها الانسان و یكون ناتج تحققها خسارة مالیة دائما', 'ب- هى التى یتسبب فى نشأتها ظواهر یخلقها الانسان بنفسه ولنفسه بفرض الأمل فى تحقیق مكاسب مالیة', 'ج- هى النقص الكلي أو الجزئي في الدخل أو في قیمة الممتلكات', 'د- كل ما سبق']",أ,[0.3458857  0.32096702 0.11966492 0.2134823 ],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- هى التى یتعرض لها الانسان و یكون ناتج تحققها خسارة مالیة دائما', 'ب- هى التى یتسبب فى نشأتها ظواهر یخلقها الانسان بنفسه ولنفسه بفرض الأمل فى تحقیق مكاسب مالیة', 'ج- هى النقص الكلي أو الجزئي في الدخل أو في قیمة الممتلكات', 'د- كل ما سبق']",أ,[0.48179102 0.22099312 0.08626552 0.21095026],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1897,7 +1897,7 @@ Options:
 ج- الزلازل والسیول
 د- لیس أیا مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- الأعمال التجاریة والصناعیة وأعمال الخدمات وأعمال المقامرة والمضاربة', 'ب- حوادث السیارات', 'ج- الزلازل والسیول', 'د- لیس أیا مما سبق']",أ,[0.7106198  0.20194802 0.00980745 0.07762472],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- الأعمال التجاریة والصناعیة وأعمال الخدمات وأعمال المقامرة والمضاربة', 'ب- حوادث السیارات', 'ج- الزلازل والسیول', 'د- لیس أیا مما سبق']",أ,[0.54467833 0.13349113 0.0816313  0.24019927],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1912,7 +1912,7 @@ Options:
 ج- الخسائر الكلیة
 د- الخسائر الجزئیة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الأعمال التجاریة والصناعیة وأعمال الخدمات وأعمال المقامرة والمضاربة', 'ب- الأخطار التى یتسبب عنها ظواهر طبیعیة لیس للانسان دخل فى تحققها', 'ج- الخسائر الكلیة', 'د- الخسائر الجزئیة']",أ,[0.660789   0.22627425 0.0735999  0.03933685],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- الأعمال التجاریة والصناعیة وأعمال الخدمات وأعمال المقامرة والمضاربة', 'ب- الأخطار التى یتسبب عنها ظواهر طبیعیة لیس للانسان دخل فى تحققها', 'ج- الخسائر الكلیة', 'د- الخسائر الجزئیة']",أ,[0.51266944 0.22593977 0.07274107 0.18864971],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1927,7 +1927,7 @@ Options:
 ج- المسببات الشخصیة
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- المسببات طبیعیة', 'ب- المسببات الذاتیة', 'ج- المسببات الشخصیة', 'د- كل ما سبق']",ب,[0.14141016 0.4883247  0.22047389 0.14979126],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- المسببات طبیعیة', 'ب- المسببات الذاتیة', 'ج- المسببات الشخصیة', 'د- كل ما سبق']",أ,[0.43961295 0.238054   0.08369286 0.23864011],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1942,7 +1942,7 @@ Options:
 ج- رعونة قائد السیارة بالنسبة لحوادث السیارات
 د- تعمد أحداث الحریق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- وجود مبنى من الأخشاب بالنسبة لخطر الحریق', 'ب- التدخین', 'ج- رعونة قائد السیارة بالنسبة لحوادث السیارات', 'د- تعمد أحداث الحریق']",د,[0.17674781 0.102492   0.19896412 0.52179605],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- وجود مبنى من الأخشاب بالنسبة لخطر الحریق', 'ب- التدخین', 'ج- رعونة قائد السیارة بالنسبة لحوادث السیارات', 'د- تعمد أحداث الحریق']",د,[0.28695053 0.27386642 0.11134639 0.32783672],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1957,7 +1957,7 @@ Options:
 ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- أخطار لو حدثت ینتج عنها خسارة مادیة نتیجة لهلاك الأصل أو تلفه', 'ب- أخطار لو حدثت تسبب نقص القدرة على استخدام الأصل بكفاءة عالیة', 'ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى', 'د- كل ما سبق']",أ,[0.51744187 0.21120568 0.19087031 0.08048208],Economics
+For example, reply with <answer>vase</answer>.",2,"['أ- أخطار لو حدثت ینتج عنها خسارة مادیة نتیجة لهلاك الأصل أو تلفه', 'ب- أخطار لو حدثت تسبب نقص القدرة على استخدام الأصل بكفاءة عالیة', 'ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى', 'د- كل ما سبق']",أ,[0.5845684  0.15201107 0.07121261 0.19220796],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1972,7 +1972,7 @@ Options:
 ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى
 د- كل ما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- أخطار لو حدثت ینتج عنها خسارة مادیة نتیجة لهلاك الأصل أو تلفه', 'ب- أخطار لو حدثت تسبب الفرد فى مسئولیتع المدنیة تجاه الغیر', 'ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى', 'د- كل ما سبق']",أ,[0.38560253 0.33741695 0.12387026 0.15311025],Economics
+For example, reply with <answer>vase</answer>.",0,"['أ- أخطار لو حدثت ینتج عنها خسارة مادیة نتیجة لهلاك الأصل أو تلفه', 'ب- أخطار لو حدثت تسبب الفرد فى مسئولیتع المدنیة تجاه الغیر', 'ج- أخطار لو حدثت تصیب الفرد نفسه مباشرة فى دخله المادى', 'د- كل ما سبق']",أ,[0.5558671  0.18831947 0.06684312 0.1889703 ],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -1987,7 +1987,7 @@ Options:
 ج- خطة انتاجیة تهدف ىإلى تعظیم الربح
 د- كل مت سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- نشاط محاسبى یهدف إلى ترسید التكالیف', 'ب- نشاط إداري یهدف إلى التحكم في الخطر', 'ج- خطة انتاجیة تهدف ىإلى تعظیم الربح', 'د- كل مت سبق']",ج,[0.18146002 0.2356323  0.38822976 0.19467781],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- نشاط محاسبى یهدف إلى ترسید التكالیف', 'ب- نشاط إداري یهدف إلى التحكم في الخطر', 'ج- خطة انتاجیة تهدف ىإلى تعظیم الربح', 'د- كل مت سبق']",ب,[0.2586151  0.3087447  0.19154839 0.24109185],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2002,7 +2002,7 @@ Options:
 ج- تقلیل حجم الخسارة النلتجة من تحقق الخطر
 د- كل ما سلق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- منع وقوع الخطر', 'ب- تقلیل عدد مرات وقوعه خلال فترة زمنیة محددة', 'ج- تقلیل حجم الخسارة النلتجة من تحقق الخطر', 'د- كل ما سلق']",د,[0.16986258 0.2593402  0.16147427 0.40932295],Economics
+For example, reply with <answer>vase</answer>.",3,"['أ- منع وقوع الخطر', 'ب- تقلیل عدد مرات وقوعه خلال فترة زمنیة محددة', 'ج- تقلیل حجم الخسارة النلتجة من تحقق الخطر', 'د- كل ما سلق']",أ,[0.3487514  0.23623537 0.1161885  0.2988248 ],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2017,7 +2017,7 @@ Options:
 ج- كل من (i (و (ii (
 د- لیس أیا مما سبق.
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- (i (فقط.', 'ب- (ii (فقط.', 'ج- كل من (i (و (ii (', 'د- لیس أیا مما سبق.']",ب,[0.31796753 0.43177813 0.14006625 0.11018814],Economics
+For example, reply with <answer>vase</answer>.",1,"['أ- (i (فقط.', 'ب- (ii (فقط.', 'ج- كل من (i (و (ii (', 'د- لیس أیا مما سبق.']",أ,[0.39236492 0.23558886 0.10839857 0.2636476 ],Economics
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2032,7 +2032,7 @@ Options:
 ج- إدراك للقوانين العامة
 د- مرتبط بالنشاط العملي .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- تجسيد للسمات الشخصية للفرد .', 'ب- تعبير لفظي رمزي', 'ج- إدراك للقوانين العامة', 'د- مرتبط بالنشاط العملي .']",ب,[0.15435576 0.46526402 0.3119027  0.06847759],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- تجسيد للسمات الشخصية للفرد .', 'ب- تعبير لفظي رمزي', 'ج- إدراك للقوانين العامة', 'د- مرتبط بالنشاط العملي .']",أ,[0.37231466 0.13149396 0.19372365 0.3024678 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2047,7 +2047,7 @@ Options:
 ج- مرتبط بالنشاط النظري .
 د- يجسد السمات الشخصية للفرد .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- إدراك للقوانين العامة .', 'ب- مرتبط بالنشاط العملي .', 'ج- مرتبط بالنشاط النظري .', 'د- يجسد السمات الشخصية للفرد .']",ج,[0.09281947 0.32815474 0.47108275 0.10794298],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- إدراك للقوانين العامة .', 'ب- مرتبط بالنشاط العملي .', 'ج- مرتبط بالنشاط النظري .', 'د- يجسد السمات الشخصية للفرد .']",أ,[0.40014422 0.22850823 0.15285717 0.2184904 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2062,7 +2062,7 @@ Options:
 ج- القابلية لالستهواء .
 د- التعصب والتطرف
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ-  نقص المعلومات .', 'ب- الهيمنة والسيطرة .', 'ج- القابلية لالستهواء .', 'د- التعصب والتطرف']",ج,[0.04313251 0.19544564 0.50970435 0.25171748],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ-  نقص المعلومات .', 'ب- الهيمنة والسيطرة .', 'ج- القابلية لالستهواء .', 'د- التعصب والتطرف']",أ,[0.4553186 0.1739279 0.1023108 0.2684427],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2077,7 +2077,7 @@ Options:
 ج- تشكيل العقل والفكر.
 د- تحليل ونقد آلاراء
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- تكوين فلسفة خاصة .', 'ب- غرس محبة المعرفة .', 'ج- تشكيل العقل والفكر.', 'د- تحليل ونقد آلاراء']",ب,[0.18120739 0.4645377  0.23173596 0.12251895],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- تكوين فلسفة خاصة .', 'ب- غرس محبة المعرفة .', 'ج- تشكيل العقل والفكر.', 'د- تحليل ونقد آلاراء']",أ,[0.36882097 0.23053168 0.10517443 0.29547295],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2092,7 +2092,7 @@ Options:
 ج- تبادل
 د- انفصال
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- تواصل', 'ب- انقطاع', 'ج- تبادل', 'د- انفصال']",ب,[0.03390992 0.80143553 0.07685358 0.08780103],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- تواصل', 'ب- انقطاع', 'ج- تبادل', 'د- انفصال']",أ,[0.41163376 0.14353125 0.09759874 0.34723628],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2107,7 +2107,7 @@ Options:
 ج- وصف الواقع واستشرافه .
 د- تبرير الواقع واستشرافه .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- وصف الواقع وتفسيره .', 'ب- تفسير الواقع وتغييره', 'ج- وصف الواقع واستشرافه .', 'د- تبرير الواقع واستشرافه .']",ب,[0.07074851 0.47451326 0.37489793 0.07984032],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- وصف الواقع وتفسيره .', 'ب- تفسير الواقع وتغييره', 'ج- وصف الواقع واستشرافه .', 'د- تبرير الواقع واستشرافه .']",د,[0.3509695  0.15283053 0.12864532 0.36755463],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2122,7 +2122,7 @@ Options:
 ج- تحليل ونقد آلاراء .
 د- تكوين فلسفة خاصة .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- غرس محبة المعرفة .', 'ب- تشكيل العقل والفكر.', 'ج- تحليل ونقد آلاراء .', 'د- تكوين فلسفة خاصة .']",ب,[0.12630227 0.38484785 0.20734371 0.28150618],Philosophy
+For example, reply with <answer>vase</answer>.",3,"['أ- غرس محبة المعرفة .', 'ب- تشكيل العقل والفكر.', 'ج- تحليل ونقد آلاراء .', 'د- تكوين فلسفة خاصة .']",د,[0.37380883 0.16103362 0.08954196 0.3756156 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2137,7 +2137,7 @@ Options:
 ج- علم كلي .
 د- ارتقاء بالحياة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- توجيه للسلوك', 'ب- اتجاه عملي', 'ج- علم كلي .', 'د- ارتقاء بالحياة']",د,[0.04257777 0.13212067 0.16499041 0.6603111 ],Philosophy
+For example, reply with <answer>vase</answer>.",2,"['أ- توجيه للسلوك', 'ب- اتجاه عملي', 'ج- علم كلي .', 'د- ارتقاء بالحياة']",د,[0.29957014 0.1486268  0.18496816 0.3668349 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2152,7 +2152,7 @@ Options:
 ج- وصف الواقع
 د- تحليل الواقع .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- استشراف المستقبل .', 'ب- تفسير الواقع', 'ج- وصف الواقع', 'د- تحليل الواقع .']",ب,[0.16243859 0.6652668  0.14660484 0.02568982],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- استشراف المستقبل .', 'ب- تفسير الواقع', 'ج- وصف الواقع', 'د- تحليل الواقع .']",أ,[0.39053163 0.21521766 0.12886405 0.26538667],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2167,7 +2167,7 @@ Options:
 ج- تعطي الفرد معني للحياة .
 د- تبحث عن العلل القريبة للظواهر
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- تقاوم العقل وأحكامه .', 'ب- تؤدي إلي جمود العقل .', 'ج- تعطي الفرد معني للحياة .', 'د- تبحث عن العلل القريبة للظواهر']",ج,[0.06453213 0.22099653 0.41864127 0.2958301 ],Philosophy
+For example, reply with <answer>vase</answer>.",2,"['أ- تقاوم العقل وأحكامه .', 'ب- تؤدي إلي جمود العقل .', 'ج- تعطي الفرد معني للحياة .', 'د- تبحث عن العلل القريبة للظواهر']",أ,[0.381613   0.14682904 0.13685328 0.33470467],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2182,7 +2182,7 @@ Options:
 ج- المذهبي
 د- االرتيابي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- االعتيادي', 'ب- المنهجي', 'ج- المذهبي', 'د- االرتيابي']",ب,[0.2794238  0.33360404 0.22845112 0.15852107],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- االعتيادي', 'ب- المنهجي', 'ج- المذهبي', 'د- االرتيابي']",أ,[0.46689308 0.16288899 0.11182923 0.2583887 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2197,7 +2197,7 @@ Options:
 ج- التجريد والتعميم .
 د- الشك والريبة .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- التحليل والتركيب', 'ب- النقد المحكم .', 'ج- التجريد والتعميم .', 'د- الشك والريبة .']",د,[0.2134145  0.08357233 0.31897986 0.3840333 ],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- التحليل والتركيب', 'ب- النقد المحكم .', 'ج- التجريد والتعميم .', 'د- الشك والريبة .']",أ,[0.46090472 0.26254943 0.09451378 0.18203212],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2212,7 +2212,7 @@ Options:
 ج- التعميم
 د- التجريد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التركيب', 'ب- النقد', 'ج- التعميم', 'د- التجريد']",ج,[0.27054203 0.23818849 0.43929097 0.05197851],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- التركيب', 'ب- النقد', 'ج- التعميم', 'د- التجريد']",د,[0.314153   0.2577459  0.10845363 0.3196475 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2227,7 +2227,7 @@ Options:
 ج- الحوار
 د- التجريد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التعميم', 'ب- التحليل', 'ج- الحوار', 'د- التجريد']",ج,[0.14844011 0.31505764 0.50176    0.0347423 ],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- التعميم', 'ب- التحليل', 'ج- الحوار', 'د- التجريد']",أ,[0.3713091  0.15826483 0.13255754 0.33786854],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2242,7 +2242,7 @@ Options:
 ج- الشك
 د- النقد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- التركيب', 'ب- التعميم', 'ج- الشك', 'د- النقد']",ب,[0.08893032 0.51063836 0.35932693 0.04110436],Philosophy
+For example, reply with <answer>vase</answer>.",2,"['أ- التركيب', 'ب- التعميم', 'ج- الشك', 'د- النقد']",أ,[0.3724034  0.222887   0.08864599 0.3160636 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2257,7 +2257,7 @@ Options:
 ج- التسامح
 د- التحليل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- التركيب', 'ب- النقد', 'ج- التسامح', 'د- التحليل']",ب,[0.36576664 0.4049077  0.18976845 0.0395572 ],Philosophy
+For example, reply with <answer>vase</answer>.",2,"['أ- التركيب', 'ب- النقد', 'ج- التسامح', 'د- التحليل']",أ,[0.37353057 0.26598132 0.0805104  0.27997774],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2272,7 +2272,7 @@ Options:
 ج- التسامح
 د- النقد
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- التركيب', 'ب- التعميم', 'ج- التسامح', 'د- النقد']",ب,[0.21061076 0.31858587 0.31666812 0.15413523],Philosophy
+For example, reply with <answer>vase</answer>.",3,"['أ- التركيب', 'ب- التعميم', 'ج- التسامح', 'د- النقد']",أ,[0.3947755  0.2416656  0.12300345 0.24055539],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2287,7 +2287,7 @@ Options:
 ج- التأمل
 د- الاستقلال
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الدقة', 'ب- الدهشة', 'ج- التأمل', 'د- الاستقلال']",د,[0.1418399  0.17815736 0.08669962 0.5933031 ],Philosophy
+For example, reply with <answer>vase</answer>.",3,"['أ- الدقة', 'ب- الدهشة', 'ج- التأمل', 'د- الاستقلال']",د,[0.36291432 0.11290142 0.1094682  0.41471606],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2302,7 +2302,7 @@ Options:
 ج- غرس قيم جديدة
 د- التنسيق بين جوانب ثقافة المجتمع .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- المحافظ علي المجتمع .', 'ب- نقد قيم ثبت عدم صالحيتها .', 'ج- غرس قيم جديدة', 'د- التنسيق بين جوانب ثقافة المجتمع .']",ج,[0.20197113 0.26319125 0.41337577 0.12146192],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- المحافظ علي المجتمع .', 'ب- نقد قيم ثبت عدم صالحيتها .', 'ج- غرس قيم جديدة', 'د- التنسيق بين جوانب ثقافة المجتمع .']",د,[0.29270285 0.1973272  0.13559666 0.37437338],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2317,7 +2317,7 @@ Options:
 ج- الدقة
 د- التأمل
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الدهشة', 'ب- الاستقلال', 'ج- الدقة', 'د- التأمل']",د,[0.2953951  0.28493553 0.1202156  0.29945374],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- الدهشة', 'ب- الاستقلال', 'ج- الدقة', 'د- التأمل']",د,[0.31385228 0.15865482 0.0966148  0.43087813],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2332,7 +2332,7 @@ Options:
 ج- الاستقلال
 د- الدقة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التأمل', 'ب- الدهشة', 'ج- الاستقلال', 'د- الدقة']",د,[0.31034905 0.19650699 0.06678701 0.426357  ],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- التأمل', 'ب- الدهشة', 'ج- الاستقلال', 'د- الدقة']",د,[0.3365676  0.14438443 0.10440134 0.41464666],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2347,7 +2347,7 @@ Options:
 ج- استبعاد الاحكام المسبقة.
 د- الاستناد إلي الدليل العلمي.
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- قبول الاخر واحترامه', 'ب- التواصل العقلي مع الاخر.', 'ج- استبعاد الاحكام المسبقة.', 'د- الاستناد إلي الدليل العلمي.']",ج,[0.22101144 0.2512816  0.4575085  0.07019848],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- قبول الاخر واحترامه', 'ب- التواصل العقلي مع الاخر.', 'ج- استبعاد الاحكام المسبقة.', 'د- الاستناد إلي الدليل العلمي.']",أ,[0.3809786  0.16193303 0.10902964 0.3480587 ],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2362,7 +2362,7 @@ Options:
 ج- التحليل
 د- التركيب
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- التعميم', 'ب- التجريد', 'ج- التحليل', 'د- التركيب']",ج,[0.06829786 0.18703973 0.73866236 0.00600001],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- التعميم', 'ب- التجريد', 'ج- التحليل', 'د- التركيب']",أ,[0.46854067 0.20978609 0.09712903 0.22454415],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2377,7 +2377,7 @@ Options:
 ج- التجريد
 د- التعميم
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- الشك', 'ب- الحوار', 'ج- التجريد', 'د- التعميم']",ج,[0.14135797 0.3159577  0.4954186  0.0472658 ],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- الشك', 'ب- الحوار', 'ج- التجريد', 'د- التعميم']",أ,[0.345009   0.17436257 0.14682494 0.33380345],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2392,7 +2392,7 @@ Options:
 ج- التحليل
 د- التركيب
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- الحوار', 'ب- الشك', 'ج- التحليل', 'د- التركيب']",ب,[0.31367213 0.38409343 0.2452807  0.05695368],Philosophy
+For example, reply with <answer>vase</answer>.",0,"['أ- الحوار', 'ب- الشك', 'ج- التحليل', 'د- التركيب']",أ,[0.38910675 0.17112915 0.16140547 0.27835858],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2407,7 +2407,7 @@ Options:
 ج- تقبل نقد األخرين .
 د- النقد الضعيف .
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الشك و الريبة .', 'ب- تقبل الرأي األخر', 'ج- تقبل نقد األخرين .', 'د- النقد الضعيف .']",ب,[0.2510095  0.40564594 0.15128607 0.19205849],Philosophy
+For example, reply with <answer>vase</answer>.",1,"['أ- الشك و الريبة .', 'ب- تقبل الرأي األخر', 'ج- تقبل نقد األخرين .', 'د- النقد الضعيف .']",أ,[0.43127468 0.1939784  0.08557651 0.28917044],Philosophy
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2422,7 +2422,7 @@ Options:
 ج- 31 عظمة
 د- لا شئ مما سبق
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- 26 عظمة', 'ب- 33 عظمة', 'ج- 31 عظمة', 'د- لا شئ مما سبق']",ب,[0.1447721  0.54773057 0.14764819 0.15984912],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- 26 عظمة', 'ب- 33 عظمة', 'ج- 31 عظمة', 'د- لا شئ مما سبق']",أ,[0.42586696 0.20081262 0.11107963 0.26224077],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2437,7 +2437,7 @@ Options:
 ج- 8
 د- 14
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- 22', 'ب- 29', 'ج- 8', 'د- 14']",ب,[0.09316468 0.5684242  0.08882972 0.24958138],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- 22', 'ب- 29', 'ج- 8', 'د- 14']",أ,[0.4256774  0.19607316 0.12212734 0.25612208],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2452,7 +2452,7 @@ Options:
 ج- 12
 د- لا توجد إجابة صحيحة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- 19', 'ب- 17', 'ج- 12', 'د- لا توجد إجابة صحيحة']",ب,[0.10939892 0.45098472 0.20686096 0.23275536],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- 19', 'ب- 17', 'ج- 12', 'د- لا توجد إجابة صحيحة']",أ,[0.6078381  0.21011037 0.03840042 0.14365102],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2467,7 +2467,7 @@ Options:
 ج- 21
 د- 22
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- 0', 'ب- 20', 'ج- 21', 'د- 22']",ب,[0.05827054 0.56638944 0.22353555 0.15180448],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- 0', 'ب- 20', 'ج- 21', 'د- 22']",أ,[0.3967389  0.3334653  0.07923263 0.19056323],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2482,7 +2482,7 @@ Options:
 ج- الزوجان الأخيران
 د- جميع الإجابات خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- 0', 'ب- العشرة أزواج الأولى', 'ج- الزوجان الأخيران', 'د- جميع الإجابات خاطئة']",ب,[0.09760944 0.5215838  0.1030055  0.2778013 ],Biology
+For example, reply with <answer>vase</answer>.",0,"['أ- 0', 'ب- العشرة أزواج الأولى', 'ج- الزوجان الأخيران', 'د- جميع الإجابات خاطئة']",أ,[0.55834883 0.17345348 0.06752343 0.20067425],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2497,7 +2497,7 @@ Options:
 ج- 5
 د- لا توجد انحناءات فى العمود الفقرى
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- 3', 'ب- 4', 'ج- 5', 'د- لا توجد انحناءات فى العمود الفقرى']",ب,[0.04818536 0.7331632  0.1728183  0.04583319],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- 3', 'ب- 4', 'ج- 5', 'د- لا توجد انحناءات فى العمود الفقرى']",أ,[0.46483904 0.16497138 0.07637429 0.2938153 ],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2512,7 +2512,7 @@ Options:
 ج- زند
 د- كعب القدم
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- كعبرة', 'ب- أحد عظام رسغ اليد', 'ج- زند', 'د- كعب القدم']",أ,[0.74389887 0.17792279 0.04774681 0.0304316 ],Biology
+For example, reply with <answer>vase</answer>.",2,"['أ- كعبرة', 'ب- أحد عظام رسغ اليد', 'ج- زند', 'د- كعب القدم']",أ,[0.46016473 0.16178322 0.1305555  0.24749659],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2527,7 +2527,7 @@ Options:
 ج- عضد
 د- لوح كتف
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- ترقوة', 'ب- قص', 'ج- عضد', 'د- لوح كتف']",أ,[0.5371276  0.26340714 0.17058758 0.02887767],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- ترقوة', 'ب- قص', 'ج- عضد', 'د- لوح كتف']",أ,[0.4782943  0.21778713 0.09383849 0.21008004],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2542,7 +2542,7 @@ Options:
 ج- 3
 د- 4
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- 1', 'ب- 2', 'ج- 3', 'د- 4']",ب,[0.10018973 0.40543306 0.14710571 0.34727147],Biology
+For example, reply with <answer>vase</answer>.",3,"['أ- 1', 'ب- 2', 'ج- 3', 'د- 4']",أ,[0.53186476 0.2210241  0.06589836 0.18121283],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2557,7 +2557,7 @@ Options:
 ج- تجويف الزند
 د- جميع الإجابات صحيحة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- التجويف الأروح', 'ب- التجويف الحقى', 'ج- تجويف الزند', 'د- جميع الإجابات صحيحة']",ج,[0.19021359 0.09321681 0.6865034  0.03006624],Biology
+For example, reply with <answer>vase</answer>.",1,"['أ- التجويف الأروح', 'ب- التجويف الحقى', 'ج- تجويف الزند', 'د- جميع الإجابات صحيحة']",أ,[0.48992383 0.15691952 0.13981627 0.21334042],Biology
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2570,7 +2570,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.2080711 0.7919289],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.64631224 0.3536878 ],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2583,7 +2583,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.06543328 0.9345667 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.66916937 0.33083063],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2596,7 +2596,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.07422907 0.9257709 ],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.6682646  0.33173543],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2609,7 +2609,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.07964244 0.9203575 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.8052894  0.19471063],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2622,7 +2622,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.12002864 0.8799714 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.63086843 0.36913162],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2635,7 +2635,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.13128543 0.8687145 ],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.66579074 0.3342093 ],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2648,7 +2648,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.07762104 0.922379  ],Driving Test
+For example, reply with <answer>vase</answer>.",1,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.62972623 0.37027374],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2661,7 +2661,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.07401892 0.9259811 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.67560333 0.32439664],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2674,7 +2674,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.10372557 0.89627445],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.62102526 0.37897474],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2687,7 +2687,7 @@ Options:
 أ- العبارة صحيحة
 ب- العبارة خاطئة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",ب,[0.10635766 0.8936423 ],Driving Test
+For example, reply with <answer>vase</answer>.",0,"['أ- العبارة صحيحة', 'ب- العبارة خاطئة']",أ,[0.67367554 0.3263245 ],Driving Test
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2702,7 +2702,7 @@ Options:
 ج- مصبات الانهار و البحيرات الساحليه و الانهار المحلية
 د- الانهار المحليه و البحار المغلقه و المياه التكميلية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- البحيرات الساحليه و الانهار المحليه و البحار المغلقه', 'ب- المياه الاقليميه و الانهار الدوليه و مصبات الانهار', 'ج- مصبات الانهار و البحيرات الساحليه و الانهار المحلية', 'د- الانهار المحليه و البحار المغلقه و المياه التكميلية']",ج,[0.08635305 0.27202073 0.41564253 0.22598372],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- البحيرات الساحليه و الانهار المحليه و البحار المغلقه', 'ب- المياه الاقليميه و الانهار الدوليه و مصبات الانهار', 'ج- مصبات الانهار و البحيرات الساحليه و الانهار المحلية', 'د- الانهار المحليه و البحار المغلقه و المياه التكميلية']",أ,[0.44168428 0.20434791 0.13265489 0.22131298],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2717,7 +2717,7 @@ Options:
 ج- التلال
 د- الانهار
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- الغابات', 'ب- المستنقعات', 'ج- التلال', 'د- الانهار']",أ,[0.47231764 0.16682482 0.19676666 0.16409095],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- الغابات', 'ب- المستنقعات', 'ج- التلال', 'د- الانهار']",أ,[0.48132235 0.11663937 0.10143361 0.30060467],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2732,7 +2732,7 @@ Options:
 ج- جوارها لدوليتن حبيستين
 د- زيادة عدد الدول الداخلية ألافريقية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- تناقص عدد الدول الافريقية', 'ب- زيادة عدد الدول البحرية الافريقية', 'ج- جوارها لدوليتن حبيستين', 'د- زيادة عدد الدول الداخلية ألافريقية']",ج,[0.3718501  0.1663134  0.44974005 0.01209643],Geography
+For example, reply with <answer>vase</answer>.",3,"['أ- تناقص عدد الدول الافريقية', 'ب- زيادة عدد الدول البحرية الافريقية', 'ج- جوارها لدوليتن حبيستين', 'د- زيادة عدد الدول الداخلية ألافريقية']",أ,[0.4642642  0.15261339 0.10043399 0.2826884 ],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2747,7 +2747,7 @@ Options:
 ج- درجة غناها بالموارد
 د- موقعها الجغرافي
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",2,"['أ- قوة و هيمنة الدوله', 'ب- موقعها الفلكي', 'ج- درجة غناها بالموارد', 'د- موقعها الجغرافي']",ج,[0.0911324  0.09236532 0.7572861  0.05921621],Geography
+For example, reply with <answer>vase</answer>.",2,"['أ- قوة و هيمنة الدوله', 'ب- موقعها الفلكي', 'ج- درجة غناها بالموارد', 'د- موقعها الجغرافي']",أ,[0.36476028 0.08416288 0.27593046 0.27514637],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2762,7 +2762,7 @@ Options:
 ج- الاجزاء الجنوبية لبحيرة سوبريور
 د- ألاجزاء الشرقية لبحيرة متشجن
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- الأجزاء الشمالية لنهر الريوجراند', 'ب- ألاجزاء الشرقية لبحيرة هورن', 'ج- الاجزاء الجنوبية لبحيرة سوبريور', 'د- ألاجزاء الشرقية لبحيرة متشجن']",أ,[0.47169724 0.07368755 0.41885898 0.0357562 ],Geography
+For example, reply with <answer>vase</answer>.",1,"['أ- الأجزاء الشمالية لنهر الريوجراند', 'ب- ألاجزاء الشرقية لبحيرة هورن', 'ج- الاجزاء الجنوبية لبحيرة سوبريور', 'د- ألاجزاء الشرقية لبحيرة متشجن']",أ,[0.7416428  0.11102939 0.05734351 0.08998433],Geography
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2775,7 +2775,7 @@ Options:
 أ- صح 
 ب- خطأ
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- صح ', 'ب- خطأ']",أ,[0.71313417 0.2868658 ],History
+For example, reply with <answer>vase</answer>.",1,"['أ- صح ', 'ب- خطأ']",أ,[0.6924223  0.30757773],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2788,7 +2788,7 @@ Options:
 أ- صح 
 ب- خطأ
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- صح ', 'ب- خطأ']",أ,[0.6896105  0.31038952],History
+For example, reply with <answer>vase</answer>.",0,"['أ- صح ', 'ب- خطأ']",أ,[0.76703846 0.23296152],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2803,7 +2803,7 @@ Options:
 ج- ولاه للعثمانيين
 د- طموحاته السياسية
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",3,"['أ- دعم المصريين', 'ب- كراهية المماليك', 'ج- ولاه للعثمانيين', 'د- طموحاته السياسية']",ج,[0.06360132 0.11064819 0.61312467 0.21262582],History
+For example, reply with <answer>vase</answer>.",3,"['أ- دعم المصريين', 'ب- كراهية المماليك', 'ج- ولاه للعثمانيين', 'د- طموحاته السياسية']",أ,[0.448214   0.22966476 0.09046256 0.2316587 ],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2818,7 +2818,7 @@ Options:
 ج- استدعاء السلطان العثماني فرق الألبان
 د- هروب المماليك من القاهرة
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- رفض محمد على التوجه لمحاربة المماليك', 'ب- ارسال السلطان العثماني فرقا عسكرية جديدة لمصر', 'ج- استدعاء السلطان العثماني فرق الألبان', 'د- هروب المماليك من القاهرة']",د,[0.09549613 0.17616984 0.26057157 0.4677624 ],History
+For example, reply with <answer>vase</answer>.",1,"['أ- رفض محمد على التوجه لمحاربة المماليك', 'ب- ارسال السلطان العثماني فرقا عسكرية جديدة لمصر', 'ج- استدعاء السلطان العثماني فرق الألبان', 'د- هروب المماليك من القاهرة']",أ,[0.35011327 0.29540357 0.09998759 0.25449562],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2831,7 +2831,7 @@ Options:
 أ- صح 
 ب- خطأ
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",1,"['أ- صح ', 'ب- خطأ']",أ,[0.61543524 0.38456473],History
+For example, reply with <answer>vase</answer>.",1,"['أ- صح ', 'ب- خطأ']",أ,[0.7836538 0.2163462],History
 "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. At the end, I will give you a question you must answer. For each phrase, you must:
 # 1. Write down a succinct description of what each agent knows about the environment and about the other agents. Keep the description short and do not produce redundant information. 
 Here's the dialogue:
@@ -2844,4 +2844,4 @@ Options:
 أ- صح
 ب- خطأ
 Think step by step, answer with one word and provide the answer between <answer></answer> tags.
-For example, reply with <answer>vase</answer>.",0,"['أ- صح', 'ب- خطأ']",أ,[0.6898823  0.31011766],History
+For example, reply with <answer>vase</answer>.",0,"['أ- صح', 'ب- خطأ']",أ,[0.781475   0.21852504],History
