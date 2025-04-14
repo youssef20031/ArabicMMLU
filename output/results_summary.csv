@@ -127,3 +127,51 @@ result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Geography,31,8,25.81%
 result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,History,32,8,25.00%
 result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Economics,26,4,15.38%
 result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv,Philosophy,26,4,15.38%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,overall,194,52,26.80%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Driving Test,29,7,24.14%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Accounting,24,5,20.83%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Biology,26,7,26.92%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Geography,31,11,35.48%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,History,32,11,34.38%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Economics,26,9,34.62%
+result_prompt_en_alpa_ar_falcon-1b-finetuned-aings-chat-1.csv,Philosophy,26,2,7.69%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,overall,194,62,31.96%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Driving Test,29,7,24.14%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Accounting,24,9,37.50%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Biology,26,10,38.46%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Geography,31,6,19.35%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,History,32,10,31.25%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Economics,26,8,30.77%
+result_prompt_en_alpa_ar_cot_falcon-1b-finetuned-aings-chat-1.csv,Philosophy,26,12,46.15%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,overall,194,149,76.80%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Driving Test,29,23,79.31%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Accounting,24,20,83.33%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Biology,26,20,76.92%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Geography,31,16,51.61%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,History,32,26,81.25%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Economics,26,23,88.46%
+result_prompt_en_alpa_ar_cot_gemini-1.5-flash-latest.csv,Philosophy,26,21,80.77%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,overall,194,158,81.44%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Driving Test,29,25,86.21%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Accounting,24,20,83.33%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Biology,26,21,80.77%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Geography,31,17,54.84%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,History,32,30,93.75%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Economics,26,25,96.15%
+result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Philosophy,26,20,76.92%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,overall,194,157,80.93%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Driving Test,29,27,93.10%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Accounting,24,22,91.67%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Biology,26,19,73.08%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Geography,31,14,45.16%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,History,32,29,90.62%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Economics,26,25,96.15%
+result_prompt_en_alpa_ar_gemini-2.0-flash-001.csv,Philosophy,26,21,80.77%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,overall,194,161,82.99%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Driving Test,29,27,93.10%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Accounting,24,22,91.67%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Biology,26,21,80.77%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Geography,31,15,48.39%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,History,32,30,93.75%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Economics,26,25,96.15%
+result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv,Philosophy,26,21,80.77%
