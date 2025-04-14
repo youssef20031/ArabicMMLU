@@ -23,7 +23,22 @@ df["model"] = df["filename"].apply(extract_model)
 # ---------------------------
 # Graph 1: Overall performance per model
 overall_df = df[df["subject"].str.lower() == "overall"].reset_index(drop=True)
-plt.figure(figsize=(10, 6))
+
+def sort_key(m):
+    m_lower = m.lower()
+    if m_lower.startswith("cot_"):
+        base = m_lower[4:]
+        return (base, 1)
+    elif "-cot" in m_lower:
+        base = m_lower.replace("-cot", "")
+        return (base, 1)
+    else:
+        return (m_lower, 0)
+
+ordered_models = sorted(overall_df["model"].unique(), key=sort_key)
+overall_df = overall_df.set_index("model").loc[ordered_models].reset_index()
+
+plt.figure(figsize=(12, 6))
 plt.bar(overall_df["model"], overall_df["percentage_correct"], color='skyblue')
 plt.xlabel("Model")
 plt.ylabel("Percentage Correct")
@@ -31,9 +46,9 @@ plt.title("Overall Performance Comparison between Models")
 
 # Increase ylim based on max percentage:
 max_val = overall_df["percentage_correct"].max()
-plt.ylim(0, max(max_val * 1.15, 100))
+plt.ylim(0, max(max_val * 1.5, 100))
 
-plt.xticks(rotation=45, ha="right")  # Rotate x-axis labels to avoid overlap
+plt.xticks(rotation=30, ha="right")  # Rotate x-axis labels to avoid overlap
 
 for idx, row in overall_df.iterrows():
     plt.text(idx, row["percentage_correct"] + 1, f'{row["percentage_correct"]:.1f}%', ha='center')
@@ -64,8 +79,19 @@ pivot_df = subject_df.pivot(index="subject", columns="model", values="percentage
 # Calculate the average for each subject
 avg = pivot_df.mean(axis=1)
 
-# Save original model columns order
-model_columns = pivot_df.columns.tolist()
+def sort_key(m):
+    m_lower = m.lower()
+    if m_lower.startswith("cot_"):
+        base = m_lower[4:]
+        return (base, 1)
+    elif "-cot" in m_lower:
+        base = m_lower.replace("-cot", "")
+        return (base, 1)
+    else:
+        return (m_lower, 0)
+
+model_columns = sorted(pivot_df.columns.tolist(), key=sort_key)
+
 
 # Add a blank column to separate the model columns from the average column
 pivot_df[" "] = np.nan
@@ -76,11 +102,12 @@ pivot_df["Average"] = avg
 # Reorder columns: original model columns, then blank column, then average
 pivot_df = pivot_df[model_columns + [" ", "Average"]]
 
-plt.figure(figsize=(14, 8))
-sns.heatmap(pivot_df, annot=True, fmt=".1f", cmap="YlGnBu", cbar_kws={"label": "Percentage Correct"})
+plt.figure(figsize=(14, 10))
+hm_ax = sns.heatmap(pivot_df, annot=True, fmt=".1f", cmap="YlGnBu",  cbar_kws={"label": "Percentage Correct"})
 plt.xlabel("Model / Average")
 plt.ylabel("Subject")
 plt.title("Per-Subject Performance Comparison Across Models (with Average)")
+hm_ax.set_yticklabels(hm_ax.get_yticklabels(), rotation=0)  # Ensure y-axis labels are horizontal
 plt.tight_layout()
 plt.savefig("output/graph_subjects_heatmap_with_avg.png")
 plt.close()

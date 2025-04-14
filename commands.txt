@@ -12,3 +12,7 @@ python evaluate.py --chain_of_thought --base_model='bigscience/bloomz-560m' --lo
 python evaluate.py --base_model='bigscience/bloomz-560m' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
 python evaluate.py --chain_of_thought --base_model='bigscience/mt0-small' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
 python evaluate.py --base_model='bigscience/mt0-small' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
+python evaluate.py --base_model='ramdhanfirdaus/falcon-1b-finetuned-aings-chat-1' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
+python evaluate.py --chain_of_thought --base_model='ramdhanfirdaus/falcon-1b-finetuned-aings-chat-1' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
+python evaluate.py --base_model='gemini-1.5-flash-latest' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'
+python evaluate.py --chain_of_thought --base_model='gemini-1.5-flash-latest' --lora_weights='x' --lang_alpa='ar' --lang_prompt='en'

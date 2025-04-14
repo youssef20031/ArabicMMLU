@@ -8,7 +8,7 @@ correct_count = 0
 total = 0
 subject_stats = {}  # Dictionary to hold per subject stats
 
-csv_file = 'output/result_prompt_en_alpa_ar_cot_AraT5v2-base-1024.csv'
+csv_file = 'output/result_prompt_en_alpa_ar_cot_gemini-2.0-flash-001.csv'
 with open(csv_file, encoding='utf-8') as f:
     reader = csv.DictReader(f)
     for row in reader:
