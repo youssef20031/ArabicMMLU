@@ -1,0 +1,169 @@
+filename,subject,total_questions,correct_predictions,percentage_correct
+result_prompt_en_alpa_en_bloomz-560m.csv,overall,2860,925,32.34%
+result_prompt_en_alpa_en_bloomz-560m.csv,Ambiguous Story Task,200,68,34.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Completion of Failed Actions,20,4,20.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Discrepant Desires,20,6,30.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Discrepant Emotions,40,10,25.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Discrepant Intentions,40,11,27.50%
+result_prompt_en_alpa_en_bloomz-560m.csv,Emotion Regulation,20,4,20.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,False Belief Task,600,151,25.17%
+result_prompt_en_alpa_en_bloomz-560m.csv,Faux-pas Recognition Test,560,189,33.75%
+result_prompt_en_alpa_en_bloomz-560m.csv,Hidden Emotions,80,22,27.50%
+result_prompt_en_alpa_en_bloomz-560m.csv,Hinting Task Test,103,44,42.72%
+result_prompt_en_alpa_en_bloomz-560m.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Knowledge-Pretend Play Links,30,7,23.33%
+result_prompt_en_alpa_en_bloomz-560m.csv,Moral Emotions,40,10,25.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Multiple Desires,20,1,5.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Percepts-Knowledge Links,40,3,7.50%
+result_prompt_en_alpa_en_bloomz-560m.csv,Persuasion Story Task,100,27,27.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Prediction of Actions,20,6,30.00%
+result_prompt_en_alpa_en_bloomz-560m.csv,Scalar Implicature Test,200,59,29.50%
+result_prompt_en_alpa_en_bloomz-560m.csv,Strange Story Task,407,212,52.09%
+result_prompt_en_alpa_en_bloomz-560m.csv,Unexpected Outcome Test,300,85,28.33%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,overall,2860,772,26.99%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Ambiguous Story Task,200,46,23.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Completion of Failed Actions,20,8,40.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Discrepant Desires,20,5,25.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Discrepant Emotions,40,16,40.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Discrepant Intentions,40,8,20.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Emotion Regulation,20,6,30.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,False Belief Task,600,164,27.33%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Faux-pas Recognition Test,560,203,36.25%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Hidden Emotions,80,19,23.75%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Hinting Task Test,103,22,21.36%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Knowledge-Pretend Play Links,30,4,13.33%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Moral Emotions,40,12,30.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Percepts-Knowledge Links,40,10,25.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Persuasion Story Task,100,24,24.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Scalar Implicature Test,200,39,19.50%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Strange Story Task,407,89,21.87%
+result_prompt_en_alpa_en_cot_AraT5v2-base-1024.csv,Unexpected Outcome Test,300,72,24.00%
+result_prompt_en_alpa_en_mt0-base.csv,overall,2860,840,29.37%
+result_prompt_en_alpa_en_mt0-base.csv,Ambiguous Story Task,200,51,25.50%
+result_prompt_en_alpa_en_mt0-base.csv,Completion of Failed Actions,20,8,40.00%
+result_prompt_en_alpa_en_mt0-base.csv,Discrepant Desires,20,4,20.00%
+result_prompt_en_alpa_en_mt0-base.csv,Discrepant Emotions,40,15,37.50%
+result_prompt_en_alpa_en_mt0-base.csv,Discrepant Intentions,40,8,20.00%
+result_prompt_en_alpa_en_mt0-base.csv,Emotion Regulation,20,6,30.00%
+result_prompt_en_alpa_en_mt0-base.csv,False Belief Task,600,168,28.00%
+result_prompt_en_alpa_en_mt0-base.csv,Faux-pas Recognition Test,560,217,38.75%
+result_prompt_en_alpa_en_mt0-base.csv,Hidden Emotions,80,24,30.00%
+result_prompt_en_alpa_en_mt0-base.csv,Hinting Task Test,103,24,23.30%
+result_prompt_en_alpa_en_mt0-base.csv,Knowledge-Attention Links,20,7,35.00%
+result_prompt_en_alpa_en_mt0-base.csv,Knowledge-Pretend Play Links,30,3,10.00%
+result_prompt_en_alpa_en_mt0-base.csv,Moral Emotions,40,12,30.00%
+result_prompt_en_alpa_en_mt0-base.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_mt0-base.csv,Percepts-Knowledge Links,40,17,42.50%
+result_prompt_en_alpa_en_mt0-base.csv,Persuasion Story Task,100,24,24.00%
+result_prompt_en_alpa_en_mt0-base.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_mt0-base.csv,Scalar Implicature Test,200,35,17.50%
+result_prompt_en_alpa_en_mt0-base.csv,Strange Story Task,407,114,28.01%
+result_prompt_en_alpa_en_mt0-base.csv,Unexpected Outcome Test,300,84,28.00%
+result_prompt_en_alpa_en_mt0-small.csv,overall,2860,732,25.59%
+result_prompt_en_alpa_en_mt0-small.csv,Ambiguous Story Task,200,42,21.00%
+result_prompt_en_alpa_en_mt0-small.csv,Completion of Failed Actions,20,8,40.00%
+result_prompt_en_alpa_en_mt0-small.csv,Discrepant Desires,20,3,15.00%
+result_prompt_en_alpa_en_mt0-small.csv,Discrepant Emotions,40,10,25.00%
+result_prompt_en_alpa_en_mt0-small.csv,Discrepant Intentions,40,9,22.50%
+result_prompt_en_alpa_en_mt0-small.csv,Emotion Regulation,20,6,30.00%
+result_prompt_en_alpa_en_mt0-small.csv,False Belief Task,600,159,26.50%
+result_prompt_en_alpa_en_mt0-small.csv,Faux-pas Recognition Test,560,193,34.46%
+result_prompt_en_alpa_en_mt0-small.csv,Hidden Emotions,80,15,18.75%
+result_prompt_en_alpa_en_mt0-small.csv,Hinting Task Test,103,22,21.36%
+result_prompt_en_alpa_en_mt0-small.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_mt0-small.csv,Knowledge-Pretend Play Links,30,5,16.67%
+result_prompt_en_alpa_en_mt0-small.csv,Moral Emotions,40,9,22.50%
+result_prompt_en_alpa_en_mt0-small.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_mt0-small.csv,Percepts-Knowledge Links,40,11,27.50%
+result_prompt_en_alpa_en_mt0-small.csv,Persuasion Story Task,100,24,24.00%
+result_prompt_en_alpa_en_mt0-small.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_mt0-small.csv,Scalar Implicature Test,200,33,16.50%
+result_prompt_en_alpa_en_mt0-small.csv,Strange Story Task,407,89,21.87%
+result_prompt_en_alpa_en_mt0-small.csv,Unexpected Outcome Test,300,69,23.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,overall,2860,941,32.90%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Ambiguous Story Task,200,52,26.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Completion of Failed Actions,20,2,10.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Discrepant Desires,20,6,30.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Discrepant Emotions,40,6,15.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Discrepant Intentions,40,10,25.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Emotion Regulation,20,7,35.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,False Belief Task,600,156,26.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Faux-pas Recognition Test,560,216,38.57%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Hidden Emotions,80,25,31.25%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Hinting Task Test,103,22,21.36%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Knowledge-Attention Links,20,4,20.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Knowledge-Pretend Play Links,30,14,46.67%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Moral Emotions,40,9,22.50%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Percepts-Knowledge Links,40,16,40.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Persuasion Story Task,100,25,25.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Scalar Implicature Test,200,46,23.00%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Strange Story Task,407,221,54.30%
+result_prompt_en_alpa_en_cot_mt0-base.csv,Unexpected Outcome Test,300,85,28.33%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,overall,2860,927,32.41%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Ambiguous Story Task,200,68,34.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Completion of Failed Actions,20,4,20.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Discrepant Desires,20,6,30.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Discrepant Emotions,40,10,25.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Discrepant Intentions,40,11,27.50%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Emotion Regulation,20,4,20.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,False Belief Task,600,153,25.50%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Faux-pas Recognition Test,560,189,33.75%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Hidden Emotions,80,22,27.50%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Hinting Task Test,103,44,42.72%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Knowledge-Pretend Play Links,30,7,23.33%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Moral Emotions,40,10,25.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Multiple Desires,20,1,5.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Percepts-Knowledge Links,40,3,7.50%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Persuasion Story Task,100,27,27.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Prediction of Actions,20,6,30.00%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Scalar Implicature Test,200,59,29.50%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Strange Story Task,407,212,52.09%
+result_prompt_en_alpa_en_cot_bloomz-560m.csv,Unexpected Outcome Test,300,85,28.33%
+result_prompt_en_alpa_en_cot_mt0-small.csv,overall,2860,724,25.31%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Ambiguous Story Task,200,43,21.50%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Completion of Failed Actions,20,8,40.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Discrepant Desires,20,4,20.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Discrepant Emotions,40,10,25.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Discrepant Intentions,40,8,20.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Emotion Regulation,20,6,30.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,False Belief Task,600,160,26.67%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Faux-pas Recognition Test,560,193,34.46%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Hidden Emotions,80,14,17.50%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Hinting Task Test,103,22,21.36%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Knowledge-Pretend Play Links,30,4,13.33%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Moral Emotions,40,5,12.50%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Percepts-Knowledge Links,40,11,27.50%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Persuasion Story Task,100,24,24.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Scalar Implicature Test,200,33,16.50%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Strange Story Task,407,89,21.87%
+result_prompt_en_alpa_en_cot_mt0-small.csv,Unexpected Outcome Test,300,65,21.67%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,overall,2860,787,27.52%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Ambiguous Story Task,200,46,23.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Completion of Failed Actions,20,8,40.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Discrepant Desires,20,6,30.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Discrepant Emotions,40,17,42.50%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Discrepant Intentions,40,8,20.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Emotion Regulation,20,6,30.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,False Belief Task,600,175,29.17%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Faux-pas Recognition Test,560,206,36.79%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Hidden Emotions,80,20,25.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Hinting Task Test,103,22,21.36%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Knowledge-Attention Links,20,6,30.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Knowledge-Pretend Play Links,30,4,13.33%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Moral Emotions,40,12,30.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Multiple Desires,20,15,75.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Percepts-Knowledge Links,40,11,27.50%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Persuasion Story Task,100,22,22.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Prediction of Actions,20,4,20.00%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Scalar Implicature Test,200,33,16.50%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Strange Story Task,407,92,22.60%
+result_prompt_en_alpa_en_AraT5v2-base-1024.csv,Unexpected Outcome Test,300,74,24.67%

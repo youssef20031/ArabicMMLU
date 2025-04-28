@@ -64,7 +64,7 @@ alpa_ar = ['أ-',
 def prepare_data_en(args):
     if args.chain_of_thought:
         PROMPT = (
-            "You are an expert in {subject} at the {level} level.\n"
+            "You are an expert in {subject}\n"
             "Analyze the given multiple-choice question and\n"
             "provide the correct answer using this approach:\n\n"
             "Carefully read the question and options\n"
@@ -78,9 +78,10 @@ def prepare_data_en(args):
             "Maintain objectivity, consider {subject}-specific\n"
             "sensitivities, and base your decision on verifiable\n"
             "facts and sound logical reasoning within {subject}\n"
-            "at the {level}. Question:\n"
+            "Question:\n"
             "{question}\n"
             "{options}\n"
+            "When asked to choose from options like 'أ', 'ب', 'ج', 'د', your response must be only the single character representing your choice. Do not include any introductory phrases (e.g., 'Here's the answer:', 'I choose:'), explanations, or any other text before or after the selected character. For example, if the correct answer is 'ب', your entire output should be just 'ب'."
             "Correct option number is:"
         )
     else:
@@ -90,12 +91,12 @@ def prepare_data_en(args):
             "# 1. Write down a succinct description of what each agent knows about the environment and about the other agents. "
             "Keep the description short and do not produce redundant information. \n"
             "Here's the dialogue:\n"
+            "{BackStory}\n"
         )
         final_ask = (
             "This is the end of the dialogue. Now, answer the following question.\n"
             "Question: {question}{options}\n"
-            "Think step by step, answer with one word and provide the answer between <answer></answer> tags.\n"
-            "For example, reply with <answer>vase</answer>."
+            "When asked to choose from options like 'أ', 'ب', 'ج', 'د', your response must be only the single character representing your choice. Do not include any introductory phrases (e.g., 'Here's the answer:', 'I choose:'), explanations, or any other text before or after the selected character. For example, if the correct answer is 'ب', your entire output should be just 'ب'."
         )
 
     alpa = alpa_ar
@@ -106,7 +107,7 @@ def prepare_data_en(args):
     outputs = []
     outputs_options = []
     subjects = []  # added subjects list
-    data = pd.read_csv('data/ArabicMMLUSS.csv', engine='python', on_bad_lines='skip')
+    data = pd.read_csv('data/cleaned_output_english.csv', engine='python', on_bad_lines='skip')
     data = data[data['is_few_shot'] == 0]
 
     for idx, row in data.iterrows():
@@ -159,7 +160,7 @@ def prepare_data_en(args):
             prompt_text = prefix + "\n" + dialogue + "\n\n" + final_ask.format(question=question_field, options=options_text)
     
         inputs.append(prompt_text)
-        idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key']]
+        idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key'].strip()]
         outputs.append(idx_label)
         outputs_options.append(options_list)
     return inputs, outputs, outputs_options, subjects
