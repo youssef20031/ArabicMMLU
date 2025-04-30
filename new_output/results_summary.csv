@@ -1,4 +1,24 @@
 filename,subject,total_questions,correct_predictions,percentage_correct
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,overall,2814,1021,36.28%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Ambiguous Story Task,199,71,35.68%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Completion of Failed Actions,20,7,35.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Discrepant Desires,20,10,50.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Discrepant Emotions,40,12,30.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Discrepant Intentions,40,13,32.50%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Emotion Regulation,20,10,50.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,False Belief Task,599,147,24.54%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Faux-pas Recognition Test,558,243,43.55%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Hidden Emotions,80,30,37.50%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Hinting Task Test,103,53,51.46%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Knowledge-Attention Links,20,7,35.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Knowledge-Pretend Play Links,30,12,40.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Multiple Desires,20,10,50.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Percepts-Knowledge Links,40,12,30.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Persuasion Story Task,99,37,37.37%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Prediction of Actions,20,8,40.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Scalar Implicature Test,200,53,26.50%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Strange Story Task,407,175,43.00%
+result_prompt_en_alpa_ar_cot_groq_llama-3.1-8b-instant.csv,Unexpected Outcome Test,299,111,37.12%
 result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,overall,2800,1194,42.64%
 result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Ambiguous Story Task,198,82,41.41%
 result_prompt_en_alpa_ar_gemini-1.5-flash-latest.csv,Completion of Failed Actions,20,8,40.00%
@@ -219,6 +239,26 @@ result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Prediction of Actions,20,2,10.00%
 result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Scalar Implicature Test,200,48,24.00%
 result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Strange Story Task,407,114,28.01%
 result_prompt_en_alpa_ar_cot_bloomz-560m.csv,Unexpected Outcome Test,299,100,33.44%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,overall,2813,917,32.60%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Ambiguous Story Task,199,69,34.67%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Completion of Failed Actions,20,7,35.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Discrepant Desires,20,10,50.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Discrepant Emotions,40,9,22.50%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Discrepant Intentions,40,11,27.50%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Emotion Regulation,20,7,35.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,False Belief Task,599,136,22.70%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Faux-pas Recognition Test,558,211,37.81%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Hidden Emotions,80,27,33.75%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Hinting Task Test,103,37,35.92%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Knowledge-Attention Links,20,8,40.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Knowledge-Pretend Play Links,30,14,46.67%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Multiple Desires,20,5,25.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Percepts-Knowledge Links,40,10,25.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Persuasion Story Task,99,34,34.34%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Prediction of Actions,20,7,35.00%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Scalar Implicature Test,199,49,24.62%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Strange Story Task,407,159,39.07%
+result_prompt_en_alpa_ar_groq_llama-3.1-8b-instant.csv,Unexpected Outcome Test,299,107,35.79%
 result_prompt_en_alpa_ar_mt0-small.csv,overall,2814,875,31.09%
 result_prompt_en_alpa_ar_mt0-small.csv,Ambiguous Story Task,199,54,27.14%
 result_prompt_en_alpa_ar_mt0-small.csv,Completion of Failed Actions,20,2,10.00%

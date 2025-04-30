@@ -2,10 +2,19 @@ import torch
 import numpy as np
 import os
 import time  # <--- Add this import
-# import google.generativeai as genai 
+# import google.generativeai as genai
 from google.api_core import exceptions as google_exceptions # <-- Import google exceptions
 import math # <-- Add math import for ceil
+import re
+import json # <-- Add json import for parsing error details
 
+try:
+    from groq import Groq, RateLimitError, APIError # Import specific Groq errors
+except ImportError:
+    Groq = None # Define Groq as None if import fails
+    RateLimitError = Exception # Define dummy exceptions if Groq not installed
+    APIError = Exception
+# --- End Groq imports ---
 
 
 alpa_ar = {
@@ -37,7 +46,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         print(f"Warning: Received empty labels list for input. Skipping prediction.")
         # Return values indicating failure/skip
         return None, None
-    
+
     alpa = alpa_ar
     if lang_alpa == 'en':
         alpa = alpa_en
@@ -45,7 +54,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
     choices = list(alpa.values())[:len(labels)]
     choice_ids = [tokenizer.encode(choice)[-1] for choice in choices]
     with torch.no_grad():
-        
+
         if model.config._name_or_path in ['core42/jais-30b-v3', 'core42/jais-30b-chat-v3', 'abdo-Mansour/jais-adapted-7b-chat-BNB-4bit']:
             inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         elif model.config._name_or_path in ['aubmindlab/aragpt2-mega']:
@@ -120,9 +129,16 @@ def configure_gemini():
              raise ValueError("No active Gemini API key could be determined.")
 
         try:
+            # Dynamically import genai only when needed
+            global genai
+            import google.generativeai as genai
             genai.configure(api_key=_active_api_key)
             _gemini_configured = True
             print(f"Gemini API configured successfully with {_current_key_type.upper()} key.")
+        except ImportError:
+             print("Error: google.generativeai package not found. Cannot use Gemini models.")
+             _gemini_configured = False # Mark as not configured
+             # Do not raise here, let the calling function handle the lack of configuration
         except Exception as e:
             print(f"Error configuring Gemini API with {_current_key_type.upper()} key: {e}")
             # Reset configured status so it retries configuration next time
@@ -152,13 +168,24 @@ def get_gemini_model(model_name):
     global _gemini_model_cache, _gemini_configured
     # Ensure API is configured *before* checking cache or initializing
     if not _gemini_configured:
-         configure_gemini()
+         try:
+             configure_gemini()
+             # Check again after attempting configuration
+             if not _gemini_configured:
+                 raise RuntimeError("Gemini API could not be configured (package missing or key error).")
+         except (ValueError, RuntimeError) as e:
+             print(f"Skipping Gemini model initialization due to configuration error: {e}")
+             raise # Re-raise to signal failure to the caller
 
     if model_name not in _gemini_model_cache:
         try:
             # Configuration should already be done by the check above
             print(f"Initializing Gemini model: {model_name} using {_current_key_type.upper()} key.")
             # Safety settings moved inside predict function, only need model name here
+            # Ensure genai is imported (it should be by configure_gemini)
+            global genai
+            if 'genai' not in globals():
+                 import google.generativeai as genai # Import if somehow missed
             model = genai.GenerativeModel(model_name)
             _gemini_model_cache[model_name] = model
             print(f"Successfully initialized Gemini model: {model_name}")
@@ -189,7 +216,7 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
 
     try:
         # Get model will handle configuration if needed
-        model = get_gemini_model(model_name)
+        model = get_gemini_model(model_name) # This can raise if configuration fails
 
         alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
         choices = list(alpa.values())[:len(labels)]
@@ -199,6 +226,11 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
              prompt = f"{input_text}\n\nالرجاء الإجابة فقط بحرف الخيار الصحيح الموافق للإجابة الصحيحة من الخيارات {', '.join(choices)}."
         else: # lang_alpa == 'en'
              prompt = f"{input_text}\n\nPlease answer with only the single letter corresponding to the correct option from the choices {', '.join(choices)}."
+
+        # Ensure genai is available for types
+        global genai
+        if 'genai' not in globals():
+             import google.generativeai as genai
 
         # Generation Configuration
         generation_config = genai.types.GenerationConfig(
@@ -288,9 +320,24 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
 
                 # Standard wait logic for rate limits (used if < 5 failures or if switch failed)
                 wait_time = 60 # Default wait time (seconds)
-                if hasattr(e, 'retry_delay') and e.retry_delay and hasattr(e.retry_delay, 'total_seconds'):
-                     suggested_wait = e.retry_delay.total_seconds()
-                     wait_time = max(1, math.ceil(suggested_wait)) + 1
+                # Check if the error object has metadata with retry delay
+                suggested_wait = None
+                if hasattr(e, 'metadata') and e.metadata:
+                    for item in e.metadata:
+                        if item.key == 'retry-delay':
+                            # Assuming the value is like '60s' or similar, parse it
+                            try:
+                                delay_str = item.value
+                                if delay_str.endswith('s'):
+                                    suggested_wait = float(delay_str[:-1])
+                                else:
+                                    suggested_wait = float(delay_str) # Assume seconds if no unit
+                                break # Found the delay
+                            except ValueError:
+                                print(f"Could not parse retry-delay value: {item.value}")
+
+                if suggested_wait is not None:
+                     wait_time = max(1, math.ceil(suggested_wait)) + 1 # Add 1s buffer
                      print(f"Using suggested retry delay + 1 second: {wait_time:.0f} seconds...")
                 else:
                      print(f"No specific retry delay provided by API. Waiting {wait_time} seconds...")
@@ -313,9 +360,13 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
                 backoff_factor = wait_time # Increase backoff for the next potential general error
                 # Continue the while loop to retry
 
+    except (ImportError, RuntimeError, ValueError) as e:
+        # Catch errors during setup (import, configuration, key issues)
+        print(f"Error during Gemini prediction setup: {e}")
+        return None, None # Indicate failure
     except Exception as e:
-        # Catch errors during model initialization or other unexpected issues outside the loop
-        print(f"Error during Gemini prediction setup/initialization: {e}")
+        # Catch other unexpected issues outside the loop
+        print(f"An unexpected error occurred during Gemini prediction: {e}")
         return None, None # Indicate failure
 
     # This part should ideally not be reached
@@ -323,3 +374,155 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
     return None, None
 
 # --- End of New Gemini Functionality ---
+
+
+# --- New Groq Prediction Function ---
+def predict_classification_groq(client, model_name, input_text, labels, lang_alpa):
+    """
+    Predicts the classification using the Groq API.
+
+    Args:
+        client: Initialized Groq client.
+        model_name: The Groq model ID (e.g., 'llama-3.1-8b-instant').
+        input_text: The formatted prompt containing the question and options.
+        labels: The list of possible answer labels (e.g., ['A', 'B', 'C', 'D']).
+        lang_alpa: 'ar' or 'en' to determine expected output format.
+
+    Returns:
+        A tuple (predicted_label, raw_response_content).
+        predicted_label is the single character prediction (e.g., 'A' or 'ب').
+        Returns (None, None) on failure.
+    """
+    if client is None:
+        print("Error: Groq client not initialized.")
+        return None, None
+
+    # Determine the expected answer format based on lang_alpa
+    alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
+    expected_labels = list(alpa.values())[:len(labels)] # Use the actual labels passed
+    expected_labels_str = ", ".join(f"'{label}'" for label in expected_labels)
+
+    # Simple instruction for the system prompt
+    system_prompt = f"You are an assistant helping with multiple-choice questions. Please answer the following question. Your response must be only the single character representing your choice from {expected_labels_str}. Do not include any other text, explanations, or introductory phrases."
+
+    max_retries = 5 # Increased retries for rate limits
+    attempt = 0
+    backoff_time = 1 # Initial seconds for exponential backoff if no specific time given
+
+    while attempt < max_retries:
+        try:
+            print(f"Attempting Groq API call (Attempt {attempt + 1}/{max_retries})...")
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": system_prompt
+                    },
+                    {
+                        "role": "user",
+                        "content": input_text # Assuming input_text is the full prompt
+                    }
+                ],
+                model=model_name,
+                temperature=0, # Set low for deterministic output
+                max_tokens=10, # Allow a few tokens in case of slight deviation
+            )
+
+            raw_response = chat_completion.choices[0].message.content.strip()
+            print(f"Groq Raw Response: '{raw_response}'")
+
+            # --- Parse the response ---
+            predicted_label = None
+            expected_chars = "".join(expected_labels)
+            match = re.search(f"[{re.escape(expected_chars)}]", raw_response)
+            if match:
+                predicted_label = match.group(0)
+                print(f"Groq Parsed Prediction: '{predicted_label}'")
+                return predicted_label, raw_response
+            else:
+                if raw_response in expected_labels:
+                     print(f"Groq Parsed Prediction (direct match): '{raw_response}'")
+                     return raw_response, raw_response
+                else:
+                    print(f"Warning: Could not parse expected label from Groq response: '{raw_response}'. Expected one of {expected_labels_str}.")
+                    # Treat as failure for this call, let retry logic handle it if applicable
+                    # Raise an exception to trigger the retry logic below for this specific case
+                    raise ValueError(f"Failed to parse expected label from response: {raw_response}")
+
+
+        except RateLimitError as e:
+            attempt += 1 # Count as a retry attempt
+            wait_time = backoff_time # Default wait time
+
+            # Try to parse the suggested wait time from the error message
+            try:
+                # The error body might be JSON parsable
+                error_body = e.body
+                if error_body and 'error' in error_body and 'message' in error_body['error']:
+                    message = error_body['error']['message']
+                    # Use regex to find "try again in Xs" or "try again in XmYs"
+                    match_seconds = re.search(r"try again in ([\d.]+)\s*s", message, re.IGNORECASE)
+                    match_minutes_seconds = re.search(r"try again in ([\d.]+)\s*m([\d.]+)\s*s", message, re.IGNORECASE)
+
+                    if match_minutes_seconds:
+                        minutes = float(match_minutes_seconds.group(1))
+                        seconds = float(match_minutes_seconds.group(2))
+                        suggested_wait = (minutes * 60) + seconds
+                        wait_time = max(1, math.ceil(suggested_wait)) + 2 # Add 2s buffer
+                        print(f"Groq Rate Limit Error: {e}. Using suggested wait time + 2s: {wait_time} seconds.")
+                    elif match_seconds:
+                        suggested_wait = float(match_seconds.group(1))
+                        wait_time = max(1, math.ceil(suggested_wait)) + 2 # Add 2s buffer
+                        print(f"Groq Rate Limit Error: {e}. Using suggested wait time + 2s: {wait_time} seconds.")
+                    else:
+                         # Fallback to exponential backoff if time not found in message
+                         print(f"Groq Rate Limit Error: {e}. Could not parse suggested wait time. Retrying in {wait_time} seconds (exponential backoff)...")
+                         backoff_time *= 2 # Exponential backoff only if no specific time given
+                else:
+                    # Fallback if error body structure is unexpected
+                    print(f"Groq Rate Limit Error: {e}. Could not parse error details. Retrying in {wait_time} seconds (exponential backoff)...")
+                    backoff_time *= 2
+            except Exception as parse_e:
+                # Fallback if any parsing error occurs
+                print(f"Groq Rate Limit Error: {e}. Error parsing details ({parse_e}). Retrying in {wait_time} seconds (exponential backoff)...")
+                backoff_time *= 2
+
+            if attempt < max_retries:
+                time.sleep(wait_time)
+            else:
+                print(f"Groq Rate Limit Error: Failed after {max_retries} attempts.")
+                return None, None # Failed after retries
+
+        except APIError as e:
+            attempt += 1
+            print(f"Groq API Error: {e}. Retrying in {backoff_time} seconds...")
+            if attempt < max_retries:
+                time.sleep(backoff_time)
+                backoff_time *= 2
+            else:
+                print(f"Groq API Error: Failed after {max_retries} attempts.")
+                return None, None # Failed after retries
+
+        except ValueError as e: # Catch the parsing failure raised above
+             attempt += 1
+             print(f"Groq Response Parsing Error: {e}. Retrying in {backoff_time} seconds...")
+             if attempt < max_retries:
+                 time.sleep(backoff_time)
+                 backoff_time *= 2 # Apply backoff for parsing errors too
+             else:
+                 print(f"Groq Response Parsing Error: Failed after {max_retries} attempts.")
+                 # Return the last raw response for debugging even if parsing failed
+                 # Need to get raw_response from the last failed attempt if possible, tricky scope.
+                 # Let's return None, None for simplicity.
+                 return None, None
+
+        except Exception as e:
+            print(f"An unexpected error occurred during Groq API call: {e}")
+            # Treat unexpected errors as non-retryable for this call
+            return None, None # Indicate failure
+
+    # This point is reached if the loop completes without returning (i.e., max retries exceeded)
+    print(f"Groq API call failed after {max_retries} attempts (loop ended).")
+    return None, None # Failed after retries
+
+# --- End of New Groq Prediction Function ---

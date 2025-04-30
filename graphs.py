@@ -5,7 +5,14 @@ import seaborn as sns
 import numpy as np  # Add this line
 import pandas as pd
 
-csv_path = os.path.join("new_output", "results_summary.csv")
+# --- Configuration ---
+output_dir = "english_output" # Define the output directory here
+# --- End Configuration ---
+
+# Create the output directory if it doesn't exist
+os.makedirs(output_dir, exist_ok=True)
+
+csv_path = os.path.join(output_dir, "results_summary.csv")
 # Read the CSV without header and then assign our column names.
 df = pd.read_csv(csv_path, header=None, skiprows=1)
 df.columns = ["filename", "subject", "total_questions", "correct_predictions", "percentage_correct"]
@@ -72,7 +79,8 @@ for idx, row in overall_df.iterrows():
 
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.25)  # Increase bottom margin
-plt.savefig("new_output/graph_overall.png")
+graph1_path = os.path.join(output_dir, "graph_overall.png")
+plt.savefig(graph1_path)
 plt.close()
 
 # ---------------------------
@@ -86,7 +94,8 @@ plt.title("Per-Subject Performance Comparison Between Models")
 plt.ylim(0, 100)
 plt.legend(title="Model", bbox_to_anchor=(1.05, 1), loc="upper left")
 plt.tight_layout()
-plt.savefig("new_output/graph_subjects.png")
+graph2_path = os.path.join(output_dir, "graph_subjects.png")
+plt.savefig(graph2_path)
 plt.close()
 # ---------------------------
 # Graph 3: Per-subject performance as a heatmap with average
@@ -116,7 +125,8 @@ plt.ylabel("Subject")
 plt.title("Per-Subject Performance Comparison Across Models (Heatmap with Average)") # Clarified title
 hm_ax.set_yticklabels(hm_ax.get_yticklabels(), rotation=0)  # Ensure y-axis labels are horizontal
 plt.tight_layout()
-plt.savefig("new_output/graph_subjects_heatmap_with_avg.png")
+graph3_path = os.path.join(output_dir, "graph_subjects_heatmap_with_avg.png")
+plt.savefig(graph3_path)
 plt.close()
 
 # ---------------------------
@@ -198,6 +208,7 @@ for subj in all_subjects:
 
 
 # --- Create and Save the Detailed Comparison Table Plot ---
+graph4_path = None # Initialize path variable
 if comparison_data:
     comparison_df = pd.DataFrame(comparison_data)
     comparison_df = comparison_df.sort_values(by=['Subject', 'Model 1 (Base)'])
@@ -221,9 +232,10 @@ if comparison_data:
 
     plt.title("Base vs CoT Model Comparison per Subject (Excluding Ties)", y=1.02)
     plt.tight_layout()
-    plt.savefig("new_output/graph_base_vs_cot_comparison.png", bbox_inches='tight', dpi=150) # Changed output folder
+    graph4_path = os.path.join(output_dir, "graph_base_vs_cot_comparison.png")
+    plt.savefig(graph4_path, bbox_inches='tight', dpi=150)
     plt.close(fig_comp)
-    print("Base vs CoT comparison table saved to new_output/graph_base_vs_cot_comparison.png")
+    print(f"Base vs CoT comparison table saved to {graph4_path}")
 
 else:
     print("No Base/CoT model pairs found with differing scores for comparison.")
@@ -231,7 +243,7 @@ else:
 
 # ---------------------------
 # Graph 5: Summary Counts Table Plot
-
+graph5_path = None # Initialize path variable
 if subject_summary_data:
     summary_df = pd.DataFrame(subject_summary_data)
     summary_df = summary_df.sort_values(by='Subject')
@@ -287,9 +299,10 @@ if subject_summary_data:
 
     plt.title("Summary: Better Model Counts per Subject", y=1.05) # Adjust title position and text
     plt.tight_layout()
-    plt.savefig("new_output/graph_base_vs_cot_summary.png", bbox_inches='tight', dpi=150) # Save the summary table
+    graph5_path = os.path.join(output_dir, "graph_base_vs_cot_summary.png")
+    plt.savefig(graph5_path, bbox_inches='tight', dpi=150) # Save the summary table
     plt.close(fig_summary) # Close the specific figure
-    print("Base vs CoT summary table saved to new_output/graph_base_vs_cot_summary.png")
+    print(f"Base vs CoT summary table saved to {graph5_path}")
 
     # --- Print Summary Table to Console (Optional) ---
     # print("\n--- Summary: Better Model Counts per Subject ---") # Adjusted print title
@@ -343,10 +356,11 @@ if 'Average' in table_df.index:
 
 plt.title("Per-Model Performance Comparison Across Subjects (Table with Average)", y=1.05)
 plt.tight_layout()
-plt.savefig("new_output/graph_subjects_table_with_avg.png", bbox_inches='tight', dpi=150)
+graph6_path = os.path.join(output_dir, "graph_subjects_table_with_avg.png")
+plt.savefig(graph6_path, bbox_inches='tight', dpi=150)
 plt.close(fig_table_perf)
 
-print("Per-subject performance table saved to new_output/graph_subjects_table_with_avg.png")
+print(f"Per-subject performance table saved to {graph6_path}")
 
 # ... existing code before Graph 7 ...
 
@@ -399,9 +413,10 @@ for idx, row in avg_subj_norm_df.iterrows():
 
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.25)
-plt.savefig("new_output/graph_avg_subj_normalized.png") # New filename
+graph7_path = os.path.join(output_dir, "graph_avg_subj_normalized.png")
+plt.savefig(graph7_path) # New filename
 plt.close()
-print("Average per-subject normalized performance saved to new_output/graph_avg_subj_normalized.png")
+print(f"Average per-subject normalized performance saved to {graph7_path}")
 
 
 
@@ -440,21 +455,22 @@ plt.grid(axis='y', linestyle='--', alpha=0.7) # Add horizontal grid lines
 # plt.xticks(rotation=30, ha="right")
 plt.tight_layout()
 # plt.subplots_adjust(bottom=0.25) # Likely not needed with tight_layout and fewer labels
-plt.savefig("new_output/graph_base_vs_cot_normalized_violin.png") # New filename
+graph8_path = os.path.join(output_dir, "graph_base_vs_cot_normalized_violin.png")
+plt.savefig(graph8_path) # New filename
 plt.close()
-print("Violin plot comparing Base vs CoT normalized scores saved to new_output/graph_base_vs_cot_normalized_violin.png")
+print(f"Violin plot comparing Base vs CoT normalized scores saved to {graph8_path}")
 
 
 # ... existing print statements ...
 # Update the final print list
-print("\nGraphs saved to the new_output folder:")
-print(" - new_output/graph_overall.png")
-print(" - new_output/graph_subjects.png")
-print(" - new_output/graph_subjects_heatmap_with_avg.png")
-if comparison_data:
-    print(" - new_output/graph_base_vs_cot_comparison.png")
-if subject_summary_data:
-    print(" - new_output/graph_base_vs_cot_summary.png")
-print(" - new_output/graph_subjects_table_with_avg.png")
-print(" - new_output/graph_avg_subj_normalized.png") # Graph 7
-print(" - new_output/graph_base_vs_cot_normalized_violin.png") # Updated Graph 8 print
+print(f"\nGraphs saved to the {output_dir} folder:")
+print(f" - {graph1_path}")
+print(f" - {graph2_path}")
+print(f" - {graph3_path}")
+if graph4_path: # Only print if the file was created
+    print(f" - {graph4_path}")
+if graph5_path: # Only print if the file was created
+    print(f" - {graph5_path}")
+print(f" - {graph6_path}")
+print(f" - {graph7_path}")
+print(f" - {graph8_path}")
