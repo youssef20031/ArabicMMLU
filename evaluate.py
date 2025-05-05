@@ -42,8 +42,9 @@ def parse_args():
     parser.add_argument("--lora_weights", type=str, default="x", help="Path to LoRA weights (if using HF model)")
     parser.add_argument("--lang_alpa", type=str, default="ar", help="Language of answer choices ('ar' or 'en')")
     parser.add_argument("--lang_prompt", type=str, default="ar", help="Language of the prompt ('ar' or 'en')")
-    parser.add_argument("--output_folder", type=str, default="new_output", help="Folder to save the results CSV")
+    parser.add_argument("--output_folder", type=str, default="super_new_output", help="Folder to save the results CSV")
     parser.add_argument("--chain_of_thought", action="store_true", help="Use chain-of-thought prompting")
+    parser.add_argument("--tree_of_thought", action="store_true", help="Use tree-of-thought prompting (experimental, overrides CoT)") # <-- Add ToT argument
     parser.add_argument("--offload_folder", type=str, default=None, help="Folder for offloaded weights when loading HF in 8-bit")
     # --- Add Groq arguments ---
     parser.add_argument("--use_groq", action='store_true', help="Use Groq API instead of local/Gemini models")
@@ -52,6 +53,9 @@ def parse_args():
     args = parser.parse_args()
 
     # --- Add validation ---
+    if args.tree_of_thought and args.chain_of_thought:
+        print("Warning: --tree_of_thought and --chain_of_thought are mutually exclusive. Using Tree of Thought.")
+        args.chain_of_thought = False # Prioritize ToT if both are specified
     if args.use_groq and args.base_model:
         print("Warning: --base_model is ignored when --use_groq is specified.")
         args.base_model = None # Clear base_model if using Groq
@@ -76,26 +80,34 @@ def main():
     is_hf_model = not is_groq_model and not is_gemini_model and args.base_model is not None
 
     cot_suffix = "cot_" if args.chain_of_thought else ""
-    # --- Adjust filename based on model type ---
+    tot_suffix = "_tot" if args.tree_of_thought else "" # <-- Add ToT suffix
+    prompt_method_suffix = tot_suffix if args.tree_of_thought else cot_suffix
+
+     # --- Replace the existing filename generation block with this ---
     if is_groq_model:
         model_identifier = args.groq_model.replace("/", "-") # Sanitize model name for filename
-        SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{cot_suffix}groq_{model_identifier}.csv'
+        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_groq_{model_identifier}.csv' # Use prompt_method_suffix
     elif is_gemini_model:
         model_identifier = args.base_model # Gemini IDs are usually filename-safe
-        SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{cot_suffix}{model_identifier}.csv'
+        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}.csv' # Use prompt_method_suffix
     elif is_hf_model:
         model_identifier = args.base_model.split("/")[-1] # Get last part of HF path
         # Update save file name if LoRA is used with HF model
         if args.lora_weights != "x":
              lora_identifier = args.lora_weights.split("/")[-1]
-             SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{cot_suffix}{model_identifier}_{lora_identifier}.csv'
+             SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}_{lora_identifier}.csv' # Use prompt_method_suffix
         else:
-             SAVE_FILE = f'{args.output_folder}/result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}_{cot_suffix}{model_identifier}.csv'
+             SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}.csv' # Use prompt_method_suffix
     else:
+        # Fallback filename if neither Groq nor base_model is specified (shouldn't happen with validation)
         print("Error: Could not determine model type or identifier.")
-        sys.exit(1)
+        # Use a default/fallback name or exit
+        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_unknown_model.csv'
+        # sys.exit(1) # Optionally exit if model type is mandatory
 
-    print(f"Results will be saved to: {SAVE_FILE}")
+    # Join with the output folder
+    SAVE_FILE = os.path.join(args.output_folder, SAVE_FILE)
+    # --- End of replacement ---
 
     model = None
     tokenizer = None
@@ -229,7 +241,7 @@ def main():
     # --- Prepare Data ---
     print("Preparing data...")
     # Assume prepare_data returns: prompts, gold_indices, options_lists, subjects
-    inputs, golds, outputs_options, subjects = prepare_data(args)
+    inputs, golds, outputs_options, subjects, indices, abilities = prepare_data(args)
     print(f"Data prepared. Number of examples: {len(inputs)}")
 
     preds = []
@@ -260,7 +272,9 @@ def main():
         'options': outputs_options, # List of option strings
         'preds': preds, # Parsed prediction ('A', 'B', 'أ', 'ب', or None)
         'raw_preds': raw_preds, # Raw output from the model/API
-        'subject': subjects
+        'subject': subjects,
+        'ABILITY': abilities, # Ability level (if applicable)
+        'index': indices # Original index from the dataset
     })
 
     # Ensure the 'preds' column handles potential None values if needed (e.g., fillna)

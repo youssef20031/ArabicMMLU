@@ -362,103 +362,97 @@ plt.close(fig_table_perf)
 
 print(f"Per-subject performance table saved to {graph6_path}")
 
-# ... existing code before Graph 7 ...
+# …existing code before Graph 7…
 
 # -------------------------------
-# Graph 7: Average Per-Subject Normalized Performance per Model
+# Graph 7: Average Per-Subject Performance per Model
 
-# Use subject_df which contains per-subject scores
-subj_norm_df = subject_df.copy()
+# Compute the mean % correct across all subjects for each model
+avg_performance_df = subject_df.groupby('model')['percentage_correct'] \
+                               .mean().reset_index()
 
-# Define normalization function to apply per subject
-def normalize_within_group(group):
-    min_val = group['percentage_correct'].min()
-    max_val = group['percentage_correct'].max()
-    if max_val - min_val > 0:
-        group['subj_normalized_percentage'] = (group['percentage_correct'] - min_val) / (max_val - min_val) * 100
-    else:
-        # If all models score the same in a subject, assign 0 or 100 based on preference
-        # Assigning 0 might be misleading if the score was high. Let's assign 50 as neutral? Or maybe the actual score?
-        # Let's assign 0 for now, assuming we care about relative difference.
-        group['subj_normalized_percentage'] = 0.0
-        # Alternative: assign 100 if max_val > 0, else 0.
-        # group['subj_normalized_percentage'] = 100.0 if max_val > 0 else 0.0
-    return group
+# Sort using same order as Graph 1
+avg_performance_df = avg_performance_df.set_index("model") \
+                                       .loc[ordered_models] \
+                                       .reset_index()
 
-# Apply normalization within each subject group
-subj_norm_df = subj_norm_df.groupby('subject').apply(normalize_within_group)
-
-# Calculate the average of these normalized scores for each model
-avg_subj_norm_df = subj_norm_df.groupby('model')['subj_normalized_percentage'].mean().reset_index()
-
-# Sort the results using the same model order as Graph 1
-avg_subj_norm_df = avg_subj_norm_df.set_index("model").loc[ordered_models].reset_index()
-
-
-# --- Plotting ---
+# Plot bar chart
 plt.figure(figsize=(12, 6))
-plt.bar(avg_subj_norm_df["model"], avg_subj_norm_df["subj_normalized_percentage"], color='mediumseagreen') # Different color
+plt.bar(avg_performance_df["model"], avg_performance_df["percentage_correct"],
+        color='mediumseagreen')
 plt.xlabel("Model")
-plt.ylabel("Average Per-Subject Normalized Score (%)")
-plt.title("Average Per-Subject Normalized Performance Comparison (Subjects Weighted Equally)")
+plt.ylabel("Average Percentage Correct (%)")
+plt.title("Average Per-Subject Performance Comparison (Tasks Weighted Equally)")
 
-# Adjust ylim
-max_avg_norm_val = avg_subj_norm_df["subj_normalized_percentage"].max()
-# Since this is an average of values between 0-100, the max is likely <= 100
-plt.ylim(0, max(max_avg_norm_val * 1.1, 100)) # Give some headroom, ensure it goes to at least 100
-
+max_avg_val = avg_performance_df["percentage_correct"].max()
+plt.ylim(0, max(max_avg_val * 1.1, 100))
 plt.xticks(rotation=30, ha="right")
-for idx, row in avg_subj_norm_df.iterrows():
-    plt.text(idx, row["subj_normalized_percentage"] + 1, f'{row["subj_normalized_percentage"]:.1f}%', ha='center')
+
+for idx, row in avg_performance_df.iterrows():
+    plt.text(idx, row["percentage_correct"] + 1,
+             f'{row["percentage_correct"]:.1f}%', ha='center')
 
 plt.tight_layout()
 plt.subplots_adjust(bottom=0.25)
-graph7_path = os.path.join(output_dir, "graph_avg_subj_normalized.png")
-plt.savefig(graph7_path) # New filename
+graph7_path = os.path.join(output_dir, "graph_avg_subj_performance.png")
+plt.savefig(graph7_path)
 plt.close()
-print(f"Average per-subject normalized performance saved to {graph7_path}")
-
-
+print(f"Average per-subject performance saved to {graph7_path}")
 
 
 # -------------------------------
-# Graph 8: Violin Plot of Per-Subject Normalized Scores (Base vs CoT)
+# Graph 8: Violin Plot of Average Per-Subject Performance (Base vs CoT)
 
-# Add a column to identify model type (Base or CoT)
+# Tag each model as Base or CoT
 def get_model_type(m):
-    m_lower = m.lower()
-    if m_lower.startswith("cot_") or "-cot" in m_lower:
-        return "CoT"
-    else:
-        # Assuming models not explicitly marked as CoT are Base models for this comparison
-        return "Base"
+    ml = m.lower()
+    return "CoT" if ml.startswith("cot_") or "-cot" in ml else "Base"
 
-# Make sure subj_norm_df is the one with per-subject normalized scores
-# This should already be calculated before Graph 7 plotting
-subj_norm_df['model_type'] = subj_norm_df['model'].apply(get_model_type)
-print("Model type counts in subj_norm_df for Graph 8:\n", subj_norm_df['model_type'].value_counts())
+avg_performance_df['model_type'] = avg_performance_df['model'].apply(get_model_type)
 
-plt.figure(figsize=(8, 6)) # Adjusted figsize for two categories
-# Use the subj_norm_df which contains the normalized score for each model on each subject
-# Plot based on the new 'model_type' column
-# inner='quartile' shows the median (white dot) and quartiles (black bar)
-# Removed showmeans=True and meanprops due to AttributeError with PolyCollection
-sns.violinplot(data=subj_norm_df, x='model_type', y='subj_normalized_percentage',
-               palette='muted', inner='quartile', order=['Base', 'CoT']) # Specify order
-plt.xlabel("Model Type")
-plt.ylabel("Per-Subject Normalized Score (%)")
-# Updated title as mean marker is not shown due to error
-plt.title("Distribution of Per-Subject Normalized Scores: Base vs. CoT Models (Median and Quartiles)")
-plt.ylim(-5, 105) # Normalized scores are between 0 and 100
-plt.grid(axis='y', linestyle='--', alpha=0.7) # Add horizontal grid lines
-# No rotation needed for 2 categories
-# plt.xticks(rotation=30, ha="right")
+plt.figure(figsize=(8, 6))
+ax = sns.violinplot(
+    data=avg_performance_df,
+    x='model_type',
+    y='percentage_correct',
+    order=['Base', 'CoT'],
+    palette='muted',
+    inner='quartile',
+    scale='width',
+    cut=0,
+    bw=.8,
+    linewidth=1
+)
+
+# Overlay the group means
+means = avg_performance_df.groupby('model_type')['percentage_correct'] \
+                          .mean().reset_index()
+sns.scatterplot(
+    data=means,
+    x='model_type',
+    y='percentage_correct',
+    color='white',
+    edgecolor='black',
+    marker='o',
+    s=100,
+    ax=ax,
+    label='Mean'
+)
+
+ax.set_xlabel("Model Type")
+ax.set_ylabel("Average Percentage Correct (%)")
+ax.set_title("Distribution of Average Per-Subject Performance\nBase vs. CoT Models")
+ax.set_ylim(0, 100)
+ax.grid(axis='y', linestyle='--', alpha=0.5)
+ax.legend(loc='upper right')
+
 plt.tight_layout()
-# plt.subplots_adjust(bottom=0.25) # Likely not needed with tight_layout and fewer labels
-graph8_path = os.path.join(output_dir, "graph_base_vs_cot_normalized_violin.png")
-plt.savefig(graph8_path) # New filename
+graph8_path = os.path.join(output_dir, "graph_avg_subj_performance_violin.png")
+plt.savefig(graph8_path)
 plt.close()
-print(f"Violin plot comparing Base vs CoT normalized scores saved to {graph8_path}")
+print(f"Violin plot saved to {graph8_path}")
+
+# …existing print statements…
 
 
 # ... existing print statements ...

@@ -433,21 +433,55 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
 
             # --- Parse the response ---
             predicted_label = None
-            expected_chars = "".join(expected_labels)
-            match = re.search(f"[{re.escape(expected_chars)}]", raw_response)
-            if match:
-                predicted_label = match.group(0)
-                print(f"Groq Parsed Prediction: '{predicted_label}'")
+            expected_chars_set = set(expected_labels) # Use a set for faster lookup
+
+            # 1. Try direct match first (cleanest case)
+            if raw_response in expected_chars_set:
+                predicted_label = raw_response
+                print(f"Groq Parsed Prediction (direct match): '{predicted_label}'")
                 return predicted_label, raw_response
-            else:
-                if raw_response in expected_labels:
-                     print(f"Groq Parsed Prediction (direct match): '{raw_response}'")
-                     return raw_response, raw_response
+
+            # 2. Try stripping common bracket/formatting issues and checking length 1
+            # Define characters to strip more aggressively, including brackets
+            strip_chars = '[]{}()\'"` *.:-' # Brackets, quotes, spaces, asterisks, dots, colons, hyphens
+            # Apply stripping multiple times or use replace for nested brackets
+            cleaned_response = raw_response.strip()
+            # Remove brackets specifically
+            cleaned_response = cleaned_response.replace('[', '').replace(']', '')
+            # Strip other unwanted characters
+            cleaned_response = cleaned_response.strip(strip_chars)
+
+            # …existing code…
+            if len(cleaned_response) == 1:
+                 predicted_label = cleaned_response
+                 # Updated print message to reflect the change
+                 print(f"Groq Parsed Prediction (single char after cleaning '{raw_response}'): '{predicted_label}'")
+                 return predicted_label, raw_response
+
+
+            # 3. Try regex search as a fallback (might catch labels embedded in longer text)
+            expected_chars_pattern = "".join(expected_labels)
+
+            # Search for the first occurrence of an expected character
+            match = re.search(f"[{re.escape(expected_chars_pattern)}]", raw_response)
+            if match:
+                potential_label = match.group(0)
+                # Check if this is the *only* potential label character in the cleaned string
+                # to avoid matching random letters in explanations.
+                temp_cleaned = raw_response.strip().strip(strip_chars)
+                all_expected_in_temp = re.findall(f"[{re.escape(expected_chars_pattern)}]", temp_cleaned)
+                if len(all_expected_in_temp) == 1 and all_expected_in_temp[0] == potential_label:
+                     predicted_label = potential_label
+                     print(f"Groq Parsed Prediction (regex fallback on '{raw_response}'): '{predicted_label}'")
+                     return predicted_label, raw_response
                 else:
-                    print(f"Warning: Could not parse expected label from Groq response: '{raw_response}'. Expected one of {expected_labels_str}.")
-                    # Treat as failure for this call, let retry logic handle it if applicable
-                    # Raise an exception to trigger the retry logic below for this specific case
-                    raise ValueError(f"Failed to parse expected label from response: {raw_response}")
+                     # If regex match is ambiguous after cleaning, prefer failing over guessing
+                     print(f"Warning: Regex matched '{potential_label}' in '{raw_response}', but cleaning resulted in ambiguity ('{temp_cleaned}').")
+                     # Fall through to error
+
+            # 4. If still not found, raise the error
+            print(f"Warning: Could not parse expected label from Groq response: '{raw_response}'. Expected one of {expected_labels_str}.")
+            raise ValueError(f"Failed to parse expected label from response: {raw_response}")
 
 
         except RateLimitError as e:

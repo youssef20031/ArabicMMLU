@@ -8,7 +8,7 @@ arabic_answer_map = {0: "أ", 1: "ب", 2: "ج", 3: "د"}
 english_answer_map = {0: "a", 1: "b", 2: "c", 3: "d"}
 
 # Directory containing the result CSV files
-input_dir = 'english_output'
+input_dir = 'new_output'
 # Path for the summary file
 summary_file = os.path.join(input_dir, 'results_summary.csv')
 

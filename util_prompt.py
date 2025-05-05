@@ -81,22 +81,27 @@ def prepare_data_en(args):
             "Question:\n"
             "{question}\n"
             "{options}\n"
-            "When asked to choose from options like 'أ', 'ب', 'ج', 'د', your response must be only the single character representing your choice. Do not include any introductory phrases (e.g., 'Here's the answer:', 'I choose:'), explanations, or any other text before or after the selected character. For example, if the correct answer is 'ب', your entire output should be just 'ب'."
+            "When asked to choose from options like 'A','B','C','D' your response must be only the single character representing your choice. Do not include any introductory phrases (e.g., 'Here's the answer:', 'I choose:'), explanations, or any other text before or after the selected character. For example, if the correct answer is  'B', your entire output should be just  'B'"
             "Correct option number is:"
         )
     else:
-        prefix = (
-            "I give you a phrase of a dialogue between agents. I will reveal more parts of it later. "
-            "At the end, I will give you a question you must answer. For each phrase, you must:\n"
-            "# 1. Write down a succinct description of what each agent knows about the environment and about the other agents. "
-            "Keep the description short and do not produce redundant information. \n"
-            "Here's the dialogue:\n"
-            "{BackStory}\n"
-        )
-        final_ask = (
-            "This is the end of the dialogue. Now, answer the following question.\n"
-            "Question: {question}{options}\n"
-            "When asked to choose from options like 'أ', 'ب', 'ج', 'د', your response must be only the single character representing your choice. Do not include any introductory phrases (e.g., 'Here's the answer:', 'I choose:'), explanations, or any other text before or after the selected character. For example, if the correct answer is 'ب', your entire output should be just 'ب'."
+         # Updated prompt structure as requested
+        PROMPT = (
+            "Below is a multiple-choice question with a story and serveral answer options. Based on the content of the story and the given\n"
+            "question, please infer the most likely answer and output the answer index.\n"
+            "Note:\n"
+            "(1) Please only output the most likely answer index in the format: [[Answer Index]], for example, if the most likely answer\n"
+            "option is ‘أ. Handbag’, then output ‘[[أ]]’;\n"
+            "(2) You must choose one of the given answer options ‘أ, ب, ج, د’ as the most likely answer, regardless of whether the story\n"
+            "provides enough information. If you think there is not enough information in the story to choose an answer, please randomly\n"
+            "output one of “[[أ]]”, “[[ب]]”, “[[ج]]”, or “[[د]]”;\n"
+            "(3) Please only output the most likely answer index based on the given information, and do not output any other content.\n"
+            "[Story]\n"
+            "{Story}\n"
+            "[Question]\n"
+            "{Questions}\n"
+            "[Candidate Answers]\n"
+            "ا. {Option_a} ب. {Option_b} ج. {Option _c} د. {Option_d}" # Adjusted order to A, B, C, D
         )
 
     alpa = alpa_ar
@@ -107,12 +112,16 @@ def prepare_data_en(args):
     outputs = []
     outputs_options = []
     subjects = []  # added subjects list
-    data = pd.read_csv('data/cleaned_output_english.csv', engine='python', on_bad_lines='skip')
+    indices = [] # New list for INDEX
+    abilities = [] # New list for ABILITY
+    data = pd.read_csv('data/cleaned_output3.csv', engine='python', on_bad_lines='skip')
     data = data[data['is_few_shot'] == 0]
 
     for idx, row in data.iterrows():
         subject = row['Subject']
         subjects.append(subject)  # store subject for each question
+        indices.append(row['INDEX']) # Store INDEX
+        abilities.append(row['ABILITY']) # Store ABILITY
         level = level_en[row['Level']] if not pd.isna(row['Level']) else 'unknown'
 
         if args.chain_of_thought:
@@ -134,36 +143,57 @@ def prepare_data_en(args):
                 options=options_text
             )
         else:
+            # Combine BackStory and Context for the Story part
+            story_parts = []
             if not pd.isna(row['BackStory']):
-                task_text = f"BackStory: {str(row['BackStory']).strip()}"
-            else:
-                task_text = ""
-            context_text = ""
+                story_parts.append(str(row['BackStory']).strip())
             if not pd.isna(row['Context']):
-                context_text = f"Context: {str(row['Context']).strip()}"
-            
-            dialogue = task_text
-            if context_text:
-                dialogue += "\n" + context_text
+                 story_parts.append(str(row['Context']).strip())
+            story_text = "\n".join(story_parts) if story_parts else "N/A" # Handle case with no story/context
 
             question_field = str(row['Question']).strip()
-            
-            options_list = []
-            for i, opt in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
-                if pd.isna(row[opt]):
-                    break
-                options_list.append(f"{alpa[i]} {row[opt]}")
-            options_text = ""
-            if options_list:
-                options_text = "\nOptions:\n" + "\n".join(options_list)
-    
-            prompt_text = prefix + "\n" + dialogue + "\n\n" + final_ask.format(question=question_field, options=options_text)
-    
+
+            # Extract options, assuming at least 4 options based on the new prompt
+            # Handle potential missing options gracefully (e.g., replace with "N/A" or similar)
+            option_a = str(row['Option 1']).strip() if not pd.isna(row['Option 1']) else "N/A"
+            option_b = str(row['Option 2']).strip() if not pd.isna(row['Option 2']) else "N/A"
+            option_c = str(row['Option 3']).strip() if not pd.isna(row['Option 3']) else "N/A"
+            option_d = str(row['Option 4']).strip() if not pd.isna(row['Option 4']) else "N/A"
+
+            # Format the new prompt
+            prompt_text = PROMPT.format(
+                Story=story_text,
+                Questions=question_field,
+                Option_a=option_a,
+                Option_b=option_b,
+                Option_c=option_c, # Mapped Option 3 to C
+                Option_d=option_d  # Mapped Option 4 to D
+            )
+
         inputs.append(prompt_text)
-        idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}[row['Answer Key'].strip()]
+        # Ensure Answer Key is stripped of whitespace before lookup
+        answer_key = str(row['Answer Key']).strip()
+        idx_label = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}.get(answer_key, -1) # Use .get for safety, default to -1 if key not found
+        if idx_label == -1:
+            print(f"Warning: Invalid Answer Key '{answer_key}' found at CSV index {idx}. Skipping row or assigning default.")
+            # Decide how to handle invalid keys: skip row, assign default, etc.
+            # For now, let's append a placeholder, but you might want to skip.
+            outputs.append(-1) # Or some other indicator
+            outputs_options.append([])
+            continue # Or adjust as needed
+
         outputs.append(idx_label)
+
+        options_list = []
+        for i, opt_key in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
+             if pd.isna(row[opt_key]):
+                 break
+             options_list.append(f"{alpa[i]} {row[opt_key]}")
         outputs_options.append(options_list)
-    return inputs, outputs, outputs_options, subjects
+
+    # Return the new lists as well
+    return inputs, outputs, outputs_options, subjects, indices, abilities
+
 
 
 def prepare_data_ar(args):
