@@ -49,7 +49,7 @@ def parse_args():
     parser.add_argument("--lora_weights", type=str, default="x", help="Path to LoRA weights (if using HF model)")
     parser.add_argument("--lang_alpa", type=str, default="ar", help="Language of answer choices ('ar' or 'en')")
     parser.add_argument("--lang_prompt", type=str, default="ar", help="Language of the prompt ('ar' or 'en')")
-    parser.add_argument("--output_folder", type=str, default="super_new_output", help="Folder to save the results CSV")
+    parser.add_argument("--output_folder", type=str, default="super_duper_output", help="Folder to save the results CSV")
     parser.add_argument("--chain_of_thought", action="store_true", help="Use chain-of-thought prompting")
     parser.add_argument("--tree_of_thought", action="store_true", help="Use tree-of-thought prompting (experimental, overrides CoT)") # <-- Add ToT argument
     parser.add_argument("--offload_folder", type=str, default=None, help="Folder for offloaded weights when loading HF in 8-bit")

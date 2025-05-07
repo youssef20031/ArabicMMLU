@@ -195,7 +195,7 @@ TOT_PROMPT_ABDUCTIVE_AR = (
 # Mapping for abductive task labels to choice letters
 # Assuming label '0' corresponds to hypothesis_1 (Choice A)
 # and label '1' corresponds to hypothesis_2 (Choice B)
-ABDUCTIVE_LABEL_TO_CHOICE_LETTER = {'0': 'A', '1': 'B'}
+ABDUCTIVE_LABEL_TO_CHOICE_LETTER = {'1': 'A', '2': 'B'}
 ALPA_EN_TO_AR_MAP = {alpa_en[k]: alpa_ar[k] for k in alpa_en if k in alpa_ar}
 
 
