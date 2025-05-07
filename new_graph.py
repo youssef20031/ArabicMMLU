@@ -28,8 +28,8 @@ ability_abbr = ["EMO", "DES", "INT", "KNO", "BEL", "NLC", "NLC_alt"] # Include b
 
 # Path to the results file
 #results_file_path = Path("results_output/results.json")
-#results_file_path = Path("test/results.json")
-results_file_path = Path("test/resultsnew.json")
+results_file_path = Path("test/results.json")
+#results_file_path = Path("test/resultsnew.json")
 #results_file_path = Path("test/results2.json")
 
 

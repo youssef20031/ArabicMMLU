@@ -9,7 +9,7 @@ import torch
 import time # Import time for potential delays/timing
 
 # Import utility functions
-from util_prompt import prepare_data
+from util_prompt import load_and_format_data
 from util_compute import (predict_classification_causal_by_letter,
                           predict_classification_mt0_by_letter,
                           predict_classification_gemini,
@@ -18,10 +18,15 @@ from util_compute import (predict_classification_causal_by_letter,
 
 # --- Add Groq import ---
 try:
-    from groq import Groq
+    from groq import Groq, RateLimitError, APIError
+    import httpx # Import httpx for timeout configuration
 except ImportError:
     # Allow script to run without groq if not used
     Groq = None
+    RateLimitError = Exception # Define dummy exceptions if Groq not installed
+    APIError = Exception
+    httpx = None # Define httpx as None if not installed
+# --- End Groq import ---
 # --- End Groq import ---
 
 # Optional: Define Hugging Face token if needed for private models
@@ -36,6 +41,8 @@ print(f"Using device: {device}")
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--task_type", type=str, default="mmlu", choices=["mmlu", "abductive"], help="Type of task to evaluate ('mmlu' or 'abductive')")
+    parser.add_argument("--data_file", type=str, default=None, help="Path to the data file (used if task_type is 'abductive' or to override default MMLU path)")
     parser.add_argument("--load_8bit", action='store_true', help="Load Hugging Face models in 8-bit")
     parser.add_argument("--share_gradio", action='store_true', help="Enable Gradio sharing (if applicable)") # Keep if Gradio is used elsewhere
     parser.add_argument("--base_model", type=str, help="Path/ID for Hugging Face model or Gemini ID (e.g., 'google/gemini-pro')", default=None) # Make optional
@@ -116,23 +123,32 @@ def main():
 
     if is_groq_model:
         print(f"Using Groq model: {args.groq_model}")
-        if Groq is None:
-             print("Error: The 'groq' library is required to use --use_groq. Please install it (`pip install groq`).")
+        if Groq is None or httpx is None: # Check both Groq and httpx imports
+             print("Error: The 'groq' and 'httpx' libraries are required to use --use_groq. Please install them (`pip install groq httpx`).")
              sys.exit(1)
         try:
-            # Initialize Groq client
+            # Initialize Groq client with custom timeouts
             groq_api_key = os.environ.get("GROQ_API_KEY")
             if not groq_api_key:
-                print("Error: GROQ_API_KEY environment variable not set.")
-                sys.exit(1)
-            groq_client = Groq(api_key=groq_api_key)
-            print("Groq client initialized.")
+                raise ValueError("GROQ_API_KEY environment variable not set.") # Use ValueError for clarity
+
+            # Configure longer timeouts (e.g., 30 seconds connect, 180 seconds read)
+            timeout_config = httpx.Timeout(1000.0, read=1800.0) # Adjust values as needed
+
+            groq_client = Groq(
+                api_key=groq_api_key,
+                timeout=timeout_config # Pass the timeout config
+            )
+            print("Groq client initialized with custom timeouts.")
+
             # Set the prediction function for Groq
-            # We pass the client and model name to the prediction function via lambda
             predict_classification = lambda input_text, labels, lang_alpa: predict_classification_groq(
                 groq_client, args.groq_model, input_text, labels, lang_alpa
             )
-        except Exception as e:
+        except ValueError as ve: # Catch specific ValueError for API key
+             print(f"Configuration Error: {ve}")
+             sys.exit(1)
+        except Exception as e: # Catch other potential initialization errors
             print(f"Error initializing Groq client: {e}")
             sys.exit(1)
 
@@ -239,9 +255,9 @@ def main():
 
 
     # --- Prepare Data ---
-    print("Preparing data...")
+    print(f"Preparing data for task: {args.task_type}...")
     # Assume prepare_data returns: prompts, gold_indices, options_lists, subjects
-    inputs, golds, outputs_options, subjects, indices, abilities = prepare_data(args)
+    inputs, golds, outputs_options, subjects, indices, abilities = load_and_format_data(args)
     print(f"Data prepared. Number of examples: {len(inputs)}")
 
     preds = []
@@ -265,23 +281,23 @@ def main():
     print(f"Predictions finished in {end_time - start_time:.2f} seconds.")
 
     # --- Save Results ---
-    print("Saving results...")
-    output_df = pd.DataFrame({
-        'input': inputs,
-        'golds': golds, # Gold standard index (0, 1, 2, 3)
-        'options': outputs_options, # List of option strings
-        'preds': preds, # Parsed prediction ('A', 'B', 'أ', 'ب', or None)
-        'raw_preds': raw_preds, # Raw output from the model/API
-        'subject': subjects,
-        'ABILITY': abilities, # Ability level (if applicable)
-        'index': indices # Original index from the dataset
-    })
+    if len(inputs) == len(golds) == len(preds) == len(raw_preds) == len(subjects) == len(outputs_options) == len(abilities):
+        out = pd.DataFrame({
+            'index': indices, # Use the indices list from load_and_format_data
+            'prompt': inputs,
+            'golds': golds,
+            'preds': preds,
+            'raw_preds': raw_preds,
+            'subject': subjects,
+            'options': outputs_options,
+            'ABILITY': abilities # Added ABILITY column
+        })
+        out.to_csv(SAVE_FILE, index=False, encoding='utf-8')
+        print(f"Results saved to {SAVE_FILE}")
+    else:
+        print("Error: Mismatch in lengths of data lists. Cannot save results.")
+        print(f"Lengths: Inputs={len(inputs)}, Golds={len(golds)}, Preds={len(preds)}, RawPreds={len(raw_preds)}, Subjects={len(subjects)}, Options={len(outputs_options)}, Abilities={len(abilities)}")
 
-    # Ensure the 'preds' column handles potential None values if needed (e.g., fillna)
-    # output_df['preds'] = output_df['preds'].fillna('N/A') # Optional: replace None with a placeholder
-
-    output_df.to_csv(SAVE_FILE, index=False, encoding='utf-8') # Ensure UTF-8 encoding
-    print(f"Results saved to {SAVE_FILE}")
 
 if __name__ == "__main__":
     main()

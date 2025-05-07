@@ -377,55 +377,57 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
 
 
 # --- New Groq Prediction Function ---
+# --- Groq Prediction Function ---
 def predict_classification_groq(client, model_name, input_text, labels, lang_alpa):
     """
-    Predicts the classification using the Groq API.
+    Predicts the classification using a Groq model with retry logic.
 
     Args:
-        client: Initialized Groq client.
-        model_name: The Groq model ID (e.g., 'llama-3.1-8b-instant').
-        input_text: The formatted prompt containing the question and options.
-        labels: The list of possible answer labels (e.g., ['A', 'B', 'C', 'D']).
-        lang_alpa: 'ar' or 'en' to determine expected output format.
+        client (Groq): The initialized Groq client.
+        model_name (str): The specific Groq model to use (e.g., 'llama3-8b-8192').
+        input_text (str): The formatted input prompt containing the question and choices.
+        labels (list): The list of possible label strings (used to determine number of choices).
+        lang_alpa (str): 'ar' or 'en' to select the alphabet for choices.
 
     Returns:
-        A tuple (predicted_label, raw_response_content).
-        predicted_label is the single character prediction (e.g., 'A' or 'ب').
-        Returns (None, None) on failure.
+        tuple: (prediction, raw_response) - prediction is the predicted letter ('A', 'B', 'أ', 'ب', etc.) or None on failure.
+                                            raw_response is the full text output from the API.
     """
-    if client is None:
-        print("Error: Groq client not initialized.")
+    if not client:
+        print("Error: Groq client is not initialized.")
+        return None, None
+    if not labels:
+        print(f"Warning: Received empty labels list for input. Skipping prediction.")
         return None, None
 
-    # Determine the expected answer format based on lang_alpa
     alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
-    expected_labels = list(alpa.values())[:len(labels)] # Use the actual labels passed
+    expected_labels = list(alpa.values())[:len(labels)]
     expected_labels_str = ", ".join(f"'{label}'" for label in expected_labels)
+    expected_chars_set = set(expected_labels) # Use a set for faster lookup
 
-    # Simple instruction for the system prompt
+    # System prompt instructing the model on the desired output format
+    # Note: For CoT/ToT, the user prompt overrides this, but it's good practice for zero-shot.
     system_prompt = f"You are an assistant helping with multiple-choice questions. Please answer the following question. Your response must be only the single character representing your choice from {expected_labels_str}. Do not include any other text, explanations, or introductory phrases."
 
-    max_retries = 5 # Increased retries for rate limits
+    max_retries = 5
     attempt = 0
-    backoff_time = 1 # Initial seconds for exponential backoff if no specific time given
+    backoff_time = 1 # Initial backoff time in seconds
 
     while attempt < max_retries:
         try:
             print(f"Attempting Groq API call (Attempt {attempt + 1}/{max_retries})...")
             chat_completion = client.chat.completions.create(
                 messages=[
-                    {
-                        "role": "system",
-                        "content": system_prompt
-                    },
-                    {
-                        "role": "user",
-                        "content": input_text # Assuming input_text is the full prompt
-                    }
+                    # System prompt might be less effective if user prompt is very detailed (like CoT/ToT)
+                    # {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": input_text}
                 ],
                 model=model_name,
-                temperature=0, # Set low for deterministic output
-                max_tokens=10, # Allow a few tokens in case of slight deviation
+                temperature=0, # For deterministic output
+                max_tokens=131072 # Increased max_tokens for potentially verbose CoT/ToT reasoning
+                # top_p=1, # Default is usually 1
+                # stop=None, # Default is usually fine
+                # stream=False # Default is False
             )
 
             raw_response = chat_completion.choices[0].message.content.strip()
@@ -433,130 +435,104 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
 
             # --- Parse the response ---
             predicted_label = None
-            expected_chars_set = set(expected_labels) # Use a set for faster lookup
 
-            # 1. Try direct match first (cleanest case)
-            if raw_response in expected_chars_set:
+            # 1. Try regex for "Final Answer: ... is X" pattern first (MODIFIED REGEX)
+            # Build character class dynamically from expected labels
+            expected_chars_pattern_str = "".join(re.escape(l) for l in expected_labels)
+
+            # English pattern: Look for "Final Answer: ... is" followed by one of the expected chars
+            final_answer_pattern = rf"Final Answer:\s*The final answer is\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+            # Arabic pattern: Look for "الإجابة النهائية: ... هي" followed by one of the expected chars
+            final_answer_pattern_ar = rf"الإجابة النهائية:\s*الإجابة النهائية هي\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+
+            match = re.search(final_answer_pattern, raw_response, re.IGNORECASE | re.DOTALL)
+
+            match = re.search(final_answer_pattern, raw_response, re.IGNORECASE | re.DOTALL)
+            if not match:
+                 match = re.search(final_answer_pattern_ar, raw_response, re.DOTALL)
+
+            if match:
+                predicted_label = match.group(1).strip() # Get the captured character
+                # Validate if the extracted label is actually one of the expected ones
+                if predicted_label in expected_chars_set:
+                    print(f"Groq Parsed Prediction (CoT/ToT pattern): '{predicted_label}'")
+                    return predicted_label, raw_response
+                else:
+                    print(f"Warning: Regex matched '{predicted_label}', but it's not in expected labels {expected_labels_str}.")
+                    predicted_label = None # Reset if invalid match
+
+            # 2. Try direct match (for zero-shot or if model behaves perfectly)
+            if predicted_label is None and raw_response in expected_chars_set:
                 predicted_label = raw_response
                 print(f"Groq Parsed Prediction (direct match): '{predicted_label}'")
                 return predicted_label, raw_response
 
-            # 2. Try stripping common bracket/formatting issues and checking length 1
-            # Define characters to strip more aggressively, including brackets
-            strip_chars = '[]{}()\'"` *.:-' # Brackets, quotes, spaces, asterisks, dots, colons, hyphens
-            # Apply stripping multiple times or use replace for nested brackets
-            cleaned_response = raw_response.strip()
-            # Remove brackets specifically
-            cleaned_response = cleaned_response.replace('[', '').replace(']', '')
-            # Strip other unwanted characters
-            cleaned_response = cleaned_response.strip(strip_chars)
+            # 3. Try stripping common bracket/formatting issues and checking length 1
+            if predicted_label is None:
+                # More aggressive cleaning: remove markdown bold/italics, brackets, then strip
+                cleaned_response = re.sub(r'[*_`]', '', raw_response) # Remove markdown chars
+                cleaned_response = cleaned_response.replace('[', '').replace(']', '')
+                strip_chars = '{}()\'".:- ' # Added dot, quote, double quote
+                cleaned_response = cleaned_response.strip(strip_chars)
 
-            # …existing code…
-            if len(cleaned_response) == 1:
-                 predicted_label = cleaned_response
-                 # Updated print message to reflect the change
-                 print(f"Groq Parsed Prediction (single char after cleaning '{raw_response}'): '{predicted_label}'")
-                 return predicted_label, raw_response
+                if len(cleaned_response) == 1 and cleaned_response in expected_chars_set:
+                    predicted_label = cleaned_response
+                    print(f"Groq Parsed Prediction (single char after cleaning '{raw_response[:50]}...'): '{predicted_label}'")
+                    return predicted_label, raw_response
 
+            # 4. Try simple regex search for the character itself at the end as a last resort
+            if predicted_label is None:
+                # Look for the character potentially at the end of the string, possibly after spaces/newlines/dots/stars
+                match = re.search(r"([" + expected_chars_pattern_str + r"])[.\s*]*$", raw_response)
+                if match:
+                    potential_label = match.group(1)
+                    predicted_label = potential_label
+                    print(f"Groq Parsed Prediction (regex fallback - last char match on '{raw_response[:50]}...'): '{predicted_label}'")
+                    return predicted_label, raw_response
 
-            # 3. Try regex search as a fallback (might catch labels embedded in longer text)
-            expected_chars_pattern = "".join(expected_labels)
+            # 5. If still not found after all attempts
+            if predicted_label is None:
+                print(f"Warning: Could not parse expected label from Groq response. Expected one of {expected_labels_str} or CoT/ToT pattern.")
+                return None, raw_response
 
-            # Search for the first occurrence of an expected character
-            match = re.search(f"[{re.escape(expected_chars_pattern)}]", raw_response)
-            if match:
-                potential_label = match.group(0)
-                # Check if this is the *only* potential label character in the cleaned string
-                # to avoid matching random letters in explanations.
-                temp_cleaned = raw_response.strip().strip(strip_chars)
-                all_expected_in_temp = re.findall(f"[{re.escape(expected_chars_pattern)}]", temp_cleaned)
-                if len(all_expected_in_temp) == 1 and all_expected_in_temp[0] == potential_label:
-                     predicted_label = potential_label
-                     print(f"Groq Parsed Prediction (regex fallback on '{raw_response}'): '{predicted_label}'")
-                     return predicted_label, raw_response
-                else:
-                     # If regex match is ambiguous after cleaning, prefer failing over guessing
-                     print(f"Warning: Regex matched '{potential_label}' in '{raw_response}', but cleaning resulted in ambiguity ('{temp_cleaned}').")
-                     # Fall through to error
-
-            # 4. If still not found, raise the error
-            print(f"Warning: Could not parse expected label from Groq response: '{raw_response}'. Expected one of {expected_labels_str}.")
-            raise ValueError(f"Failed to parse expected label from response: {raw_response}")
-
+            break # Exit loop if successful
 
         except RateLimitError as e:
-            attempt += 1 # Count as a retry attempt
-            wait_time = backoff_time # Default wait time
-
-            # Try to parse the suggested wait time from the error message
-            try:
-                # The error body might be JSON parsable
-                error_body = e.body
-                if error_body and 'error' in error_body and 'message' in error_body['error']:
-                    message = error_body['error']['message']
-                    # Use regex to find "try again in Xs" or "try again in XmYs"
-                    match_seconds = re.search(r"try again in ([\d.]+)\s*s", message, re.IGNORECASE)
-                    match_minutes_seconds = re.search(r"try again in ([\d.]+)\s*m([\d.]+)\s*s", message, re.IGNORECASE)
-
-                    if match_minutes_seconds:
-                        minutes = float(match_minutes_seconds.group(1))
-                        seconds = float(match_minutes_seconds.group(2))
-                        suggested_wait = (minutes * 60) + seconds
-                        wait_time = max(1, math.ceil(suggested_wait)) + 2 # Add 2s buffer
-                        print(f"Groq Rate Limit Error: {e}. Using suggested wait time + 2s: {wait_time} seconds.")
-                    elif match_seconds:
-                        suggested_wait = float(match_seconds.group(1))
-                        wait_time = max(1, math.ceil(suggested_wait)) + 2 # Add 2s buffer
-                        print(f"Groq Rate Limit Error: {e}. Using suggested wait time + 2s: {wait_time} seconds.")
-                    else:
-                         # Fallback to exponential backoff if time not found in message
-                         print(f"Groq Rate Limit Error: {e}. Could not parse suggested wait time. Retrying in {wait_time} seconds (exponential backoff)...")
-                         backoff_time *= 2 # Exponential backoff only if no specific time given
-                else:
-                    # Fallback if error body structure is unexpected
-                    print(f"Groq Rate Limit Error: {e}. Could not parse error details. Retrying in {wait_time} seconds (exponential backoff)...")
-                    backoff_time *= 2
-            except Exception as parse_e:
-                # Fallback if any parsing error occurs
-                print(f"Groq Rate Limit Error: {e}. Error parsing details ({parse_e}). Retrying in {wait_time} seconds (exponential backoff)...")
-                backoff_time *= 2
-
+            attempt += 1
+            print(f"Groq API rate limit exceeded (Attempt {attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
             if attempt < max_retries:
-                time.sleep(wait_time)
+                time.sleep(backoff_time)
+                backoff_time *= 2 # Exponential backoff
             else:
-                print(f"Groq Rate Limit Error: Failed after {max_retries} attempts.")
+                print(f"Groq API call failed after {max_retries} rate limit attempts.")
                 return None, None # Failed after retries
 
         except APIError as e:
             attempt += 1
-            print(f"Groq API Error: {e}. Retrying in {backoff_time} seconds...")
+            print(f"Groq API error (Attempt {attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
+            if attempt < max_retries:
+                time.sleep(backoff_time)
+                backoff_time *= 2 # Exponential backoff
+            else:
+                print(f"Groq API call failed after {max_retries} API error attempts.")
+                return None, None # Failed after retries
+
+        except Exception as e:
+            attempt += 1
+            print(f"Groq API call failed (Attempt {attempt}/{max_retries}) with unexpected error: {e}")
+            # Optionally log the full traceback here for debugging
+            # import traceback
+            # traceback.print_exc()
             if attempt < max_retries:
                 time.sleep(backoff_time)
                 backoff_time *= 2
             else:
-                print(f"Groq API Error: Failed after {max_retries} attempts.")
+                print(f"Groq API call failed after {max_retries} attempts due to unexpected errors.")
                 return None, None # Failed after retries
 
-        except ValueError as e: # Catch the parsing failure raised above
-             attempt += 1
-             print(f"Groq Response Parsing Error: {e}. Retrying in {backoff_time} seconds...")
-             if attempt < max_retries:
-                 time.sleep(backoff_time)
-                 backoff_time *= 2 # Apply backoff for parsing errors too
-             else:
-                 print(f"Groq Response Parsing Error: Failed after {max_retries} attempts.")
-                 # Return the last raw response for debugging even if parsing failed
-                 # Need to get raw_response from the last failed attempt if possible, tricky scope.
-                 # Let's return None, None for simplicity.
-                 return None, None
-
-        except Exception as e:
-            print(f"An unexpected error occurred during Groq API call: {e}")
-            # Treat unexpected errors as non-retryable for this call
-            return None, None # Indicate failure
-
-    # This point is reached if the loop completes without returning (i.e., max retries exceeded)
+    # If loop finishes without success (e.g., max retries on errors)
     print(f"Groq API call failed after {max_retries} attempts (loop ended).")
-    return None, None # Failed after retries
+    return None, None # Indicate failure
+
 
 # --- End of New Groq Prediction Function ---
