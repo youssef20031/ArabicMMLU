@@ -339,7 +339,7 @@ def load_and_format_data(args):
         if args.task_type == "mmlu":
             data_file_path = 'data/cleaned_output3.csv'  # Default for MMLU
         elif args.task_type == "abductive":
-            data_file_path = 'data/abductive_data.csv'  # Default for abductive
+            data_file_path = 'data/abductive_data2.csv'  # Default for abductive
         else:
             print(f"Error: Unknown task_type '{args.task_type}' and no data_file provided.")
             return [], [], [], [], [], []
@@ -434,11 +434,18 @@ def load_and_format_data(args):
             
             # Convert to target alphabet if needed
             if args.lang_alpa == 'ar':
+            # Validate the mapping from English to Arabic
+                assert 'A' in ALPA_EN_TO_AR_MAP and ALPA_EN_TO_AR_MAP['A'] == 'أ', "Mapping for 'A' to 'أ' is incorrect."
+                assert 'B' in ALPA_EN_TO_AR_MAP and ALPA_EN_TO_AR_MAP['B'] == 'ب', "Mapping for 'B' to 'ب' is incorrect."
+
                 gold_letter_final = ALPA_EN_TO_AR_MAP.get(gold_choice_letter_en)
-                if gold_letter_final is None: # Should not happen for 'A' or 'B'
+                if gold_letter_final is None:  # Should not happen for 'A' or 'B'
                     print(f"Warning: Abductive task - Could not map English letter '{gold_choice_letter_en}' to Arabic. Skipping row {idx}.")
                     continue
-            else: # 'en' or other (defaults to English letter)
+            else:  # 'en' or other (defaults to English letter)
+                # Validate the English mapping
+                assert ABDUCTIVE_LABEL_TO_CHOICE_LETTER['1'] == 'A', "Label '1' should map to 'A'."
+                assert ABDUCTIVE_LABEL_TO_CHOICE_LETTER['2'] == 'B', "Label '2' should map to 'B'."
                 gold_letter_final = gold_choice_letter_en
             
             golds.append(gold_letter_final)

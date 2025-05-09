@@ -1,11 +1,11 @@
 {
-    "source_csv": "result_prompt_ar_alpa_ar_groq_llama-3.1-8b-instant.csv",
-    "overall_accuracy": 67.75,
+    "source_csv": "result_prompt_ar_alpa_ar_groq_meta-llama-llama-4-maverick-17b-128e-instruct.csv",
+    "overall_accuracy": 75.26,
     "accuracy_by_subject": {
-        "abductive reasoning": 67.75
+        "abductive reasoning": 75.26
     },
     "accuracy_by_ability": {
-        "reasoning_ability": 67.75
+        "reasoning_ability": 75.26
     },
     "counts_by_subject": {
         "abductive reasoning": 1532

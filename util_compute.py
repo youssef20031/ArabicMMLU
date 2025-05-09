@@ -424,7 +424,7 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
                 ],
                 model=model_name,
                 temperature=0, # For deterministic output
-                max_tokens=131072 # Increased max_tokens for potentially verbose CoT/ToT reasoning
+                max_tokens=8192 # Increased max_tokens for potentially verbose CoT/ToT reasoning
                 # top_p=1, # Default is usually 1
                 # stop=None, # Default is usually fine
                 # stream=False # Default is False
@@ -441,7 +441,7 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
             expected_chars_pattern_str = "".join(re.escape(l) for l in expected_labels)
 
             # English pattern: Look for "Final Answer: ... is" followed by one of the expected chars
-            final_answer_pattern = rf"Final Answer:\s*The final answer is\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+            final_answer_pattern = rf"Final Answer:\s*The final answer is\s*\(\s*([{expected_chars_pattern_str}])\s*\)"
             # Arabic pattern: Look for "الإجابة النهائية: ... هي" followed by one of the expected chars
             final_answer_pattern_ar = rf"الإجابة النهائية:\s*الإجابة النهائية هي\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
 

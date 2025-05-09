@@ -14,7 +14,7 @@ OUTPUT_DATA_FOLDER = 'tobetranslated2' # Folder to save translated CSV files
 # API_KEY = "YOUR_GROQ_API_KEY_HERE" 
 API_KEY = os.environ.get("GROQ_API_KEY")
 
-MODEL_NAME = "meta-llama/llama-4-scout-17b-16e-instruct" # Groq model for translation
+MODEL_NAME = "meta-llama/llama-4-maverick-17b-128e-instruct" # Groq model for translation
 
 # --- Retry Configuration ---
 MAX_RETRIES = 5  # Maximum number of retries for API calls

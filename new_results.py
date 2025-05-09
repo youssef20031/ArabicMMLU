@@ -10,9 +10,10 @@ def extract_answer(text):
     Extracts the answer choice (A, B, C, D) from the model's raw output,
     handling both English (A,B,C,D) and Arabic (أ,ب,ج,د) formats.
     Maps Arabic choices to their English equivalents.
+    Returns None if no specific answer choice is found.
     """
     if not isinstance(text, str):
-        return "A" # Default or handle error appropriately
+        return None # Changed: Default to None for non-string
 
     # Prioritize specific markers (English and Arabic)
     if "[[A]]" in text or "[[أ]]" in text: return "A"
@@ -31,7 +32,7 @@ def extract_answer(text):
         if char == 'C' or char == 'ج': return "C"
         if char == 'D' or char == 'د': return "D"
 
-    return "A" # Default if no answer found
+    return None # Changed: Default to None if no answer found
 
 # Mapping from Arabic choices to English
 ARABIC_TO_ENGLISH_MAP = {
@@ -103,43 +104,68 @@ if __name__ == "__main__":
                     missing = [col for col in expected_columns if col not in reader.fieldnames]
                     print(f"Warning: Missing required columns in {csv_filepath}: {', '.join(missing)}. Skipping file.")
                     continue 
-
                 for row_num, row in enumerate(reader, 1):
                     try:
                         gold_answer_raw = row.get('golds', '').strip()
                         gold_answer = None
-
+                
                         if gold_answer_raw in INDEX_TO_ENGLISH_MAP:
                             gold_answer = INDEX_TO_ENGLISH_MAP[gold_answer_raw]
                         elif gold_answer_raw in ARABIC_TO_ENGLISH_MAP:
                             gold_answer = ARABIC_TO_ENGLISH_MAP[gold_answer_raw]
                         else:
-                            gold_answer = gold_answer_raw.upper() # Assume it might be a,b,c,d
-
-                        raw_prediction_text = row.get('raw_preds', '')
+                            gold_answer = gold_answer_raw.upper()  # Assume it might be a,b,c,d
+                                        
+                        predicted_answer = None
+                        preds_text = row.get('preds', '').strip()
+                        raw_preds_text = row.get('raw_preds', '').strip()
+                        
+                                                # Attempt 1: Use 'preds'
+                        if preds_text:
+                            predicted_answer = extract_answer(preds_text)
+                            if predicted_answer is None: # 'preds' had content but was unparseable
+                                                        # Fallback to 'raw_preds'
+                                if raw_preds_text:
+                                    predicted_answer = extract_answer(raw_preds_text)
+                                    if predicted_answer is None: # Both 'preds' and 'raw_preds' unparseable
+                                        print(f"Warning: Unparseable content in 'preds' ('{preds_text}') and 'raw_preds' ('{raw_preds_text}') in row {row_num} of {os.path.basename(csv_filepath)}. Treating as incorrect.")
+                                else: # 'preds' unparseable, 'raw_preds' is empty
+                                    print(f"Warning: Unparseable content in 'preds' ('{preds_text}') and 'raw_preds' is empty in row {row_num} of {os.path.basename(csv_filepath)}. Treating as incorrect.")
+                                                # 'preds' was empty, try 'raw_preds'
+                        elif raw_preds_text: 
+                            predicted_answer = extract_answer(raw_preds_text)
+                            if predicted_answer is None: # 'preds' empty, 'raw_preds' unparseable
+                                print(f"Warning: 'preds' is empty and 'raw_preds' ('{raw_preds_text}') is unparseable in row {row_num} of {os.path.basename(csv_filepath)}. Treating as incorrect.")
+                                                # Both 'preds' and 'raw_preds' were empty
+                        else:
+                            print(f"Warning: Both 'preds' and 'raw_preds' are empty in row {row_num} of {os.path.basename(csv_filepath)}. Treating as incorrect.")
+                                        
                         subject = row.get('subject', 'unknown_subject').strip()
                         ability = row.get('ABILITY', 'unknown_ability').strip()
-
-                        if not ability: ability = 'unknown_ability'
-                        if not subject: subject = 'unknown_subject'
-
+                
+                        if not ability:
+                            ability = 'unknown_ability'
+                        if not subject:
+                            subject = 'unknown_subject'
+                
                         if gold_answer not in ['A', 'B', 'C', 'D']:
                             print(f"Warning: Invalid gold answer '{gold_answer_raw}' (processed as '{gold_answer}') found in {os.path.basename(csv_filepath)} at row {row_num}. Skipping row.")
                             continue
-
-                        predicted_answer = extract_answer(raw_prediction_text)
-
+                
                         cnt_per_subject_file[subject] += 1
                         cnt_per_ability_file[ability] += 1
-                        file_processed_rows +=1
-
+                        file_processed_rows += 1
+                
+                        # If no prediction was made, count as incorrect
                         if predicted_answer == gold_answer:
                             acc_per_subject_file[subject] = acc_per_subject_file.get(subject, 0) + 1
                             acc_per_ability_file[ability] = acc_per_ability_file.get(ability, 0) + 1
-                    
+                
                     except Exception as e_row:
                         print(f"Error processing row {row_num} in {os.path.basename(csv_filepath)}: {e_row}. Row data: {row}")
-                        continue # Skip to the next row
+                        continue  # Skip to the next row
+                
+                # ...existing code...
             
             processed_files_count += 1 # Count as processed even if no valid data rows to generate JSON
 
