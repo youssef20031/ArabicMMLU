@@ -1,0 +1,26 @@
+# This is your requirements.in file. List your project's direct dependencies here.
+# pip-compile will use this to generate requirements.txt with all pinned versions.
+# Example for PyTorch with CUDA 12.1 (adjust as needed):
+# torch --index-url https://download.pytorch.org/whl/cu121
+# torchvision --index-url https://download.pytorch.org/whl/cu121
+# torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+pandas
+peft
+transformers
+tqdm
+groq
+httpx
+accelerate
+bitsandbytes
+sentencepiece
+safetensors
+google-api-core
+google-genai
+matplotlib
+numpy<2.0
+seaborn
+torch
+google
+numba
+scipy

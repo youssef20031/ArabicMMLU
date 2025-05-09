@@ -31,7 +31,7 @@ except ImportError:
 
 # Optional: Define Hugging Face token if needed for private models
 # TOKEN = 'YOUR_HF_TOKEN' # Replace with your token if necessary
-TOKEN = None # Or set to None if not needed
+TOKEN = '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' # Or set to None if not needed
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -170,6 +170,9 @@ def main():
     elif is_hf_model:
         # --- Existing Hugging Face Model Loading Logic ---
         print(f"Loading Hugging Face model: {args.base_model}")
+
+        tokenizer_class = AutoTokenizer
+
         # Determine tokenizer and model classes based on model name
         if 'llama' in args.base_model.lower():
             tokenizer_class = LlamaTokenizer
@@ -181,9 +184,33 @@ def main():
             tokenizer_class = AutoTokenizer
             model_class = AutoModelForCausalLM
 
+        tokenizer_class = AutoTokenizer
+
+
         print(f"Using Tokenizer: {tokenizer_class.__name__}, Model: {model_class.__name__}")
 
-        tokenizer = tokenizer_class.from_pretrained(args.base_model, trust_remote_code=True, use_auth_token=TOKEN)
+        try:
+            tokenizer = tokenizer_class.from_pretrained(args.base_model, trust_remote_code=True, use_auth_token=TOKEN)
+        except TypeError as e:
+            # Check if the error is the specific sentencepiece error for LlamaTokenizer
+            if "expected str, bytes or os.PathLike object, not NoneType" in str(e) and tokenizer_class == LlamaTokenizer:
+                print(f"Error: Failed to load LlamaTokenizer for the model '{args.base_model}'.")
+                print("This usually means the 'tokenizer.model' file (SentencePiece model) is missing, corrupted, or inaccessible at the specified path or model identifier.")
+                print("Please ensure that the --base_model argument points to a valid Llama model directory containing 'tokenizer.model', or a valid Hugging Face model identifier for a Llama model with its tokenizer files.")
+                sys.exit(1)
+            else:
+                # Re-raise other TypeErrors or TypeErrors from other tokenizers
+                print(f"An unexpected TypeError occurred while loading the tokenizer for '{args.base_model}': {e}")
+                sys.exit(1)
+        except OSError as e:
+            print(f"Error: Could not load tokenizer for '{args.base_model}'. Model not found or path is incorrect: {e}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"An unexpected error occurred while loading the tokenizer for '{args.base_model}': {e}")
+            # You might want to log the full traceback here for debugging
+            # import traceback
+            # traceback.print_exc()
+            sys.exit(1)
 
         load_in_8bit = args.load_8bit
         # Seq2Seq models might not support 8-bit loading in the same way, adjust if needed

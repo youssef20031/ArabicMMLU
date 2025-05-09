@@ -1,0 +1,12 @@
+google-api-core
+google-ai-generativelanguage
+groq
+httpx
+matplotlib
+numpy
+pandas
+peft
+seaborn
+torch
+tqdm
+transformers
