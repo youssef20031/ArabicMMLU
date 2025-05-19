@@ -139,7 +139,7 @@ def configure_gemini():
         try:
             # Dynamically import genai only when needed
             global genai
-            import google.generativeai as genai
+            import google.genai as genai
             genai.configure(api_key=_active_api_key)
             _gemini_configured = True
             print(f"Gemini API configured successfully with {_current_key_type.upper()} key.")
@@ -193,7 +193,7 @@ def get_gemini_model(model_name):
             # Ensure genai is imported (it should be by configure_gemini)
             global genai
             if 'genai' not in globals():
-                 import google.generativeai as genai # Import if somehow missed
+                 import google.genai as genai # Import if somehow missed
             model = genai.GenerativeModel(model_name)
             _gemini_model_cache[model_name] = model
             print(f"Successfully initialized Gemini model: {model_name}")
@@ -238,7 +238,7 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
         # Ensure genai is available for types
         global genai
         if 'genai' not in globals():
-             import google.generativeai as genai
+            import google.genai as genai
 
         # Generation Configuration
         generation_config = genai.types.GenerationConfig(
