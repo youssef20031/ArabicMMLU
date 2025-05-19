@@ -15,6 +15,14 @@ except ImportError:
     RateLimitError = Exception # Define dummy exceptions if Groq not installed
     APIError = Exception
 # --- End Groq imports ---
+# --- Add OpenAI imports ---
+try:
+    from openai import OpenAI, APIError as OpenAI_APIError, RateLimitError as OpenAI_RateLimitError
+except ImportError:
+    OpenAI = None # Define OpenAI as None if import fails
+    OpenAI_APIError = Exception
+    OpenAI_RateLimitError = Exception
+# --- End OpenAI imports ---
 
 
 alpa_ar = {
@@ -536,3 +544,154 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
 
 
 # --- End of New Groq Prediction Function ---
+
+# --- New OpenAI Prediction Function ---
+def predict_classification_openai(client, model_name, input_text, labels, lang_alpa):
+    """
+    Predicts the classification using an OpenAI model with retry logic.
+
+    Args:
+        client (OpenAI): The initialized OpenAI client.
+        model_name (str): The specific OpenAI model to use (e.g., 'gpt-3.5-turbo').
+        input_text (str): The formatted input prompt containing the question and choices.
+        labels (list): The list of possible label strings (used to determine number of choices).
+        lang_alpa (str): 'ar' or 'en' to select the alphabet for choices.
+
+    Returns:
+        tuple: (prediction, raw_response) - prediction is the predicted letter or None on failure.
+                                            raw_response is the full text output from the API.
+    """
+    if not client:
+        print("Error: OpenAI client is not initialized.")
+        return None, None
+    if not labels:
+        print(f"Warning: Received empty labels list for OpenAI input. Skipping prediction.")
+        return None, None
+
+    alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
+    expected_labels = list(alpa.values())[:len(labels)]
+    expected_labels_str = ", ".join(f"'{label}'" for label in expected_labels)
+    expected_chars_set = set(expected_labels)
+
+    # System prompt can be helpful for OpenAI models
+    system_prompt_content = f"You are an assistant helping with multiple-choice questions. Please answer the following question. Your response must be only the single character representing your choice from {expected_labels_str}. Do not include any other text, explanations, or introductory phrases."
+    if "cot_" in input_text.lower() or "_tot" in input_text.lower() or "final answer:" in input_text.lower() or "الإجابة النهائية:" in input_text.lower() : # Heuristic to detect CoT/ToT
+        # For CoT/ToT, the main instruction is in the user prompt, so a simpler system prompt might be better
+        # or let the user prompt fully guide. For now, we'll keep the detailed one as the user prompt
+        # itself contains the "Final Answer: ..." instruction.
+        pass # Keep system_prompt_content as is, or make it more generic if needed for CoT/ToT
+
+    messages = [
+        {"role": "system", "content": system_prompt_content},
+        {"role": "user", "content": input_text}
+    ]
+
+    max_retries = 5
+    attempt = 0
+    backoff_time = 1  # Initial backoff time in seconds
+
+    while attempt < max_retries:
+        try:
+            print(f"Attempting OpenAI API call (Attempt {attempt + 1}/{max_retries}, Model: {model_name})...")
+            chat_completion = client.chat.completions.create(
+                model=model_name,
+                messages=messages,
+                temperature=0,  # For deterministic output
+                max_tokens=2048 if "cot_" in input_text.lower() or "_tot" in input_text.lower() else 500, # More tokens for CoT/ToT reasoning, less for direct answer
+                # top_p=1,
+                # stop=None,
+            )
+
+            raw_response = chat_completion.choices[0].message.content.strip()
+            print(f"OpenAI Raw Response: '{raw_response}'")
+
+            predicted_label = None
+
+            # 1. Try regex for "Final Answer: ... is X" or "الإجابة النهائية: ... هي X"
+            expected_chars_pattern_str = "".join(re.escape(l) for l in expected_labels)
+            final_answer_pattern_en = rf"Final Answer:\s*The final answer is\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+            final_answer_pattern_ar = rf"الإجابة النهائية:\s*الإجابة النهائية هي\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+
+            match = re.search(final_answer_pattern_en, raw_response, re.IGNORECASE | re.DOTALL)
+            if not match:
+                match = re.search(final_answer_pattern_ar, raw_response, re.DOTALL)
+
+            if match:
+                predicted_label = match.group(1).strip()
+                if predicted_label in expected_chars_set:
+                    print(f"OpenAI Parsed Prediction (CoT/ToT pattern): '{predicted_label}'")
+                    return predicted_label, raw_response
+                else:
+                    print(f"Warning: OpenAI CoT/ToT regex matched '{predicted_label}', but it's not in expected labels {expected_labels_str}.")
+                    predicted_label = None
+
+            # 2. Try direct match (for zero-shot or if model behaves perfectly)
+            if predicted_label is None and raw_response in expected_chars_set:
+                predicted_label = raw_response
+                print(f"OpenAI Parsed Prediction (direct match): '{predicted_label}'")
+                return predicted_label, raw_response
+
+            # 3. Try stripping common formatting issues and checking length 1
+            if predicted_label is None:
+                cleaned_response = re.sub(r'[*_`]', '', raw_response)
+                cleaned_response = cleaned_response.replace('[', '').replace(']', '')
+                strip_chars = '{}()\'".:- '
+                cleaned_response = cleaned_response.strip(strip_chars)
+
+                if len(cleaned_response) == 1 and cleaned_response in expected_chars_set:
+                    predicted_label = cleaned_response
+                    print(f"OpenAI Parsed Prediction (single char after cleaning '{raw_response[:50]}...'): '{predicted_label}'")
+                    return predicted_label, raw_response
+            
+            # 4. Try simple regex search for the character itself at the end as a last resort
+            if predicted_label is None:
+                match = re.search(r"([" + expected_chars_pattern_str + r"])[.\s*]*$", raw_response)
+                if match:
+                    potential_label = match.group(1)
+                    if potential_label in expected_chars_set:
+                         predicted_label = potential_label
+                         print(f"OpenAI Parsed Prediction (regex fallback - last char match on '{raw_response[:50]}...'): '{predicted_label}'")
+                         return predicted_label, raw_response
+
+            if predicted_label is None:
+                print(f"Warning: Could not parse expected label from OpenAI response. Expected one of {expected_labels_str} or CoT/ToT pattern. Raw: '{raw_response}'")
+                # For OpenAI, if parsing fails, we might still want to return the raw response for manual inspection
+                # but for automated metrics, this will count as incorrect.
+                return None, raw_response # Return None for pred if parsing fails
+
+            # Should be unreachable if parsing logic is correct and returns
+            break 
+
+        except OpenAI_RateLimitError as e:
+            attempt += 1
+            print(f"OpenAI API rate limit exceeded (Attempt {attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
+            if attempt < max_retries:
+                time.sleep(backoff_time)
+                backoff_time *= 2
+            else:
+                print(f"OpenAI API call failed after {max_retries} rate limit attempts.")
+                return None, f"RateLimitError: {e}"
+
+        except OpenAI_APIError as e: # Catches other API errors (e.g., server errors, bad requests if not caught by validation)
+            attempt += 1
+            print(f"OpenAI API error (Attempt {attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
+            if attempt < max_retries:
+                time.sleep(backoff_time)
+                backoff_time *= 2
+            else:
+                print(f"OpenAI API call failed after {max_retries} API error attempts.")
+                return None, f"APIError: {e}"
+        
+        except Exception as e:
+            attempt += 1
+            print(f"OpenAI API call failed (Attempt {attempt}/{max_retries}) with unexpected error: {e}")
+            if attempt < max_retries:
+                time.sleep(backoff_time)
+                backoff_time *= 2
+            else:
+                print(f"OpenAI API call failed after {max_retries} attempts due to unexpected errors.")
+                return None, f"UnexpectedError: {e}"
+
+    print(f"OpenAI API call failed after {max_retries} attempts (loop ended).")
+    return None, "Max retries reached"
+# --- End of New OpenAI Prediction Function ---

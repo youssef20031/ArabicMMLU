@@ -14,7 +14,8 @@ from util_compute import (predict_classification_causal_by_letter,
                           predict_classification_mt0_by_letter,
                           predict_classification_gemini,
                           configure_gemini,
-                          predict_classification_groq) # <-- Import the Groq function
+                          predict_classification_groq,
+                          predict_classification_openai) # <-- Import the Groq function
 
 # --- Add Groq import ---
 try:
@@ -27,7 +28,14 @@ except ImportError:
     APIError = Exception
     httpx = None # Define httpx as None if not installed
 # --- End Groq import ---
-# --- End Groq import ---
+# --- Add OpenAI import ---
+try:
+    from openai import OpenAI, APIError as OpenAI_APIError, RateLimitError as OpenAI_RateLimitError
+except ImportError:
+    OpenAI = None
+    OpenAI_APIError = Exception
+    OpenAI_RateLimitError = Exception
+# --- End OpenAI import ---
 
 # Optional: Define Hugging Face token if needed for private models
 # TOKEN = 'YOUR_HF_TOKEN' # Replace with your token if necessary
@@ -57,22 +65,46 @@ def parse_args():
     parser.add_argument("--use_groq", action='store_true', help="Use Groq API instead of local/Gemini models")
     parser.add_argument("--groq_model", type=str, default="llama3-70b-8192", help="Groq model ID to use (e.g., 'llama3-70b-8192', 'mixtral-8x7b-32768')") # Updated default
     # --- End of Groq arguments ---
+    # --- Add OpenAI arguments ---
+    parser.add_argument("--use_openai", action='store_true', help="Use OpenAI API instead of local/Gemini/Groq models")
+    parser.add_argument("--openai_model", type=str, default="gpt-3.5-turbo", help="OpenAI model ID to use (e.g., 'gpt-3.5-turbo', 'gpt-4')")
+    # --- End of OpenAI arguments ---
+
     args = parser.parse_args()
 
     # --- Add validation ---
     if args.tree_of_thought and args.chain_of_thought:
         print("Warning: --tree_of_thought and --chain_of_thought are mutually exclusive. Using Tree of Thought.")
         args.chain_of_thought = False # Prioritize ToT if both are specified
-    if args.use_groq and args.base_model:
-        print("Warning: --base_model is ignored when --use_groq is specified.")
-        args.base_model = None # Clear base_model if using Groq
-    elif not args.use_groq and not args.base_model:
-        parser.error("--base_model (for HF/Gemini) is required unless --use_groq is specified.")
-    if args.use_groq and args.lora_weights != "x":
-        print("Warning: --lora_weights are ignored when --use_groq is specified.")
-        args.lora_weights = "x"
-    if args.use_groq and args.load_8bit:
-        print("Warning: --load_8bit is ignored when --use_groq is specified.")
+
+    # Model selection and related argument validation
+    if args.use_openai:
+        if args.base_model:
+            print("Warning: --base_model is ignored when --use_openai is specified.")
+            args.base_model = None
+        if args.lora_weights != "x":
+            print("Warning: --lora_weights are ignored when --use_openai is specified.")
+            args.lora_weights = "x"
+        if args.load_8bit:
+            print("Warning: --load_8bit is ignored when --use_openai is specified.")
+        if args.use_groq: # OpenAI takes precedence based on downstream logic
+            print("Warning: Both --use_openai and --use_groq are specified. OpenAI will be used.")
+
+    elif args.use_groq:  # This implies not args.use_openai due to elif
+        if args.base_model:
+            print("Warning: --base_model is ignored when --use_groq is specified.")
+            args.base_model = None
+        if args.lora_weights != "x":
+            print("Warning: --lora_weights are ignored when --use_groq is specified.")
+            args.lora_weights = "x"
+        if args.load_8bit:
+            print("Warning: --load_8bit is ignored when --use_groq is specified.")
+
+    else:  # Neither --use_openai nor --use_groq is specified, so base_model is for HF/Gemini
+        if not args.base_model:
+            parser.error("--base_model (for HF/Gemini) is required unless --use_openai or --use_groq is specified.")
+        # For HF/Gemini models, --lora_weights and --load_8bit are relevant if provided.
+        # No general warnings needed here for those flags at this stage.
     # --- End of validation ---
 
     return args
@@ -82,16 +114,19 @@ def main():
     os.makedirs(args.output_folder, exist_ok=True)
 
     # --- Determine model type and setup ---
-    is_groq_model = args.use_groq
-    is_gemini_model = not is_groq_model and args.base_model and args.base_model.startswith("gemini-")
-    is_hf_model = not is_groq_model and not is_gemini_model and args.base_model is not None
+    is_openai_model = args.use_openai
+    is_groq_model = args.use_groq and not is_openai_model
+    is_gemini_model = not is_groq_model and not is_openai_model and args.base_model and args.base_model.startswith("gemini-")
+    is_hf_model = not is_groq_model and not is_openai_model and not is_gemini_model and args.base_model is not None
 
     cot_suffix = "cot_" if args.chain_of_thought else ""
     tot_suffix = "_tot" if args.tree_of_thought else "" # <-- Add ToT suffix
     prompt_method_suffix = tot_suffix if args.tree_of_thought else cot_suffix
 
-     # --- Replace the existing filename generation block with this ---
-    if is_groq_model:
+    if is_openai_model:
+        model_identifier = args.openai_model.replace("/", "-") # Sanitize model name
+        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_openai_{model_identifier}.csv'
+    elif is_groq_model:
         model_identifier = args.groq_model.replace("/", "-") # Sanitize model name for filename
         SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_groq_{model_identifier}.csv' # Use prompt_method_suffix
     elif is_gemini_model:
@@ -120,8 +155,31 @@ def main():
     tokenizer = None
     predict_classification = None
     groq_client = None # Initialize Groq client variable
+    openai_client = None # Initialize OpenAI client variable
 
-    if is_groq_model:
+
+    if is_openai_model:
+        print(f"Using OpenAI model: {args.openai_model}")
+        if OpenAI is None:
+            print("Error: The 'openai' library is required to use --use_openai. Please install it (`pip install openai`).")
+            sys.exit(1)
+        try:
+            openai_api_key = os.environ.get("OPENAI_API_KEY")
+            if not openai_api_key:
+                raise ValueError("OPENAI_API_KEY environment variable not set.")
+            openai_client = OpenAI(api_key=openai_api_key) # Default timeout, can be configured
+            print("OpenAI client initialized.")
+            predict_classification = lambda input_text, labels, lang_alpa: predict_classification_openai(
+                openai_client, args.openai_model, input_text, labels, lang_alpa
+            )
+        except ValueError as ve:
+            print(f"Configuration Error: {ve}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"Error initializing OpenAI client: {e}")
+            sys.exit(1)
+
+    elif is_groq_model:
         print(f"Using Groq model: {args.groq_model}")
         if Groq is None or httpx is None: # Check both Groq and httpx imports
              print("Error: The 'groq' and 'httpx' libraries are required to use --use_groq. Please install them (`pip install groq httpx`).")

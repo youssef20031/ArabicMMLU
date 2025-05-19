@@ -26,6 +26,18 @@ except ImportError:
     class httpx: 
         Timeout = _DummyTimeout
 
+# Attempt to import Sentence Transformers and PyTorch
+try:
+    from sentence_transformers import SentenceTransformer, util
+    import torch
+    SENTENCE_TRANSFORMER_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMER_AVAILABLE = False
+    # Define dummy classes if not available, script will warn and use exact matching.
+    class SentenceTransformer: pass
+    class util: pass
+    class torch: pass # Basic dummy
+    print("Warning: 'sentence-transformers' or 'torch' not found. Rule matching will be exact string matching.")
 
 # --- Prompts and Formatters for Abductive Reasoning ---
 # You should move these to your util_prompt.py and import them.
@@ -103,7 +115,7 @@ def get_abductive_data_from_row(row, lang_alpa):
     try:
         correct_hyp_idx = int(label) # 0 or 1
         if correct_hyp_idx not in [1, 2]:
-             print(f"Warning: Invalid label '{label}' found. Expected '0' or '1'. Skipping row.")
+             print(f"Warning: Invalid label '{label}' found. Expected '1' or '2'. Skipping row.")
              return None, None, None, None, None, None
     except ValueError:
         print(f"Warning: Non-integer label '{label}' found. Skipping row.")
@@ -261,13 +273,14 @@ def organize_rules_with_tags(rules):
         tagged_rules.append(f"{tag}{rule['rule']}</RuleCluster>")
     return tagged_rules
 
-def save_rule_library_with_tags(rule_library, output_file):
+def save_rule_library_with_tags(tagged_rules_list, output_file):
     """
-    Saves the rule library with XML tags to a file.
+    Saves the already tagged rule library (list of strings) to a file.
     """
-    tagged_rules = organize_rules_with_tags(rule_library)
+    # tagged_rules = organize_rules_with_tags(rule_library) # Removed this line
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("\n".join(tagged_rules))
+        f.write("\n".join(tagged_rules_list)) # Use the passed list of strings directly
+
 
 def parse_verification_response(llm_output):
     """Parses 'Yes' or 'No' from verification LLM output."""
@@ -295,9 +308,13 @@ def main():
     # Filtering Arguments
     parser.add_argument("--min_coverage", type=int, default=2, help="Minimum number of times a rule must occur.")
     parser.add_argument("--min_confidence", type=float, default=0.75, help="Minimum confidence (correct_associations / occurrences) for a rule.")
+    parser.add_argument("--similarity_threshold", type=float, default=0.9, help="Cosine similarity threshold for grouping rules (0.0 to 1.0). Effective only if sentence-transformers is available. Set to 1.0 for exact matching if SBERT is available.")
     
     # Processing Control
     parser.add_argument("--max_examples", type=int, default=None, help="Maximum training examples to process (for testing).")
+    # SBERT model name argument
+    parser.add_argument("--sbert_model_name", type=str, default="all-MiniLM-L6-v2", help="Name of the Sentence Transformer model to use for semantic similarity.")
+
 
     args = parser.parse_args()
 
@@ -306,46 +323,39 @@ def main():
         print("Error: Groq library is required but not installed. Please run `pip install groq httpx`.")
         return
 
+    # --- Initialize Sentence Transformer Model ---
+    sbert_model = None
+    if SENTENCE_TRANSFORMER_AVAILABLE:
+        try:
+            sbert_model = SentenceTransformer(args.sbert_model_name)
+            print(f"Sentence Transformer model '{args.sbert_model_name}' loaded.")
+        except Exception as e:
+            print(f"Warning: Could not load Sentence Transformer model '{args.sbert_model_name}': {e}. Falling back to exact string matching.")
+            # SENTENCE_TRANSFORMER_AVAILABLE = False # Effectively disable if model load fails
+            sbert_model = None # Ensure model is None
+    else:
+        print("Info: 'sentence-transformers' library not installed. Using exact string matching for rules.")
+
+
     # Ensure output directory exists
     os.makedirs(args.output_folder, exist_ok=True)
     # Construct full output path
     args.output_rule_library_file = os.path.join(args.output_folder, os.path.basename(args.output_rule_library_file))
 
-    # Initialize final_rule_library as an empty list
-    final_rule_library = []
+    # --- Rule Induction Process ---
+    # rule_stats = defaultdict(...) # Old
+    rule_clusters = {} # New: canonical_rule_text -> {occurrence, correct_association, task_types, embedding}
+    task_name = "abductive_reasoning" 
 
-    # Organize rules with XML tags
-    tagged_rule_library = organize_rules_with_tags(final_rule_library)
-
-    # Save the tagged rule library
-    tagged_output_file = args.output_rule_library_file.replace(".json", "_tagged.xml")
-    save_rule_library_with_tags(tagged_rule_library, tagged_output_file)
-    print(f"Tagged rule library saved to {tagged_output_file}")
-
-    # --- Initialize Groq LLM ---
-    llm_config = {'type': 'groq', 'model_name': args.groq_model}
-    try:
-        # Retrieve API key from environment variable
-        groq_api_key = os.environ.get("GROQ_API_KEY")
-        if not groq_api_key: raise ValueError("GROQ_API_KEY environment variable not set.")
-        # Configure longer timeouts suitable for potentially long induction process
-        timeout_config = httpx.Timeout(60.0, read=300.0) # 60s connect, 300s read timeout
-        llm_config['client'] = Groq(api_key=groq_api_key, timeout=timeout_config)
-        print(f"Groq client initialized for model: {args.groq_model}")
-    except Exception as e:
-        print(f"Error initializing Groq: {e}"); return
-
-    # --- Load Training Data ---
+    print("Starting rule induction for abductive reasoning...")
+    # ... (Load Training Data as before) ...
     try:
         df_train = pd.read_csv(args.training_data_file)
-        # Validate required columns exist in the dataframe
         required_cols = ['observation_1', 'observation_2', 'hypothesis_1', 'hypothesis_2', 'label']
         if not all(col in df_train.columns for col in required_cols):
             missing = [col for col in required_cols if col not in df_train.columns]
             print(f"Error: Training data file '{args.training_data_file}' missing required columns: {missing}")
             return
-
-        # Limit examples if specified
         if args.max_examples:
             df_train = df_train.head(args.max_examples)
         print(f"Loaded {len(df_train)} abductive reasoning examples from {args.training_data_file}")
@@ -354,139 +364,168 @@ def main():
         return
     except Exception as e:
         print(f"Error loading training data: {e}"); return
+    
+    # --- Initialize Groq LLM ---
+    llm_config = {'type': 'groq', 'model_name': args.groq_model}
+    try:
+        groq_api_key = os.environ.get("GROQ_API_KEY")
+        if not groq_api_key: raise ValueError("GROQ_API_KEY environment variable not set.")
+        timeout_config = httpx.Timeout(60.0, read=300.0) 
+        llm_config['client'] = Groq(api_key=groq_api_key, timeout=timeout_config)
+        print(f"Groq client initialized for model: {args.groq_model}")
+    except Exception as e:
+        print(f"Error initializing Groq: {e}"); return
 
-    # --- Rule Induction Process ---
-    # Dictionary to store rule statistics: rule_text -> {occurrence, correct_association, task_types}
-    rule_stats = defaultdict(lambda: {"occurrence": 0, "correct_association": 0, "task_types": set()})
-    task_name = "abductive_reasoning" # Task identifier for the rules
 
-    print("Starting rule induction for abductive reasoning...")
     processed_count = 0
     skipped_count = 0
     # Iterate through training data with a progress bar
     for index, row in tqdm(df_train.iterrows(), total=len(df_train), desc="Processing Examples"):
-        # Extract data for the current example
         obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text = \
             get_abductive_data_from_row(row, args.lang_alpa)
 
-        # Skip row if essential data is missing or invalid
         if not correct_hyp_letter:
             skipped_count += 1
             continue
 
-        # 1. Generate Rules using LLM
         gen_prompt = format_rule_generation_abductive_prompt(
             obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text, args.lang_prompt
         )
         llm_gen_output = call_llm_for_induction(gen_prompt, llm_config)
         if not llm_gen_output:
             skipped_count += 1
-            continue # Skip if LLM fails to generate output
+            continue
 
-        # Parse the generated rules from the LLM response
-        generated_rules = parse_generated_rules(llm_gen_output)
-        if not generated_rules:
-            # No rules were parsed, still count as processed
+        generated_rules_text_list = parse_generated_rules(llm_gen_output)
+        if not generated_rules_text_list:
             processed_count += 1
             continue
 
-        # 2. Verify Each Generated Rule
-        rules_verified_for_example = 0
-        for rule_text in generated_rules:
-            # Skip empty rules
-            if not rule_text.strip(): continue
+        current_rules_embeddings = None
+        if sbert_model and generated_rules_text_list: # Check sbert_model is loaded
+            # Prepare texts for embedding: ensure they are stripped
+            texts_to_embed = [r.strip() for r in generated_rules_text_list if r.strip()]
+            if texts_to_embed:
+                current_rules_embeddings = sbert_model.encode(texts_to_embed, convert_to_tensor=True)
 
-            # Update occurrence count and associated task type
-            rule_stats[rule_text]["occurrence"] += 1
-            rule_stats[rule_text]["task_types"].add(task_name)
+        for i, new_rule_original_text in enumerate(generated_rules_text_list):
+            new_rule_text = new_rule_original_text.strip()
+            if not new_rule_text:
+                continue
 
-            # Format the verification prompt
+            current_rule_embedding = None
+            if sbert_model and current_rules_embeddings is not None and i < len(current_rules_embeddings):
+                 # Check if texts_to_embed was non-empty and embeddings were generated
+                if texts_to_embed and new_rule_text == texts_to_embed[i]: # Ensure correct mapping if some rules were empty
+                    current_rule_embedding = current_rules_embeddings[i]
+                elif not texts_to_embed and len(generated_rules_text_list) == len(current_rules_embeddings): # Fallback if all rules were empty then stripped
+                     current_rule_embedding = current_rules_embeddings[i]
+
+
+            matched_canonical_key = None
+            highest_similarity_score = -1.0
+
+            if sbert_model and current_rule_embedding is not None and rule_clusters:
+                candidate_keys = []
+                candidate_embeddings = []
+                for key, data in rule_clusters.items():
+                    if data.get("embedding") is not None:
+                        candidate_keys.append(key)
+                        candidate_embeddings.append(data["embedding"])
+                
+                if candidate_embeddings:
+                    stacked_candidate_embeddings = torch.stack(candidate_embeddings)
+                    cosine_scores = util.pytorch_cos_sim(current_rule_embedding.unsqueeze(0), stacked_candidate_embeddings)[0]
+
+                    for j, score_tensor in enumerate(cosine_scores):
+                        score = score_tensor.item()
+                        if score > highest_similarity_score:
+                            if score >= args.similarity_threshold:
+                                highest_similarity_score = score
+                                matched_canonical_key = candidate_keys[j]
+                            # If score is highest but below threshold, it's not a match for this rule.
+                            # We are looking for the best match *above* the threshold.
+            
+            target_key_for_stats = None
+            text_for_verification_prompt = None
+
+            if matched_canonical_key: # A semantic match was found above threshold
+                target_key_for_stats = matched_canonical_key
+                text_for_verification_prompt = matched_canonical_key # Verify using the canonical text
+            else: # No semantic match, or SBERT not used/available. Use exact text.
+                target_key_for_stats = new_rule_text
+                text_for_verification_prompt = new_rule_text
+                if new_rule_text not in rule_clusters:
+                    rule_clusters[new_rule_text] = {
+                        "occurrence": 0, # Will be incremented shortly
+                        "correct_association": 0,
+                        "task_types": set(),
+                        "embedding": current_rule_embedding if sbert_model else None
+                    }
+            
+            # Increment occurrence for the target cluster/rule
+            rule_clusters[target_key_for_stats]["occurrence"] += 1
+            rule_clusters[target_key_for_stats]["task_types"].add(task_name)
+            if sbert_model and current_rule_embedding is not None and rule_clusters[target_key_for_stats]["embedding"] is None:
+                 rule_clusters[target_key_for_stats]["embedding"] = current_rule_embedding
+
+
+            # Verify the rule (using text_for_verification_prompt)
             ver_prompt = format_rule_verification_abductive_prompt(
-                obs1, obs2, hyp1_text, hyp2_text, rule_text, correct_hyp_letter, correct_hyp_text, args.lang_prompt
+                obs1, obs2, hyp1_text, hyp2_text, text_for_verification_prompt, correct_hyp_letter, correct_hyp_text, args.lang_prompt
             )
-            # Call LLM for verification
             llm_ver_output = call_llm_for_induction(ver_prompt, llm_config)
-
-            # Update correct association count if verification is successful ('Yes')
             if llm_ver_output is not None and parse_verification_response(llm_ver_output):
-                rule_stats[rule_text]["correct_association"] += 1
-                rules_verified_for_example += 1
-            # Optional logging for failed verification
-            # else:
-            #    print(f"Rule not verified: '{rule_text}' | LLM Output: '{llm_ver_output}'")
+                rule_clusters[target_key_for_stats]["correct_association"] += 1
+        
+        processed_count += 1
 
-        processed_count += 1 # Increment count after processing an example
-
-    # Print summary statistics after processing all examples
     print(f"\nFinished processing examples. Processed: {processed_count}, Skipped: {skipped_count}")
-    print(f"Total unique rules generated before filtering: {len(rule_stats)}")
+    print(f"Total unique rule clusters/rules generated before filtering: {len(rule_clusters)}")
 
     # --- Filter Rules Based on Coverage and Confidence ---
     final_rule_library = []
     print("\nFiltering rules...")
     filtered_out_count = 0
-    for rule_text, stats in rule_stats.items():
+    for rule_text_key, stats in rule_clusters.items(): # Iterate over rule_clusters
         occurrence = stats["occurrence"]
         correct_association = stats["correct_association"]
-        # Calculate confidence, handling division by zero
         confidence = (correct_association / occurrence) if occurrence > 0 else 0
 
-        # Apply filtering criteria
         if occurrence >= args.min_coverage and confidence >= args.min_confidence:
             final_rule_library.append({
-                "rule": rule_text,
+                "rule": rule_text_key, # This is the canonical rule text
                 "coverage": occurrence,
                 "confidence": round(confidence, 4),
-                "task_types": sorted(list(stats["task_types"])) # Store associated task types
+                "task_types": sorted(list(stats["task_types"]))
+                # Embedding is not typically saved in the final JSON unless needed downstream
             })
         else:
             filtered_out_count += 1
-            # Optional logging for filtered out rules
-            # print(f"Filtering out rule: '{rule_text}' (Occ: {occurrence}, Conf: {confidence:.2f})")
-
     print(f"Filtered out {filtered_out_count} rules.")
     
-    # Sort the final library by confidence, then coverage (descending)
     final_rule_library.sort(key=lambda x: (x['confidence'], x['coverage']), reverse=True)
 
-        # --- Save the Final Rule Library ---
+    # --- Save the Final Rule Library (JSON) ---
     try:
-        # Save as JSON file with indentation for readability
         with open(args.output_rule_library_file, 'w', encoding='utf-8') as f:
             json.dump(final_rule_library, f, ensure_ascii=False, indent=4)
         print(f"\nSuccessfully saved {len(final_rule_library)} rules to {args.output_rule_library_file}")
-        # Provide a warning if no rules met the criteria
         if not final_rule_library and processed_count > 0:
             print(f"Warning: No rules met the filtering criteria (Min Coverage: {args.min_coverage}, Min Confidence: {args.min_confidence}).")
     except Exception as e:
         print(f"Error saving rule library to {args.output_rule_library_file}: {e}")
     
-    # Ensure final_rule_library is initialized as an empty list if no rules were generated
-    if 'final_rule_library' not in locals():
-        final_rule_library = []
-    
-    # Organize rules with XML tags
-    tagged_rule_library = organize_rules_with_tags(final_rule_library)
-    
-    # Save the tagged rule library
-    tagged_output_file = args.output_rule_library_file.replace(".json", "_tagged.xml")
-    save_rule_library_with_tags(tagged_rule_library, tagged_output_file)
-    print(f"Tagged rule library saved to {tagged_output_file}")
-        
+    # --- Save Tagged Rule Library (XML-like) ---
+    # Ensure final_rule_library is used for tagging
+    if final_rule_library: # Only proceed if there are rules
+        tagged_rule_library_for_xml = organize_rules_with_tags(final_rule_library) # Pass the list of dicts
+        tagged_output_file = args.output_rule_library_file.replace(".json", "_tagged.xml")
+        save_rule_library_with_tags(tagged_rule_library_for_xml, tagged_output_file) # Pass the list of strings
+        print(f"Tagged rule library saved to {tagged_output_file}")
+    elif processed_count > 0 : # If rules were processed but none saved
+        print(f"No rules to save in tagged XML format as final_rule_library is empty.")
 
-
-def test_with_rule_library(test_data, rule_library, llm_config):
-    """
-    Tests the model using the rule library for deduction.
-    """
-    for example in test_data:
-        prompt = format_rule_generation_abductive_prompt(
-            example['obs1'], example['obs2'], example['hyp1'], example['hyp2'],
-            example['correct_hyp_letter'], example['correct_hyp_text'], 'en'
-        )
-        augmented_prompt = prepend_rule_library_to_prompt(prompt, rule_library)
-        response = call_llm_for_induction(augmented_prompt, llm_config)
-        print(f"Response: {response}")
 
 if __name__ == "__main__":
     main()

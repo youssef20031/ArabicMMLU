@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-accelerate==1.6.0
+accelerate==1.7.0
     # via
     #   -r requirements.in
     #   peft
@@ -15,6 +15,7 @@ anyio==4.9.0
     #   google-genai
     #   groq
     #   httpx
+    #   openai
 beautifulsoup4==4.13.4
     # via google
 bitsandbytes==0.45.5
@@ -33,15 +34,17 @@ contourpy==1.3.2
 cycler==0.12.1
     # via matplotlib
 distro==1.9.0
-    # via groq
-exceptiongroup==1.2.2
+    # via
+    #   groq
+    #   openai
+exceptiongroup==1.3.0
     # via anyio
 filelock==3.18.0
     # via
     #   huggingface-hub
     #   torch
     #   transformers
-fonttools==4.57.0
+fonttools==4.58.0
     # via matplotlib
 fsspec==2025.3.2
     # via
@@ -55,16 +58,14 @@ google-auth==2.40.1
     # via
     #   google-api-core
     #   google-genai
-google-genai==1.14.0
+google-genai==1.15.0
     # via -r requirements.in
 googleapis-common-protos==1.70.0
     # via google-api-core
-groq==0.24.0
+groq==0.25.0
     # via -r requirements.in
 h11==0.16.0
     # via httpcore
-hf-xet==1.1.0
-    # via huggingface-hub
 httpcore==1.0.9
     # via httpx
 httpx==0.28.1
@@ -72,10 +73,12 @@ httpx==0.28.1
     #   -r requirements.in
     #   google-genai
     #   groq
-huggingface-hub==0.31.1
+    #   openai
+huggingface-hub==0.31.2
     # via
     #   accelerate
     #   peft
+    #   sentence-transformers
     #   tokenizers
     #   transformers
 idna==3.10
@@ -85,6 +88,10 @@ idna==3.10
     #   requests
 jinja2==3.1.6
     # via torch
+jiter==0.9.0
+    # via openai
+joblib==1.5.0
+    # via scikit-learn
 kiwisolver==1.4.8
     # via matplotlib
 llvmlite==0.44.0
@@ -111,6 +118,7 @@ numpy==1.26.4
     #   numba
     #   pandas
     #   peft
+    #   scikit-learn
     #   scipy
     #   seaborn
     #   transformers
@@ -151,6 +159,8 @@ nvidia-nvjitlink-cu12==12.6.85
     #   torch
 nvidia-nvtx-cu12==12.6.77
     # via torch
+openai==1.79.0
+    # via -r requirements.in
 packaging==25.0
     # via
     #   accelerate
@@ -165,10 +175,12 @@ pandas==2.2.3
 peft==0.15.2
     # via -r requirements.in
 pillow==11.2.1
-    # via matplotlib
+    # via
+    #   matplotlib
+    #   sentence-transformers
 proto-plus==1.26.1
     # via google-api-core
-protobuf==6.30.2
+protobuf==6.31.0
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -187,6 +199,7 @@ pydantic==2.11.4
     # via
     #   google-genai
     #   groq
+    #   openai
 pydantic-core==2.33.2
     # via pydantic
 pyparsing==3.2.3
@@ -219,9 +232,16 @@ safetensors==0.5.3
     #   accelerate
     #   peft
     #   transformers
+scikit-learn==1.6.1
+    # via sentence-transformers
 scipy==1.15.3
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   scikit-learn
+    #   sentence-transformers
 seaborn==0.13.2
+    # via -r requirements.in
+sentence-transformers==4.1.0
     # via -r requirements.in
 sentencepiece==0.2.0
     # via -r requirements.in
@@ -231,10 +251,13 @@ sniffio==1.3.1
     # via
     #   anyio
     #   groq
+    #   openai
 soupsieve==2.7
     # via beautifulsoup4
 sympy==1.14.0
     # via torch
+threadpoolctl==3.6.0
+    # via scikit-learn
 tokenizers==0.21.1
     # via transformers
 torch==2.7.0
@@ -243,27 +266,34 @@ torch==2.7.0
     #   accelerate
     #   bitsandbytes
     #   peft
+    #   sentence-transformers
 tqdm==4.67.1
     # via
     #   -r requirements.in
     #   huggingface-hub
+    #   openai
     #   peft
+    #   sentence-transformers
     #   transformers
 transformers==4.51.3
     # via
     #   -r requirements.in
     #   peft
+    #   sentence-transformers
 triton==3.3.0
     # via torch
 typing-extensions==4.13.2
     # via
     #   anyio
     #   beautifulsoup4
+    #   exceptiongroup
     #   google-genai
     #   groq
     #   huggingface-hub
+    #   openai
     #   pydantic
     #   pydantic-core
+    #   sentence-transformers
     #   torch
     #   typing-inspection
 typing-inspection==0.4.0

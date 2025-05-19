@@ -1,11 +1,11 @@
 {
-    "source_csv": "result_prompt_ar_alpa_arcot__groq_llama-3.1-8b-instant.csv",
-    "overall_accuracy": 63.84,
+    "source_csv": "result_prompt_ar_alpa_ar_tot_openai_gpt-4o-mini-2024-07-18.csv",
+    "overall_accuracy": 75.26,
     "accuracy_by_subject": {
-        "abductive reasoning": 63.84
+        "abductive reasoning": 75.26
     },
     "accuracy_by_ability": {
-        "reasoning_ability": 63.84
+        "reasoning_ability": 75.26
     },
     "counts_by_subject": {
         "abductive reasoning": 1532

@@ -24,3 +24,5 @@ torch
 google
 numba
 scipy
+sentence_transformers
+openai

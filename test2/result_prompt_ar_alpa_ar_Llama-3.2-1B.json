@@ -1,11 +1,11 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_Llama-3.2-1B.csv",
-    "overall_accuracy": 50.98,
+    "overall_accuracy": 49.02,
     "accuracy_by_subject": {
-        "abductive reasoning": 50.98
+        "abductive reasoning": 49.02
     },
     "accuracy_by_ability": {
-        "reasoning_ability": 50.98
+        "reasoning_ability": 49.02
     },
     "counts_by_subject": {
         "abductive reasoning": 1532

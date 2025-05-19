@@ -1,11 +1,11 @@
 {
-    "source_csv": "result_prompt_ar_alpa_arcot__groq_llama-3.1-8b-instant.csv",
-    "overall_accuracy": 63.84,
+    "source_csv": "result_prompt_ar_alpa_arcot__groq_mistral-saba-24b1.csv",
+    "overall_accuracy": 72.52,
     "accuracy_by_subject": {
-        "abductive reasoning": 63.84
+        "abductive reasoning": 72.52
     },
     "accuracy_by_ability": {
-        "reasoning_ability": 63.84
+        "reasoning_ability": 72.52
     },
     "counts_by_subject": {
         "abductive reasoning": 1532
