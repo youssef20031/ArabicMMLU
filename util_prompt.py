@@ -1,5 +1,6 @@
 import pandas as pd
-import os # Import os for path operations if needed later
+import os # Ensure os is imported
+import ast # Keep existing import
 
 # --- Alphabet Mappings ---
 alpa_ar = {
@@ -75,13 +76,13 @@ ZERO_SHOT_PROMPT_EN = (
     "The following is a multiple choice question about {subject}.\n\n"
     "{question}\n"
     "{options}\n\n"
-    "Please answer with only the single letter corresponding to the correct option." # Instruction added
+    "Please answer with only the single letter corresponding to the correct option."
 )
 ZERO_SHOT_PROMPT_AR = (
     "السؤال التالي هو سؤال متعدد الخيارات حول {subject}.\n\n"
     "{question}\n"
     "{options}\n\n"
-    "الرجاء الإجابة فقط بحرف الخيار الصحيح الموافق للإجابة الصحيحة." # Instruction added
+    "الرجاء الإجابة فقط بحرف الخيار الصحيح الموافق للإجابة الصحيحة."
 )
 
 # Chain-of-Thought Prompt
@@ -142,11 +143,7 @@ TOT_PROMPT_AR = (
     "قدم تفكيرك المفصل محاكيًا عملية شجرة الأفكار الموضحة أعلاه. اختتم بالإجابة النهائية بالتنسيق 'الإجابة النهائية: الإجابة النهائية هي [[X]]' حيث X هو حرف الخيار الصحيح."
 )
 
-
-# --- New Abductive Reasoning Prompts ---
-# These prompts expect a {question_text} placeholder which will be filled with observations and hypotheses.
-# And a {subject} placeholder, which can be generic like "reasoning".
-
+# --- Abductive Reasoning Prompts ---
 ZERO_SHOT_PROMPT_ABDUCTIVE_EN = (
     "{question_text}\n\n"
     "Instructions: Answer with only the single letter (A or B) corresponding to the most plausible hypothesis."
@@ -191,11 +188,84 @@ TOT_PROMPT_ABDUCTIVE_AR = (
     "٥. الت综合 والاستنتاج: حدد الفرضية الأكثر قبولاً.\n\n"
     "قدم تفكيرك المفصل محاكيًا عملية شجرة الأفكار الموضحة أعلاه. اختتم بالإجابة النهائية بالتنسيق 'الإجابة النهائية: الإجابة النهائية هي [[X]]' حيث X هو حرف الخيار الصحيح (أ أو ب)."
 )
+# --- End Abductive Reasoning Prompts ---
+
+# --- Deductive Reasoning Prompts (Multiple Choice Format) ---
+ZERO_SHOT_PROMPT_DEDUCTIVE_EN = (
+    "The following is a deductive reasoning question about {subject}.\n\n"
+    "{question}\n"
+    "{options}\n\n"
+    "Please answer with only the single letter corresponding to the most logically sound conclusion."
+)
+ZERO_SHOT_PROMPT_DEDUCTIVE_AR = (
+    "السؤال التالي هو سؤال استدلال استنباطي حول {subject}.\n\n"
+    "{question}\n"
+    "{options}\n\n"
+    "الرجاء الإجابة فقط بحرف الخيار الموافق للاستنتاج الأكثر سلامة منطقيًا."
+)
+
+COT_PROMPT_DEDUCTIVE_EN = (
+    "You are an expert in {subject}.\n"
+    "Analyze the given deductive reasoning problem and determine which conclusion logically follows from the premises.\n\n"
+    "Premises/Question:\n{question}\n\n"
+    "Potential Conclusions (Options):\n{options}\n\n"
+    "Instructions:\n"
+    "1. Carefully read the premises (in the question) and each potential conclusion (in the options).\n"
+    "2. For each option, analyze its logical connection to the premises. Determine if it necessarily follows, assuming the premises are true.\n"
+    "3. Identify any logical fallacies or sound deductive steps for each option.\n"
+    "4. Provide your step-by-step reasoning for evaluating each option against the premises.\n"
+    "5. Conclude with the final answer in the format 'Final Answer: The final answer is [[X]]' where X is the letter of the correct conclusion."
+)
+COT_PROMPT_DEDUCTIVE_AR = (
+    "أنت خبير في {subject}.\n"
+    "حلل مشكلة الاستدلال الاستنباطي المعطاة وحدد أي استنتاج يتبع منطقيًا من المقدمات.\n\n"
+    "المقدمات/السؤال:\n{question}\n\n"
+    "الاستنتاجات المحتملة (الخيارات):\n{options}\n\n"
+    "التعليمات:\n"
+    "١. اقرأ بعناية المقدمات (في السؤال) وكل استنتاج محتمل (في الخيارات).\n"
+    "٢. لكل خيار، حلل ارتباطه المنطقي بالمقدمات. حدد ما إذا كان يتبع بالضرورة، بافتراض أن المقدمات صحيحة.\n"
+    "٣. حدد أي مغالطات منطقية أو خطوات استنباطية سليمة لكل خيار.\n"
+    "٤. قدم تفكيرك خطوة بخطوة لتقييم كل خيار مقابل المقدمات.\n"
+    "٥. اختتم بالإجابة النهائية بالتنسيق 'الإجابة النهائية: الإجابة النهائية هي [[X]]' حيث X هو حرف الاستنتاج الصحيح."
+)
+
+TOT_PROMPT_DEDUCTIVE_EN = (
+    "You are an expert in {subject}.\n"
+    "Solve the following deductive reasoning problem using a Tree of Thought approach to determine which conclusion logically follows from the premises.\n\n"
+    "Premises/Question:\n{question}\n\n"
+    "Potential Conclusions (Options):\n{options}\n\n"
+    "Instructions for Tree of Thought Simulation:\n"
+    "1. Deconstruct the Problem: Clearly identify the core premises provided in the question.\n"
+    "2. For each Option (Potential Conclusion): Generate lines of reasoning (thought paths) to evaluate if it logically and necessarily follows from the given premises.\n"
+    "3. Evaluate Each Path: Assess the validity of each reasoning path. Does it adhere to rules of deductive logic? Are there counterexamples or fallacies?\n"
+    "4. Explore Promising Options: Elaborate on why certain options appear to be logically sound conclusions based on the premises. Detail the deductive steps.\n"
+    "5. Self-Reflect and Prune: Review all evaluated options. Discard options that are demonstrably not supported by the premises or involve logical fallacies. Refine the arguments for plausible options.\n"
+    "6. Synthesize and Decide: Based on the most robust and logically sound evaluation, determine which option is the correct conclusion that necessarily follows from the premises.\n\n"
+    "Provide your detailed reasoning simulating the Tree of Thought process. Conclude with the final answer in the format 'Final Answer: The final answer is [[X]]' where X is the letter of the correct conclusion."
+)
+TOT_PROMPT_DEDUCTIVE_AR = (
+    "أنت خبير في {subject}.\n"
+    "حل مشكلة الاستدلال الاستنباطي التالية باستخدام نهج شجرة الأفكار لتحديد أي استنتاج يتبع منطقيًا من المقدمات.\n\n"
+    "المقدمات/السؤال:\n{question}\n\n"
+    "الاستنتاجات المحتملة (الخيارات):\n{options}\n\n"
+    "تعليمات لمحاكاة شجرة الأفكار:\n"
+    "١. فكك المشكلة: حدد بوضوح المقدمات الأساسية الواردة في السؤال.\n"
+    "٢. لكل خيار (استنتاج محتمل): ولّد خطوط تفكير (مسارات فكرية) لتقييم ما إذا كان يتبع منطقيًا وبالضرورة من المقدمات المعطاة.\n"
+    "٣. قيّم كل مسار: قيّم مدى صحة كل مسار تفكير. هل يلتزم بقواعد المنطق الاستنباطي؟ هل هناك أمثلة مضادة أو مغالطات؟\n"
+    "٤. استكشف الخيارات الواعدة: توسع في شرح لماذا تبدو بعض الخيارات استنتاجات سليمة منطقيًا بناءً على المقدمات. فصل الخطوات الاستنباطية.\n"
+    "٥. تأمل ذاتيًا وقلم: راجع جميع الخيارات التي تم تقييمها. تجاهل الخيارات التي ثبت أنها غير مدعومة بالمقدمات أو تنطوي على مغالطات منطقية. نقح الحجج للخيارات المعقولة.\n"
+    "٦. ركب وقرر: بناءً على التقييم الأكثر قوة وسليمة منطقيًا، حدد أي خيار هو الاستنتاج الصحيح الذي يتبع بالضرورة من المقدمات.\n\n"
+    "قدم تفكيرك المفصل محاكيًا عملية شجرة الأفكار. اختتم بالإجابة النهائية بالتنسيق 'الإجابة النهائية: الإجابة النهائية هي [[X]]' حيث X هو حرف الاستنتاج الصحيح."
+)
+# --- End Deductive Reasoning Prompts ---
 
 # Mapping for abductive task labels to choice letters
-# Assuming label '0' corresponds to hypothesis_1 (Choice A)
-# and label '1' corresponds to hypothesis_2 (Choice B)
 ABDUCTIVE_LABEL_TO_CHOICE_LETTER = {'1': 'A', '2': 'B'}
+
+# Define English and Arabic alphabets for options
+alpa_en = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E'}
+alpa_ar = {0: 'أ', 1: 'ب', 2: 'ج', 3: 'د', 4: 'ه'}
+
 ALPA_EN_TO_AR_MAP = {alpa_en[k]: alpa_ar[k] for k in alpa_en if k in alpa_ar}
 
 
@@ -221,7 +291,7 @@ def format_abductive_question_text(obs1, obs2, hyp1, hyp2, lang_prompt):
             f"(B) {hyp2}"
         )
     
-def format_question(row, lang_prompt, lang_alpa, use_chain_of_thought, use_tree_of_thought):
+def format_question(row, lang_prompt, lang_alpa, task_type="mmlu", use_cot=False, use_tot=False):
     """
     Formats a single question row into the desired prompt based on arguments.
 
@@ -229,8 +299,9 @@ def format_question(row, lang_prompt, lang_alpa, use_chain_of_thought, use_tree_
         row (pd.Series): A row from the input DataFrame.
         lang_prompt (str): 'ar' or 'en' for the prompt language.
         lang_alpa (str): 'ar' or 'en' for the answer choice alphabet.
-        use_chain_of_thought (bool): Whether to use CoT prompting.
-        use_tree_of_thought (bool): Whether to use ToT prompting (overrides CoT).
+        task_type (str): Type of task ('mmlu', 'abductive', 'deductive').
+        use_cot (bool): Whether to use CoT prompting.
+        use_tot (bool): Whether to use ToT prompting (overrides CoT).
 
     Returns:
         tuple: (formatted_prompt_text, list_of_option_labels)
@@ -240,72 +311,158 @@ def format_question(row, lang_prompt, lang_alpa, use_chain_of_thought, use_tree_
         alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
         subject = row.get('Subject', 'the topic') # Default subject if missing
 
-        # Extract options and create labels list
-        labels = []
-        options_parts = []
-        for i, opt_key in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
-            option_text = row.get(opt_key)
-            if pd.isna(option_text):
-                break
-            option_text = str(option_text).strip()
-            letter = alpa.get(i)
-            if letter is None: # Should not happen with defined alpa dicts
-                 print(f"Warning: Missing alphabet mapping for index {i}")
-                 continue
-            labels.append(option_text) # Store the raw option text
-            options_parts.append(f"{letter}- {option_text}") # Format for prompt display
+        if task_type == "mmlu":
+            # Extract options and create labels list
+            labels = []
+            options_parts = []
+            for i, opt_key in enumerate(['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5']):
+                option_text = row.get(opt_key)
+                if pd.isna(option_text):
+                    break
+                option_text = str(option_text).strip()
+                letter = alpa.get(i)
+                if letter is None: # Should not happen with defined alpa dicts
+                     print(f"Warning: Missing alphabet mapping for index {i}")
+                     continue
+                labels.append(option_text) # Store the raw option text
+                options_parts.append(f"{letter}- {option_text}") # Format for prompt display
 
-        if not options_parts:
-             print(f"Warning: No valid options found for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
-             return None, None
+            if not options_parts:
+                 print(f"Warning: No valid options found for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                 return None, None
 
-        options_str = "\n".join(options_parts)
+            options_str = "\n".join(options_parts)
 
-        # --- Construct Question Part ---
-        backstory_text = str(row.get('BackStory', '')).strip()
-        context_text = str(row.get('Context', '')).strip()
-        question_text = str(row.get('Question', '')).strip()
+            # --- Construct Question Part ---
+            backstory_text = str(row.get('BackStory', '')).strip()
+            context_text = str(row.get('Context', '')).strip()
+            question_text = str(row.get('Question', '')).strip()
 
-        # Combine parts, handling potential empty strings and adding separators
-        full_question_parts = []
-        if backstory_text:
-            full_question_parts.append(f"BackStory: {backstory_text}" if lang_prompt == 'en' else f"الخلفية: {backstory_text}")
-        if context_text:
-            full_question_parts.append(f"Context: {context_text}" if lang_prompt == 'en' else f"السياق: {context_text}")
-        if question_text:
-            full_question_parts.append(f"Question: {question_text}" if lang_prompt == 'en' else f"السؤال: {question_text}")
+            # Combine parts, handling potential empty strings and adding separators
+            full_question_parts = []
+            if backstory_text:
+                full_question_parts.append(f"BackStory: {backstory_text}" if lang_prompt == 'en' else f"الخلفية: {backstory_text}")
+            if context_text:
+                full_question_parts.append(f"Context: {context_text}" if lang_prompt == 'en' else f"السياق: {context_text}")
+            if question_text:
+                full_question_parts.append(f"Question: {question_text}" if lang_prompt == 'en' else f"السؤال: {question_text}")
+            else:
+                # If Question field is empty, it's likely an error in the data
+                print(f"Warning: Missing 'Question' field for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None
+
+            full_question_str = "\n\n".join(full_question_parts)
+            # --- End Construct Question Part ---
+
+
+            # --- Select and Format Prompt ---
+            if lang_prompt == 'ar':
+                if use_tot:
+                    prompt_template = TOT_PROMPT_AR
+                elif use_cot:
+                    prompt_template = COT_PROMPT_AR
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_AR
+                # Translate subject for Arabic prompts if needed (using the mapping)
+                subject_display = subject_ar.get(subject, subject) # Use original if no translation
+                input_text = prompt_template.format(subject=subject_display, question=full_question_str, options=options_str)
+
+            else: # lang_prompt == 'en'
+                if use_tot:
+                    prompt_template = TOT_PROMPT_EN
+                elif use_cot:
+                    prompt_template = COT_PROMPT_EN
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_EN
+                input_text = prompt_template.format(subject=subject, question=full_question_str, options=options_str)
+            # --- End Select and Format Prompt ---
+
+            return input_text, labels # Return formatted prompt and the list of raw option texts
+
+        elif task_type == "abductive":
+            question_text = row['question'] # Assuming 'question' column holds the full abductive problem text
+            subject = row.get('subject', 'logical reasoning') 
+            if lang_prompt == 'ar':
+                prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_AR
+            else:
+                prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_EN
+            
+            formatted_prompt = prompt_template.format(question_text=question_text, subject=subject)
+            options_list = [row['hyp1'], row['hyp2']] 
+            gold_index = row['gold_index'] 
+            return formatted_prompt, options_list, gold_index, subject
+
+        elif task_type == "deductive":
+            main_question_text = str(row.get('question', '')).strip()
+            if not main_question_text:
+                print(f"Warning: Deductive task - Missing 'question' field for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None, None
+
+            subject = str(row.get('subject', 'logical reasoning')).strip() # Default subject
+
+            # Define the keys for options in the CSV for deductive task
+            option_col_keys = {
+                0: 'option_a',
+                1: 'option_b',
+                2: 'option_c',
+                3: 'option_d',
+                4: 'option_e' # Assuming up to 5 options like MMLU
+            }
+
+            labels = [] # List to store the text of the options
+            options_parts = [] # List to store formatted options for the prompt string
+
+            for i in range(len(option_col_keys)): # Iterate up to the number of defined option keys
+                opt_csv_key = option_col_keys.get(i)
+                if not opt_csv_key: continue # Should not happen with current dict
+
+                option_text = row.get(opt_csv_key)
+                if pd.isna(option_text): # Stop if an option is missing (e.g. only A, B, C are present)
+                    break 
+                
+                option_text = str(option_text).strip()
+                letter = alpa.get(i) # Get 'A', 'B', 'C' or 'أ', 'ب', 'ج'
+                
+                if letter is None:
+                     print(f"Warning: Deductive task - Missing alphabet mapping for option index {i}. Skipping option.")
+                     continue
+                
+                labels.append(option_text) # Store the raw option text
+                options_parts.append(f"{letter}- {option_text}") # Format for prompt display (e.g., "A- Conclusion 1")
+
+            if not labels: # If no valid options were found
+                 print(f"Warning: Deductive task - No valid options (option_a, option_b, etc.) found for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                 return None, None, None
+            
+            options_str = "\n".join(options_parts)
+
+            # Select and Format Prompt for Deductive
+            if lang_prompt == 'ar':
+                if use_tot:
+                    prompt_template = TOT_PROMPT_DEDUCTIVE_AR
+                elif use_cot:
+                    prompt_template = COT_PROMPT_DEDUCTIVE_AR
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_DEDUCTIVE_AR
+                subject_display = subject_ar.get(subject, subject) if subject_ar else subject # Translate subject if map exists
+            else: # lang_prompt == 'en'
+                if use_tot:
+                    prompt_template = TOT_PROMPT_DEDUCTIVE_EN
+                elif use_cot:
+                    prompt_template = COT_PROMPT_DEDUCTIVE_EN
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_DEDUCTIVE_EN
+                subject_display = subject # No translation for English subject needed here
+            
+            input_text = prompt_template.format(subject=subject_display, question=main_question_text, options=options_str)
+            
+            # For deductive, format_question returns (input_text, labels, subject)
+            # gold_index is handled in load_and_format_data based on 'answer' column
+            return input_text, labels, subject_display
+
         else:
-            # If Question field is empty, it's likely an error in the data
-            print(f"Warning: Missing 'Question' field for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+            print(f"Error: Unknown task_type '{task_type}' in format_question.")
             return None, None
-
-        full_question_str = "\n\n".join(full_question_parts)
-        # --- End Construct Question Part ---
-
-
-        # --- Select and Format Prompt ---
-        if lang_prompt == 'ar':
-            if use_tree_of_thought:
-                prompt_template = TOT_PROMPT_AR
-            elif use_chain_of_thought:
-                prompt_template = COT_PROMPT_AR
-            else:
-                prompt_template = ZERO_SHOT_PROMPT_AR
-            # Translate subject for Arabic prompts if needed (using the mapping)
-            subject_display = subject_ar.get(subject, subject) # Use original if no translation
-            input_text = prompt_template.format(subject=subject_display, question=full_question_str, options=options_str)
-
-        else: # lang_prompt == 'en'
-            if use_tree_of_thought:
-                prompt_template = TOT_PROMPT_EN
-            elif use_chain_of_thought:
-                prompt_template = COT_PROMPT_EN
-            else:
-                prompt_template = ZERO_SHOT_PROMPT_EN
-            input_text = prompt_template.format(subject=subject, question=full_question_str, options=options_str)
-        # --- End Select and Format Prompt ---
-
-        return input_text, labels # Return formatted prompt and the list of raw option texts
 
     except Exception as e:
         print(f"Error formatting row index {row.name if hasattr(row, 'name') else 'unknown'}: {e}")
@@ -315,7 +472,7 @@ def format_question(row, lang_prompt, lang_alpa, use_chain_of_thought, use_tree_
 def load_and_format_data(args):
     """
     Loads data from the specified CSV file and formats questions based on arguments.
-    Handles both 'mmlu' and 'abductive' task types.
+    Handles 'mmlu', 'abductive', and 'deductive' task types.
 
     Args:
         args (argparse.Namespace): Parsed command-line arguments including
@@ -327,19 +484,20 @@ def load_and_format_data(args):
                Returns empty lists if data loading fails or no valid prompts generated.
     """
     prompts = []
-    golds = []  # Gold standard answer letter (e.g., 'A', 'B', 'أ', 'ب')
-    labels_list = []  # List of lists, each inner list contains the raw option/hypothesis texts
+    golds = []  
+    labels_list = []  
     subjects = []
     indices = []
     abilities = []
 
-    # Determine data file path
     data_file_path = args.data_file
     if not data_file_path:
         if args.task_type == "mmlu":
-            data_file_path = 'data/cleaned_output3.csv'  # Default for MMLU
+            data_file_path = 'data/cleaned_output3.csv'  
         elif args.task_type == "abductive":
-            data_file_path = 'data/abductive_data2.csv'  # Default for abductive
+            data_file_path = 'data/abductive_data2.csv'  
+        elif args.task_type == "deductive":
+            data_file_path = 'data/deductive_data.csv'  
         else:
             print(f"Error: Unknown task_type '{args.task_type}' and no data_file provided.")
             return [], [], [], [], [], []
@@ -356,17 +514,12 @@ def load_and_format_data(args):
         return [], [], [], [], [], []
 
     if args.task_type == "mmlu":
-        # Filter out few-shot examples if necessary (specific to MMLU data structure)
         if 'is_few_shot' in data_df.columns:
             initial_count = len(data_df)
             data_df = data_df[data_df['is_few_shot'] == 0].copy()
             print(f"Filtered out {initial_count - len(data_df)} few-shot examples for MMLU task.")
-        # else:
-        #     print("Warning: 'is_few_shot' column not found in MMLU data. Assuming all are zero-shot.")
 
-        # Mapping from answer key letter ('A', 'B', ...) to index (0, 1, ...)
-        # This is used to find the correct letter from alpa_en or alpa_ar
-        answer_key_to_index_map = {letter: idx for idx, letter in alpa_en.items()} # e.g. {'A':0, 'B':1}
+        answer_key_to_index_map = {letter: idx for idx, letter in alpa_en.items()} 
 
         print("Formatting MMLU prompts...")
         for idx, row in data_df.iterrows():
@@ -374,12 +527,12 @@ def load_and_format_data(args):
                 row,
                 args.lang_prompt,
                 args.lang_alpa,
-                args.chain_of_thought,
-                args.tree_of_thought
+                task_type="mmlu",
+                use_cot=args.chain_of_thought,
+                use_tot=args.tree_of_thought
             )
 
             if prompt is None or current_labels is None:
-                # format_question prints its own warnings
                 continue
 
             answer_key_original = row.get('Answer Key')
@@ -387,7 +540,7 @@ def load_and_format_data(args):
                 print(f"Warning: MMLU task - Missing 'Answer Key' for row at original CSV index {idx}. Skipping.")
                 continue
 
-            answer_key_original = str(answer_key_original).strip().upper() # Normalize (e.g., 'A', 'B')
+            answer_key_original = str(answer_key_original).strip().upper() 
             
             gold_idx = answer_key_to_index_map.get(answer_key_original)
 
@@ -395,11 +548,10 @@ def load_and_format_data(args):
                 print(f"Warning: MMLU task - Invalid 'Answer Key' ('{answer_key_original}') found for row at original CSV index {idx}. Expected A, B, C, D, or E. Skipping.")
                 continue
             
-            # Determine the gold letter based on lang_alpa
             current_alpa = alpa_ar if args.lang_alpa == 'ar' else alpa_en
             gold_letter = current_alpa.get(gold_idx)
 
-            if gold_letter is None: # Should not happen if gold_idx is valid
+            if gold_letter is None: 
                 print(f"Warning: MMLU task - Could not map gold index {gold_idx} to a letter for lang_alpa '{args.lang_alpa}'. Skipping row {idx}.")
                 continue
 
@@ -407,11 +559,11 @@ def load_and_format_data(args):
             labels_list.append(current_labels)
             golds.append(gold_letter)
             subjects.append(row.get('Subject', 'Unknown_MMLU_Subject'))
-            indices.append(row.get('INDEX', idx)) # Use 'INDEX' column if exists, else df index
+            indices.append(row.get('INDEX', idx)) 
             abilities.append(row.get('ABILITY', 'Unknown_MMLU_Ability'))
 
     elif args.task_type == "abductive":
-        required_cols = ['observation_1', 'observation_2', 'hypothesis_1', 'hypothesis_2', 'label']
+        required_cols = ['question', 'hyp1', 'hyp2', 'gold_index']
         if not all(col in data_df.columns for col in required_cols):
             missing_cols = [col for col in required_cols if col not in data_df.columns]
             print(f"Error: Abductive task - Missing required columns in {data_file_path}: {missing_cols}")
@@ -419,60 +571,86 @@ def load_and_format_data(args):
 
         print("Formatting abductive reasoning prompts...")
         for idx, row in data_df.iterrows():
-            obs1 = str(row['observation_1'])
-            obs2 = str(row['observation_2'])
-            hyp1_text = str(row['hypothesis_1'])
-            hyp2_text = str(row['hypothesis_2'])
-            original_label = str(row['label']).strip() # '0' or '1'
+            formatted_prompt, options, gold_idx, subj = format_question(
+                row,
+                args.lang_prompt,
+                args.lang_alpa,
+                task_type="abductive",
+                use_cot=args.chain_of_thought, 
+                use_tot=args.tree_of_thought
+            )
+            prompts.append(formatted_prompt)
+            golds.append(gold_idx)
+            labels_list.append(options)
+            subjects.append(subj)
+            indices.append(idx) 
+            abilities.append("reasoning_ability") 
 
-            # Get the English gold letter ('A' or 'B')
-            gold_choice_letter_en = ABDUCTIVE_LABEL_TO_CHOICE_LETTER.get(original_label)
+    elif args.task_type == "deductive":
+        # Define required columns based on the new structure
+        required_cols = ['question', 'option_a', 'option_b', 'answer'] 
+        # Check for essential columns
+        if not all(col in data_df.columns for col in required_cols):
+            missing_cols = [col for col in required_cols if col not in data_df.columns]
+            print(f"Error: Deductive task - Missing essential columns in {data_file_path}: {missing_cols}. Need at least 'question', 'option_a', 'option_b', 'answer'.")
+            return [], [], [], [], [], []
 
-            if gold_choice_letter_en is None:
-                print(f"Warning: Abductive task - Unknown label '{original_label}' in row {idx} of {data_file_path}. Expected '0' or '1'. Skipping.")
+        # Map for converting answer letter (A, B, C, D) to numeric index (0, 1, 2, 3)
+        alpa_en_to_idx_map = {letter: idx for idx, letter in alpa_en.items()}
+        alpa_ar_to_idx_map = {letter: idx for idx, letter in alpa_ar.items()}
+
+
+        print("Formatting deductive reasoning prompts...")
+        for idx, row in data_df.iterrows():
+            # format_question for deductive now returns (input_text, labels, subject)
+            formatted_prompt, current_labels, subj = format_question(
+                row,
+                args.lang_prompt,
+                args.lang_alpa,
+                task_type="deductive",
+                use_cot=args.chain_of_thought,
+                use_tot=args.tree_of_thought
+            )
+
+            if formatted_prompt is None or current_labels is None: # Check if format_question skipped the row
+                continue
+
+            answer_key_original = row.get('answer') # Get the gold answer letter (e.g., 'A', 'B', 'أ', 'ب')
+            if pd.isna(answer_key_original):
+                print(f"Warning: Deductive task - Missing 'answer' for row at original CSV index {idx}. Skipping.")
                 continue
             
-            # Convert to target alphabet if needed
-            if args.lang_alpa == 'ar':
-            # Validate the mapping from English to Arabic
-                assert 'A' in ALPA_EN_TO_AR_MAP and ALPA_EN_TO_AR_MAP['A'] == 'أ', "Mapping for 'A' to 'أ' is incorrect."
-                assert 'B' in ALPA_EN_TO_AR_MAP and ALPA_EN_TO_AR_MAP['B'] == 'ب', "Mapping for 'B' to 'ب' is incorrect."
+            answer_key_original = str(answer_key_original).strip() # Normalize
 
-                gold_letter_final = ALPA_EN_TO_AR_MAP.get(gold_choice_letter_en)
-                if gold_letter_final is None:  # Should not happen for 'A' or 'B'
-                    print(f"Warning: Abductive task - Could not map English letter '{gold_choice_letter_en}' to Arabic. Skipping row {idx}.")
-                    continue
-            else:  # 'en' or other (defaults to English letter)
-                # Validate the English mapping
-                assert ABDUCTIVE_LABEL_TO_CHOICE_LETTER['1'] == 'A', "Label '1' should map to 'A'."
-                assert ABDUCTIVE_LABEL_TO_CHOICE_LETTER['2'] == 'B', "Label '2' should map to 'B'."
-                gold_letter_final = gold_choice_letter_en
-            
-            golds.append(gold_letter_final)
-            
-            current_hypotheses_texts = [hyp1_text, hyp2_text]
-            labels_list.append(current_hypotheses_texts)
+            # Convert the gold answer letter to a numeric index
+            gold_idx_numeric = alpa_ar_to_idx_map.get(answer_key_original) # Try Arabic first
+            if gold_idx_numeric is None:
+                gold_idx_numeric = alpa_en_to_idx_map.get(answer_key_original.upper()) # Then try English (uppercase)
 
-            # Format the question part of the prompt
-            # Note: format_abductive_question_text already includes A/B or أ/ب based on lang_prompt
-            # The lang_alpa argument for the prediction function will handle the expected output format.
-            question_text_for_prompt = format_abductive_question_text(obs1, obs2, hyp1_text, hyp2_text, args.lang_prompt)
-            
-            current_subject = "abductive reasoning" # Generic subject for this task
 
-            if args.tree_of_thought:
-                PROMPT_TEMPLATE = TOT_PROMPT_ABDUCTIVE_AR if args.lang_prompt == 'ar' else TOT_PROMPT_ABDUCTIVE_EN
-            elif args.chain_of_thought:
-                PROMPT_TEMPLATE = COT_PROMPT_ABDUCTIVE_AR if args.lang_prompt == 'ar' else COT_PROMPT_ABDUCTIVE_EN
-            else: # Zero-shot
-                PROMPT_TEMPLATE = ZERO_SHOT_PROMPT_ABDUCTIVE_AR if args.lang_prompt == 'ar' else ZERO_SHOT_PROMPT_ABDUCTIVE_EN
+            if gold_idx_numeric is None:
+                print(f"Warning: Deductive task - Invalid 'answer' key ('{answer_key_original}') found for row at original CSV index {idx}. Expected A-E or أ-ه. Skipping.")
+                continue
             
-            final_prompt = PROMPT_TEMPLATE.format(question_text=question_text_for_prompt, subject=current_subject)
-            prompts.append(final_prompt)
-            
-            subjects.append(current_subject)
-            abilities.append("reasoning_ability") # Generic ability for this task
-            indices.append(idx) # Use DataFrame index for abductive task
+            # Ensure the gold index is within the range of available options for this row
+            if not (0 <= gold_idx_numeric < len(current_labels)):
+                print(f"Warning: Deductive task - 'answer' key ('{answer_key_original}' -> index {gold_idx_numeric}) is out of range for the number of options ({len(current_labels)}) found for row {idx}. Options: {current_labels}. Skipping.")
+                continue
+
+            # Determine the gold letter based on lang_alpa (e.g., 'A' or 'أ')
+            current_alpa_map = alpa_ar if args.lang_alpa == 'ar' else alpa_en
+            gold_letter_for_output = current_alpa_map.get(gold_idx_numeric)
+
+            if gold_letter_for_output is None:
+                print(f"Warning: Deductive task - Could not map gold index {gold_idx_numeric} to a letter for lang_alpa '{args.lang_alpa}'. Skipping row {idx}.")
+                continue
+
+            prompts.append(formatted_prompt)
+            labels_list.append(current_labels) # List of option texts
+            golds.append(gold_letter_for_output) # Gold letter ('A', 'أ', etc.)
+            subjects.append(subj)
+            indices.append(row.get('INDEX', idx)) # Use 'INDEX' if exists, else DataFrame index
+            abilities.append(row.get('ABILITY', 'deductive_reasoning')) # Or derive from data
 
     else:
         print(f"Error: Unknown task_type '{args.task_type}' in load_and_format_data.")
@@ -484,20 +662,3 @@ def load_and_format_data(args):
         print(f"Successfully formatted {len(prompts)} prompts for task '{args.task_type}'.")
         
     return prompts, golds, labels_list, subjects, indices, abilities
-
-
-# --- Deprecated Functions (Keep commented out or remove) ---
-# def prepare_data_en(args):
-#     # ... old implementation ...
-#     pass
-
-# def prepare_data_ar(args):
-#     # ... old implementation ...
-#     pass
-
-# def prepare_data(args): # This function is now replaced by load_and_format_data
-#     if args.lang_prompt == 'en':
-#         return prepare_data_en(args)
-#     elif args.lang_prompt == 'ar':
-#         return prepare_data_ar(args)
-# --- End Deprecated Functions ---

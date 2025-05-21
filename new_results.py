@@ -211,7 +211,26 @@ if __name__ == "__main__":
                 with open(current_output_json_path, "w", encoding='utf-8') as f:
                     json.dump(results_file, f, ensure_ascii=False, indent=4)
                 print(f"Results for {base_csv_name} successfully saved to {current_output_json_path}")
-                print(f"Overall Accuracy for {base_csv_name}: {overall_accuracy_file}%")
+
+                # More readable output:
+                print(f"\n--- Results for {base_csv_name} ---")
+                print(f"Overall Accuracy: {results_file['overall_accuracy']}%")
+                
+                print("\nAccuracy by Subject:")
+                if results_file['accuracy_by_subject']:
+                    for subject, acc in results_file['accuracy_by_subject'].items():
+                        print(f"  - {subject}: {acc}% (Count: {results_file['counts_by_subject'].get(subject, 0)})")
+                else:
+                    print("  No subject data.")
+
+                print("\nAccuracy by Ability:")
+                if results_file['accuracy_by_ability']:
+                    for ability, acc in results_file['accuracy_by_ability'].items():
+                        print(f"  - {ability}: {acc}% (Count: {results_file['counts_by_ability'].get(ability, 0)})")
+                else:
+                    print("  No ability data.")
+                print(f"--- End of results for {base_csv_name} ---\n")
+                
                 successfully_generated_files += 1
             except Exception as e_json:
                 print(f"An error occurred while writing the results JSON for {base_csv_name}: {e_json}")
@@ -228,4 +247,3 @@ if __name__ == "__main__":
     print(f"CSV files attempted to process: {processed_files_count}")
     print(f"JSON result files successfully generated: {successfully_generated_files}")
 
-   

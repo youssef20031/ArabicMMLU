@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_deductive_deductive_datacot__groq_meta-llama_llama-4-maverick-17b-128e-instruct.csv",
+    "overall_accuracy": 61.09,
+    "accuracy_by_subject": {
+        "logical reasoning": 61.09
+    },
+    "accuracy_by_ability": {
+        "deductive_reasoning": 61.09
+    },
+    "counts_by_subject": {
+        "logical reasoning": 640
+    },
+    "counts_by_ability": {
+        "deductive_reasoning": 640
+    }
+}

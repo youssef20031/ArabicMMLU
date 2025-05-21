@@ -49,8 +49,8 @@ print(f"Using device: {device}")
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--task_type", type=str, default="mmlu", choices=["mmlu", "abductive"], help="Type of task to evaluate ('mmlu' or 'abductive')")
-    parser.add_argument("--data_file", type=str, default=None, help="Path to the data file (used if task_type is 'abductive' or to override default MMLU path)")
+    parser.add_argument("--task_type", type=str, default="mmlu", choices=["mmlu", "abductive", "deductive"], help="Type of task to evaluate ('mmlu', 'abductive', or 'deductive')") # <-- Added "deductive"
+    parser.add_argument("--data_file", type=str, default=None, help="Path to the data file (used if task_type is 'abductive', 'deductive' or to override default MMLU path)") # <-- Updated help text
     parser.add_argument("--load_8bit", action='store_true', help="Load Hugging Face models in 8-bit")
     parser.add_argument("--share_gradio", action='store_true', help="Enable Gradio sharing (if applicable)") # Keep if Gradio is used elsewhere
     parser.add_argument("--base_model", type=str, help="Path/ID for Hugging Face model or Gemini ID (e.g., 'google/gemini-pro')", default=None) # Make optional
@@ -123,29 +123,35 @@ def main():
     tot_suffix = "_tot" if args.tree_of_thought else "" # <-- Add ToT suffix
     prompt_method_suffix = tot_suffix if args.tree_of_thought else cot_suffix
 
+    model_name_suffix = "unknown_model"
     if is_openai_model:
-        model_identifier = args.openai_model.replace("/", "-") # Sanitize model name
-        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_openai_{model_identifier}.csv'
+        model_name_suffix = f"openai_{args.openai_model.replace('/', '_')}"
     elif is_groq_model:
-        model_identifier = args.groq_model.replace("/", "-") # Sanitize model name for filename
-        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_groq_{model_identifier}.csv' # Use prompt_method_suffix
+        model_name_suffix = f"groq_{args.groq_model.replace('/', '_')}"
     elif is_gemini_model:
-        model_identifier = args.base_model # Gemini IDs are usually filename-safe
-        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}.csv' # Use prompt_method_suffix
+        model_name_suffix = f"gemini_{args.base_model.replace('/', '_')}"
     elif is_hf_model:
-        model_identifier = args.base_model.split("/")[-1] # Get last part of HF path
-        # Update save file name if LoRA is used with HF model
+        model_name_suffix = f"hf_{args.base_model.replace('/', '_')}"
         if args.lora_weights != "x":
-             lora_identifier = args.lora_weights.split("/")[-1]
-             SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}_{lora_identifier}.csv' # Use prompt_method_suffix
-        else:
-             SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_{model_identifier}.csv' # Use prompt_method_suffix
+            model_name_suffix += f"_lora_{os.path.basename(args.lora_weights)}"
+
+    # --- Define SAVE_FILE based on task type and model ---
+    task_specific_name_part = ""
+    if args.task_type == "mmlu":
+        task_specific_name_part = f"mmlu_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}"
+    elif args.task_type == "abductive":
+        data_file_basename = os.path.basename(args.data_file).replace('.csv', '') if args.data_file else "abductive_data"
+        task_specific_name_part = f"abductive_{data_file_basename}"
+    elif args.task_type == "deductive": # <-- Added deductive case
+        data_file_basename = os.path.basename(args.data_file).replace('.csv', '') if args.data_file else "deductive_data"
+        task_specific_name_part = f"deductive_{data_file_basename}"
     else:
-        # Fallback filename if neither Groq nor base_model is specified (shouldn't happen with validation)
-        print("Error: Could not determine model type or identifier.")
-        # Use a default/fallback name or exit
-        SAVE_FILE = f'result_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}{prompt_method_suffix}_unknown_model.csv'
-        # sys.exit(1) # Optionally exit if model type is mandatory
+        # Fallback for any new task types not explicitly handled, or if task_type is somehow None
+        task_specific_name_part = f"{args.task_type or 'unknown_task'}_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}"
+
+
+    SAVE_FILE = f"result_{task_specific_name_part}{prompt_method_suffix}_{model_name_suffix}.csv"
+    # --- End of SAVE_FILE definition ---
 
     # Join with the output folder
     SAVE_FILE = os.path.join(args.output_folder, SAVE_FILE)

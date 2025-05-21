@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_deductive_deductive_data_groq_meta-llama_llama-4-scout-17b-16e-instruct.csv",
+    "overall_accuracy": 46.09,
+    "accuracy_by_subject": {
+        "logical reasoning": 46.09
+    },
+    "accuracy_by_ability": {
+        "deductive_reasoning": 46.09
+    },
+    "counts_by_subject": {
+        "logical reasoning": 640
+    },
+    "counts_by_ability": {
+        "deductive_reasoning": 640
+    }
+}
