@@ -1,0 +1,378 @@
+[
+    {
+        "rule": "To determine the correct answer, identify the main claim or conclusion supported by the passage and match it with the available options, selecting the one that is most directly supported or implied by the information given in the passage.",
+        "coverage": 3,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main theme or focus of the given text and match it with the available options.",
+        "coverage": 3,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, analyze the given text and compare each option against its content, looking for a statement that either contradicts the information provided or is not supported by it.",
+        "coverage": 3,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "An event or situation is not considered an \"وباء\" if it is driven by a natural or common response rather than the imitation of a specific lifestyle or trend.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "سلوك عدم الحب يحدث عندما يتم فرض السيطرة على شخص قريب باسم الحب، ضد إرادته، لإجباره على التصرف وفقًا لرغبات المتحكم.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "An argument about the potential for recreating an extinct hybrid relies on the assumption that the genetic material necessary for its recreation exists in the current population of related species.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the statement that is directly supported by the information given in the passage without requiring additional assumptions or inferences beyond what is stated.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To be considered \"induced motion,\" the perceived motion of an object should be due to the relative motion of other objects, not because the object itself is actually moving or because of a different optical illusion mechanism.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "إذا كانت العبارة تشير إلى ملوثات أولية دون ذكر أي تفاعل أو تحويل إلى ملوثات جديدة، فإنها لا تمثل ملوثات ثانوية.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main claim or warning presented in the passage and match it with the available options, selecting the one that aligns with or is supported by the information given in the passage.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "If an option involves a random or chance-based element where not all participants are guaranteed a reward, it is considered a lottery-type prize sale, unless the outcome is certain or predetermined for all participants.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To answer a question correctly based on a given text, the correct option should be a logical inference or a direct implication of the information provided in the text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "If an option directly contradicts or weakens the conclusion stated in the passage, it is the correct answer when the question asks for what \"does not support\" or \"weakens\" the conclusion.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To weaken a causal conclusion, identify an alternative explanation for the observed effect and check if any option supports this alternative explanation.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "If an option directly aligns with the information given in the passage and is a logical conclusion based on that information, it is likely to be the correct answer.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "When managing a renewable resource facing depletion due to unregulated or excessive use by a particular group, introducing regulated access or conditional use for that group can be an effective conservation measure.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "An option is incorrect if it makes a claim that is not supported or implied by the given text, and choosing it would require making an assumption that isn't directly backed by the information provided in the passage.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main theme or subject of the given text and match it with the most relevant option. The correct option should be a concise summary or representation of the text's primary content or message.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "The correct answer is the option that best matches the main idea or summary of the given text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "When a question asks for the main idea or implication of a given text, the correct answer is likely to be the one that best summarizes or encapsulates the central message or theme of the text, often focusing on the author's intent or the overall impact of the information presented.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main idea or conclusion presented in the passage and match it with the most relevant and accurate option.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "When the question asks for the main topic or subject of a given text, the correct answer is the option that most closely matches the central theme or subject discussed in the text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "The correct answer is the one that most closely aligns with the main theme or topic discussed in the given text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "If the question describes a situation or context and the correct answer is an option that summarizes or encapsulates the main idea or key point of the given text, then that option is likely the correct answer.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the most suitable title for a given text, identify the common theme or main idea expressed through the quotes or statements provided, and then match this theme to the available title options.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main theme or purpose of the given text and match it with the option that best summarizes or aligns with that theme.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "The correct answer is the one that directly follows from the information given in the passage, without requiring additional assumptions or inferences beyond what is stated.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main idea or key point being made in the given text and match it with the options provided, selecting the one that best aligns with or summarizes the main idea.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "The correct answer is typically the one that most directly summarizes or reflects the main point or conclusion of the given text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, analyze the content of the given text and match it with the options provided, selecting the one that best aligns with the main idea or information presented in the text.",
+        "coverage": 2,
+        "confidence": 1.0,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "When the question asks for the purpose or main idea of a text, the correct answer is likely the one that summarizes or directly relates to the central theme or objective described in the text.",
+        "coverage": 4,
+        "confidence": 0.75,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main theme or subject discussed in the given text and match it with the most relevant option.",
+        "coverage": 3,
+        "confidence": 0.6667,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "When a question asks for the main idea or purpose of a given text, the correct answer is likely to be the one that best summarizes the central argument or key point of the text, often focusing on the approach, method, or underlying principle discussed.",
+        "coverage": 6,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "إذا كان الضرر أو الإصابة تشمل طرفًا ثالثًا وفقًا للتعريف المحدد (أشخاص أو ممتلكات خارج السيارة أو ركاب غير السائق)، فإن تأمين المسؤولية تجاه الغير يغطي التعويض.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "إذا كانت المشكلة ناتجة عن ظروف لاحقة لا تتعلق بالصفقة نفسها أو بالمحتوى المتفق عليه، فإن ضمان المسؤولية عن العيوب لا ينطبق.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "لكي تعتبر جرائم متتالية، يجب أن تكون هناك عدة أفعال إجرامية منفصلة وليست جريمة واحدة متعددة الأطراف أو النتائج.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "تكلفة الفرصة البديلة لا تشمل التكاليف الغارقة (النفقات التي أنفقت ولا يمكن استردادها) ولكنها تشمل الفوائد الضائعة نتيجة لقرار معين.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "حقوق الملكية الفكرية تشمل الحقوق المتعلقة بالابتكارات والإبداعات مثل الاختراعات والعلامات التجارية وحقوق النشر، بينما الحق في الصورة يعتبر حقًا من حقوق الشخصية وليس ملكية فكرية بالضرورة.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "العمولة تعتبر صحيحة إذا كانت تعبر عن مكافآت مادية ناتجة عن تقديم خدمات وسيطة للآخرين من خلال عمل مستقل.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "Eliminate options that introduce information or implications not directly supported by the passage.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "Eliminate options that contradict or are not supported by the information given in the text.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To determine the correct answer, identify the main idea or purpose of the given text and match it with the most relevant option.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "To choose the correct answer, identify the main issue or problem described in the passage and match it with the option that most directly addresses or explains that issue.",
+        "coverage": 2,
+        "confidence": 0.5,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "تأمين المسؤولية تجاه الغير يغطي الأضرار التي تلحق بالطرف الثالث، حيث يشمل الطرف الثالث الأشخاص والممتلكات خارج السيارة المؤمن عليها، ويمكن أن يشمل الركاب إذا لم يكونوا سائقين.",
+        "coverage": 3,
+        "confidence": 0.3333,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "المسؤولية عن العيوب تتعلق بالعيوب الكامنة في الشيء المنقول أو الحق، وليس بالأوضاع أو النتائج اللاحقة التي لا ترتبط مباشرة بالصفقة.",
+        "coverage": 3,
+        "confidence": 0.3333,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "الانتكاس يشير إلى سلوك إجرامي متكرر من نفس الطبيعة، حيث يكون الجاني قد ارتكب عدة جرائم متطابقة أو متشابهة في أوقات مختلفة.",
+        "coverage": 3,
+        "confidence": 0.3333,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    },
+    {
+        "rule": "التهرب الضريبي يتطلب وجود نية متعمدة للتهرب من دفع الضرائب أو تقديم إقرارات كاذبة، وعدم دفع الضرائب أو دفعها بشكل ناقص نتيجة أفعال تنتهك قوانين الضرائب. الخيار الذي لا ينطوي على إخفاء أو تقديم معلومات كاذبة أو أفعال تنتهك قوانين الضرائب لا يعتبر تهربًا ضريبيًا.",
+        "coverage": 3,
+        "confidence": 0.3333,
+        "task_types": [
+            "deductive_reasoning"
+        ]
+    }
+]

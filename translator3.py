@@ -6,8 +6,8 @@ import sys # For checking if running in Colab
 from tqdm import tqdm # For progress bars
 
 # --- Configuration ---
-INPUT_DATA_FOLDER = 'tobetranslated4'  # Folder containing input CSV files
-OUTPUT_DATA_FOLDER = 'tobetranslated4' # Folder to save translated CSV files
+INPUT_DATA_FOLDER = 'tobetranslated5'  # Folder containing input CSV files
+OUTPUT_DATA_FOLDER = 'tobetranslated5' # Folder to save translated CSV files
 
 # Ensure your GROQ_API_KEY is set as an environment variable.
 # In Google Colab, you can set this in the "Secrets" tab (recommended)

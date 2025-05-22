@@ -6,6 +6,7 @@ from tqdm import tqdm
 import time
 import re
 import torch
+import xml.etree.ElementTree as ET # Added for XML parsing
 
 # Attempt to import Groq and related errors
 try:
@@ -42,6 +43,10 @@ print(f"Using device: {device}")
 # Alphabet maps for hypotheses
 hyp_alpa_en = {0: 'A', 1: 'B'}
 hyp_alpa_ar = {0: 'أ', 1: 'ب'}
+
+# For Deductive (A/B/C/D)
+hyp_alpa_deductive_en = {0: 'A', 1: 'B', 2: 'C', 3: 'D'}
+hyp_alpa_deductive_ar = {0: 'أ', 1: 'ب', 2: 'ج', 3: 'د'}
 
 # --- Prompts for Deduction ---
 DEDUCTION_PROMPT_ABDUCTIVE_EN = """
@@ -86,6 +91,44 @@ DEDUCTION_PROMPT_ABDUCTIVE_AR = """
 بناءً *فقط* على مكتبة القواعد المقدمة، أي فرضية (أ أو ب) هي الأكثر قبولاً؟
 يجب أن تكون إجابتك هي الحرف الوحيد للفرضية الأكثر قبولاً (أ أو ب).
 لا تقدم أي تفسيرات أو نصوص أخرى.
+"""
+
+DEDUCTION_PROMPT_DEDUCTIVE_EN = """
+You are an expert in deductive reasoning using a rule library.
+Below is a library of reasoning rules:
+Rule Library:
+---
+{rules_text}
+---
+
+Consider the following question and options:
+Question: {question_text}
+Option A: {option_A_text}
+Option B: {option_B_text}
+Option C: {option_C_text}
+Option D: {option_D_text}
+
+Based *strictly* on the provided Rule Library, which option is the correct answer?
+Conclude with your final answer in the format: 'Final Answer: X' where X is the single letter of the correct option (A, B, C, or D). Do not add any other text after this line.
+"""
+
+DEDUCTION_PROMPT_DEDUCTIVE_AR = """
+أنت خبير في الاستدلال الاستنباطي باستخدام مكتبة قواعد.
+فيما يلي مكتبة من قواعد الاستدلال:
+مكتبة القواعد:
+---
+{rules_text}
+---
+
+ضع في اعتبارك السؤال والخيارات التالية:
+السؤال: {question_text}
+الخيار أ: {option_A_text}
+الخيار ب: {option_B_text}
+الخيار ج: {option_C_text}
+الخيار د: {option_D_text}
+
+بناءً *فقط* على مكتبة القواعد المقدمة، أي خيار هو الإجابة الصحيحة؟
+اختتم بإجابتك النهائية بالتنسيق: 'الإجابة النهائية: X' حيث X هو الحرف الوحيد للخيار الصحيح (أ، ب، ج، أو د). لا تضف أي نص آخر بعد هذا السطر.
 """
 
 # --- CoT Prompts for Deduction ---
@@ -135,6 +178,56 @@ COT_DEDUCTION_PROMPT_ABDUCTIVE_AR = """
 ٥. الاستنتاج: بناءً على التقييم المستند إلى القواعد، أي فرضية مدعومة بقوة أكبر بواسطة القواعد؟
 
 اختتم بإجابتك النهائية بالتنسيق: 'الإجابة النهائية: X' حيث X هو الحرف الوحيد للفرضية الأكثر قبولاً (أ أو ب). لا تضف أي نص آخر بعد هذا السطر.
+"""
+
+COT_DEDUCTION_PROMPT_DEDUCTIVE_EN = """
+You are an expert in deductive reasoning using a rule library.
+Below is a library of reasoning rules:
+Rule Library:
+---
+{rules_text}
+---
+
+Consider the following question and options:
+Question: {question_text}
+Option A: {option_A_text}
+Option B: {option_B_text}
+Option C: {option_C_text}
+Option D: {option_D_text}
+
+Based *strictly* on the provided Rule Library, reason step-by-step to determine which option is the correct answer.
+1. Evaluate Option A against the rules.
+2. Evaluate Option B against the rules.
+3. Evaluate Option C against the rules.
+4. Evaluate Option D against the rules.
+5. Conclude which option is best supported by the rules.
+
+Conclude with your final answer in the format: 'Final Answer: X' where X is the single letter of the correct option (A, B, C, or D). Do not add any other text after this line.
+"""
+
+COT_DEDUCTION_PROMPT_DEDUCTIVE_AR = """
+أنت خبير في الاستدلال الاستنباطي باستخدام مكتبة قواعد.
+فيما يلي مكتبة من قواعد الاستدلال:
+مكتبة القواعد:
+---
+{rules_text}
+---
+
+ضع في اعتبارك السؤال والخيارات التالية:
+السؤال: {question_text}
+الخيار أ: {option_A_text}
+الخيار ب: {option_B_text}
+الخيار ج: {option_C_text}
+الخيار د: {option_D_text}
+
+بناءً *فقط* على مكتبة القواعد المقدمة، استدل خطوة بخطوة لتحديد أي خيار هو الإجابة الصحيحة.
+١. قيّم الخيار أ في ضوء القواعد.
+٢. قيّم الخيار ب في ضوء القواعد.
+٣. قيّم الخيار ج في ضوء القواعد.
+٤. قيّم الخيار د في ضوء القواعد.
+٥. استنتج أي خيار هو الأفضل دعمًا بالقواعد.
+
+اختتم بإجابتك النهائية بالتنسيق: 'الإجابة النهائية: X' حيث X هو الحرف الوحيد للخيار الصحيح (أ، ب، ج، أو د). لا تضف أي نص آخر بعد هذا السطر.
 """
 
 # --- ToT Prompts for Deduction (Simulated) ---
@@ -200,6 +293,59 @@ TOT_DEDUCTION_PROMPT_ABDUCTIVE_AR = """
 اختتم بإجابتك النهائية بالتنسيق: 'الإجابة النهائية: X' حيث X هو الحرف الوحيد للفرضية الأكثر قبولاً (أ أو ب). لا تضف أي نص آخر بعد هذا السطر.
 """
 
+TOT_DEDUCTION_PROMPT_DEDUCTIVE_EN = """
+You are an expert in deductive reasoning using a rule library.
+Below is a library of reasoning rules:
+Rule Library:
+---
+{rules_text}
+---
+
+Consider the following question and options:
+Question: {question_text}
+Option A: {option_A_text}
+Option B: {option_B_text}
+Option C: {option_C_text}
+Option D: {option_D_text}
+
+Based *strictly* on the provided Rule Library, use a Tree of Thought approach to determine the correct option:
+1.  Initial Rule Brainstorm & Option Connection:
+    *   For Option A: Identify rules that support or contradict it in relation to the question.
+    *   For Option B: Identify rules that support or contradict it in relation to the question.
+    *   For Option C: Identify rules that support or contradict it in relation to the question.
+    *   For Option D: Identify rules that support or contradict it in relation to the question.
+2.  Evaluate Plausibility Paths for each option based on rule connections.
+3.  Compare Paths and Decide: Based *only* on the rule-based evaluation, which option (A, B, C, or D) is most strongly supported by the Rule Library as the answer to the question?
+
+Conclude with your final answer in the format: 'Final Answer: X' where X is the single letter of the correct option (A, B, C, or D). Do not add any other text after this line.
+"""
+
+TOT_DEDUCTION_PROMPT_DEDUCTIVE_AR = """
+أنت خبير في الاستدلال الاستنباطي باستخدام مكتبة قواعد.
+فيما يلي مكتبة من قواعد الاستدلال:
+مكتبة القواعد:
+---
+{rules_text}
+---
+
+ضع في اعتبارك السؤال والخيارات التالية:
+السؤال: {question_text}
+الخيار أ: {option_A_text}
+الخيار ب: {option_B_text}
+الخيار ج: {option_C_text}
+الخيار د: {option_D_text}
+
+بناءً *فقط* على مكتبة القواعد المقدمة، استخدم نهج شجرة الأفكار لتحديد الخيار الصحيح:
+١. عصف ذهني أولي للقواعد وربط الخيارات:
+    *   بالنسبة للخيار أ: حدد القواعد التي تدعمه أو تتعارض معه فيما يتعلق بالسؤال.
+    *   بالنسبة للخيار ب: حدد القواعد التي تدعمه أو تتعارض معه فيما يتعلق بالسؤال.
+    *   بالنسبة للخيار ج: حدد القواعد التي تدعمه أو تتعارض معه فيما يتعلق بالسؤال.
+    *   بالنسبة للخيار د: حدد القواعد التي تدعمه أو تتعارض معه فيما يتعلق بالسؤال.
+٢. تقييم مسارات القبول لكل خيار بناءً على ارتباطات القواعد.
+٣. قارن المسارات وقرر: بناءً *فقط* على التقييم المستند إلى القواعد، أي خيار (أ، ب، ج، أو د) هو الأكثر دعمًا قويًا بواسطة مكتبة القواعد كإجابة على السؤال؟
+
+اختتم بإجابتك النهائية بالتنسيق: 'الإجابة النهائية: X' حيث X هو الحرف الوحيد للخيار الصحيح (أ، ب، ج، أو د). لا تضف أي نص آخر بعد هذا السطر.
+"""
 
 # --- Helper Functions ---
 
@@ -207,25 +353,52 @@ def load_rule_library(file_path: str) -> list[str]:
     """Loads rules from a JSON file, expecting a list of dicts with a 'rule' key."""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            raw_rules = json.load(f)
-        rule_library_texts = [item['rule'] for item in raw_rules if 'rule' in item and isinstance(item['rule'], str) and item['rule'].strip()]
-        if not rule_library_texts:
-            print(f"Warning: No valid rules found in {file_path} or rules are empty.")
+            data = json.load(f)
+        if isinstance(data, list) and all(isinstance(item, dict) and 'rule' in item for item in data):
+            return [item['rule'] for item in data if item['rule'].strip()]
+        elif isinstance(data, list) and all(isinstance(item, str) for item in data): # Handle list of strings
+             return [item for item in data if item.strip()]
+        else:
+            print(f"Warning: Rule library JSON structure not as expected in {file_path}. Expected list of dicts with 'rule' key or list of strings.")
             return []
-        return rule_library_texts
     except FileNotFoundError:
-        print(f"Error: Rule library file not found at {file_path}")
+        print(f"Error: Abductive rule JSON file not found: {file_path}")
         return []
     except json.JSONDecodeError:
-        print(f"Error: Could not decode JSON from rule library file {file_path}")
+        print(f"Error: Could not parse abductive rule JSON file: {file_path}")
         return []
     except Exception as e:
-        print(f"Error loading rule library from {file_path}: {e}")
+        print(f"An unexpected error occurred while loading abductive JSON rules from {file_path}: {e}")
         return []
+
+def load_deductive_xml_rules(file_path: str) -> list[str]:
+    """Loads deductive rules from an XML file, expecting <rules><rule>text</rule></rules> structure."""
+    rules = []
+    try:
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        # Assuming rules are direct children <rule> tags under the root <rules> tag
+        # Or <rule> tags anywhere if the structure is flatter. Using .//rule to be more flexible.
+        for rule_element in root.findall('.//rule'): 
+            if rule_element.text:
+                rules.append(rule_element.text.strip())
+        if not rules:
+            print(f"Warning: No rules found or extracted from deductive XML file: {file_path}")
+    except FileNotFoundError:
+        print(f"Error: Deductive rule XML file not found: {file_path}")
+        return []
+    except ET.ParseError:
+        print(f"Error: Could not parse deductive rule XML file: {file_path}")
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred while loading deductive XML rules from {file_path}: {e}")
+        return []
+    return rules
 
 def get_abductive_data_from_row(row: pd.Series, lang_alpa: str) -> dict | None:
     """
-    Extracts observations, hypotheses, and gold answer letter from a DataFrame row.
+    Extracts observations, hypotheses, and gold answer letter from a DataFrame row
+    for abductive reasoning (2 hypotheses).
     """
     obs1 = str(row.get('observation_1', '')).strip()
     obs2 = str(row.get('observation_2', '')).strip()
@@ -234,6 +407,7 @@ def get_abductive_data_from_row(row: pd.Series, lang_alpa: str) -> dict | None:
     label_str = str(row.get('label', '')).strip()
 
     if not all([obs1, obs2, hyp1_text, hyp2_text, label_str]):
+        print(f"Warning: Missing one or more required fields for abductive data in row: {row.to_dict()}")
         return None
 
     current_prompt_alpa_map = hyp_alpa_ar if lang_alpa == 'ar' else hyp_alpa_en
@@ -244,27 +418,81 @@ def get_abductive_data_from_row(row: pd.Series, lang_alpa: str) -> dict | None:
         gold_answer_letter = current_prompt_alpa_map[0]
     elif label_str == '2':
         gold_answer_letter = current_prompt_alpa_map[1]
-    # Fallback for other label formats (e.g., '0', 'A', 'B')
     elif label_str == '0': # If '0' is used for the first hypothesis
         gold_answer_letter = current_prompt_alpa_map[0]
     else: # Check for direct letter labels 'A'/'B' or 'أ'/'ب'
         temp_label_upper = label_str.upper() # Ensure consistent casing for A/B
-        # For Arabic, 'أ' and 'ب' don't typically change with .upper(), which is fine.
-        if temp_label_upper == current_prompt_alpa_map[0].upper(): # Compare with uppercased A/أ
+        if temp_label_upper == current_prompt_alpa_map[0].upper():
             gold_answer_letter = current_prompt_alpa_map[0]
-        elif temp_label_upper == current_prompt_alpa_map[1].upper(): # Compare with uppercased B/ب
+        elif temp_label_upper == current_prompt_alpa_map[1].upper():
             gold_answer_letter = current_prompt_alpa_map[1]
         else:
-            # print(f"Warning: Unrecognized label format '{label_str}' in row. Expected '1', '2', '0', 'A', 'B', 'أ', or 'ب'.")
-            return None
+            print(f"Warning: Unrecognized label '{label_str}' for abductive data in row: {row.to_dict()}")
 
-    if gold_answer_letter is None: # Should only be None if the above logic fails to assign
+    if gold_answer_letter is None:
         return None
 
     return {
         "obs1": obs1, "obs2": obs2,
         "hyp1_text": hyp1_text, "hyp2_text": hyp2_text,
-        "gold_answer_letter": gold_answer_letter
+        "gold_answer_letter": gold_answer_letter,
+        "type": "abductive" # Add type identifier
+    }
+
+def get_deductive_data_from_row(row: pd.Series, lang_alpa: str) -> dict | None:
+    """
+    Extracts question, options (A,B,C,D), and gold answer letter from a DataFrame row
+    for deductive reasoning.
+    """
+    question = str(row.get('question', '')).strip()
+    opt_a = str(row.get('option_a', '')).strip()
+    opt_b = str(row.get('option_b', '')).strip()
+    opt_c = str(row.get('option_c', '')).strip()
+    opt_d = str(row.get('option_d', '')).strip()
+    answer_str = str(row.get('answer', '')).strip() # This is the gold answer letter (A,B,C,D or أ,ب,ج,د)
+
+    if not all([question, opt_a, opt_b, opt_c, opt_d, answer_str]):
+        print(f"Warning: Missing one or more required fields for deductive data in row: {row.to_dict()}")
+        return None
+
+    current_deductive_alpa_map = hyp_alpa_deductive_ar if lang_alpa == 'ar' else hyp_alpa_deductive_en
+    gold_answer_letter = None
+
+    # The 'answer' column directly contains the letter of the correct option.
+    # Normalize to upper for English to match map keys if necessary, Arabic keys are as-is.
+    normalized_answer_str = answer_str.upper() if lang_alpa == 'en' else answer_str
+
+    # Check if the answer_str is one of the valid letters in the current deductive map
+    if normalized_answer_str in current_deductive_alpa_map.values():
+        gold_answer_letter = normalized_answer_str
+    else:
+        # Attempt to map from 0-indexed or 1-indexed numeric answers if direct letter match fails
+        # This is a fallback, ideally the 'answer' column is already A/B/C/D or أ/ب/ج/د
+        try:
+            answer_idx = -1
+            if answer_str == '0' or answer_str.upper() == 'A' or answer_str == 'أ': answer_idx = 0
+            elif answer_str == '1' or answer_str.upper() == 'B' or answer_str == 'ب': answer_idx = 1
+            elif answer_str == '2' or answer_str.upper() == 'C' or answer_str == 'ج': answer_idx = 2
+            elif answer_str == '3' or answer_str.upper() == 'D' or answer_str == 'د': answer_idx = 3
+            
+            if answer_idx != -1 and answer_idx in current_deductive_alpa_map:
+                 gold_answer_letter = current_deductive_alpa_map[answer_idx]
+            else:
+                print(f"Warning: Unrecognized answer label '{answer_str}' for deductive data in row: {row.to_dict()}")
+        except ValueError:
+            print(f"Warning: Could not parse answer label '{answer_str}' for deductive data in row: {row.to_dict()}")
+
+    if gold_answer_letter is None:
+        return None
+
+    return {
+        "question_text": question,
+        "option_A_text": opt_a,
+        "option_B_text": opt_b,
+        "option_C_text": opt_c,
+        "option_D_text": opt_d,
+        "gold_answer_letter": gold_answer_letter,
+        "type": "deductive" # Add type identifier
     }
 
 def format_deduction_abductive_prompt(rules_text_list: list[str], obs1: str, obs2: str,
@@ -277,12 +505,37 @@ def format_deduction_abductive_prompt(rules_text_list: list[str], obs1: str, obs
     elif use_cot:
         template = COT_DEDUCTION_PROMPT_ABDUCTIVE_AR if lang_prompt == 'ar' else COT_DEDUCTION_PROMPT_ABDUCTIVE_EN
     else: # Zero-shot
-        template = DEDUCTION_PROMPT_ABDUCTIVE_AR if lang_prompt == 'ar' else DEDUCTION_PROMPT_ABDUCTIVE_EN
+        # Ensure DEDUCTION_PROMPT_ABDUCTIVE_AR and DEDUCTION_PROMPT_ABDUCTIVE_EN are defined
+        if lang_prompt == 'ar':
+            template = globals().get('DEDUCTION_PROMPT_ABDUCTIVE_AR', COT_DEDUCTION_PROMPT_ABDUCTIVE_AR) # Fallback to CoT if zero-shot not defined
+        else:
+            template = globals().get('DEDUCTION_PROMPT_ABDUCTIVE_EN', COT_DEDUCTION_PROMPT_ABDUCTIVE_EN) # Fallback to CoT if zero-shot not defined
     
     return template.format(
         rules_text=rules_str,
         observation_1=obs1, observation_2=obs2,
         hypothesis_A_text=hyp_A_text, hypothesis_B_text=hyp_B_text
+    )
+
+def format_deductive_prompt(rules_text_list: list[str], question_text: str, 
+                            option_A_text: str, option_B_text: str, option_C_text: str, option_D_text: str, 
+                            lang_prompt: str, use_cot: bool = False, use_tot: bool = False) -> str:
+    rules_str = "\n".join(f"- {rule.strip()}" for rule in rules_text_list if rule.strip())
+
+    if use_tot:
+        template = TOT_DEDUCTION_PROMPT_DEDUCTIVE_AR if lang_prompt == 'ar' else TOT_DEDUCTION_PROMPT_DEDUCTIVE_EN
+    elif use_cot:
+        template = COT_DEDUCTION_PROMPT_DEDUCTIVE_AR if lang_prompt == 'ar' else COT_DEDUCTION_PROMPT_DEDUCTIVE_EN
+    else: # Zero-shot
+        template = DEDUCTION_PROMPT_DEDUCTIVE_AR if lang_prompt == 'ar' else DEDUCTION_PROMPT_DEDUCTIVE_EN
+        
+    return template.format(
+        rules_text=rules_str,
+        question_text=question_text,
+        option_A_text=option_A_text,
+        option_B_text=option_B_text,
+        option_C_text=option_C_text,
+        option_D_text=option_D_text
     )
 
 
@@ -370,90 +623,104 @@ def call_llm_for_deduction(prompt_text: str, llm_config: dict, max_retries: int 
         print(f"Error: Unknown LLM type '{llm_type}' in llm_config.")
         return None
 
-def parse_deduction_response(llm_output: str | None, lang_alpa: str, is_cot_or_tot: bool = False) -> str | None:
-    """Parses the LLM's response to get 'A'/'B' or 'أ'/'ب'."""
+def parse_deduction_response(llm_output: str | None, lang_alpa: str, 
+                             is_cot_or_tot: bool = False, 
+                             reasoning_type: str = "abductive") -> str | None: # Added reasoning_type
     if not llm_output: # Handles None or empty string
         return None
     
     cleaned_output_for_final_answer_check = llm_output.strip() # Keep original case for regex
     
-    current_alpa_map = hyp_alpa_ar if lang_alpa == 'ar' else hyp_alpa_en
-    valid_choices_set = set(current_alpa_map.values()) # e.g. {'A', 'B'} or {'أ', 'ب'}
+    current_alpa_map = {}
+    if reasoning_type == "deductive":
+        current_alpa_map = hyp_alpa_deductive_ar if lang_alpa == 'ar' else hyp_alpa_deductive_en
+    else: # abductive (default)
+        current_alpa_map = hyp_alpa_ar if lang_alpa == 'ar' else hyp_alpa_en
+        
+    valid_choices_set = set(current_alpa_map.values()) # e.g. {'A', 'B'} or {'أ', 'ب', 'ج', 'د'}
     
     # For CoT/ToT, primarily look for "Final Answer: X"
     if is_cot_or_tot:
-        # Regex to find "Final Answer: X" or "الإجابة النهائية: X" (case-insensitive for "Final Answer")
-        # It captures the single letter choice.
-        # Handles optional brackets [[X]] or [X] as sometimes seen.
-        patterns = [
-            r"Final Answer:\s*\[?\[?([A-B])\]?\]?$", # English
-            r"الإجابة النهائية:\s*\[?\[?([أ-ب])\]?\]?$" # Arabic
-        ]
+        # Dynamically create character class for regex from valid_choices_set
+        char_class_chars_list = sorted(list(valid_choices_set))
+        char_class_regex_part = "".join(char_class_chars_list)
         
+        if lang_alpa == 'ar':
+            # For Arabic, ensure the marker is exact. The choices are already specific.
+            pattern_str_final_answer = rf"الإجابة النهائية:\s*\[?\[?([{char_class_regex_part}])\]?\]?\.?$"
+        else: # English
+            # For English, "Final Answer:" can be case-insensitive. The choice letter will be normalized.
+            pattern_str_final_answer = rf"Final Answer:\s*\[?\[?([{char_class_regex_part}])\]?\]?\.?$"
+
         final_answer_letter = None
-        for pattern_str in patterns:
-            # Search from the end of the string for the last occurrence if multiple.
-            # However, prompts ask for no text after, so a standard search should be fine.
-            # For more robustness, one might iterate all matches and take the last one.
-            match = re.search(pattern_str, cleaned_output_for_final_answer_check, re.IGNORECASE if "Final Answer" in pattern_str else 0)
-            if match:
-                letter = match.group(1).upper() if lang_alpa == 'en' else match.group(1) # Ensure 'A'/'B' for English
-                if letter in valid_choices_set:
-                    final_answer_letter = letter
-                    break # Found a valid letter
+        # Apply re.IGNORECASE for English marker, not for Arabic.
+        # The character class itself ([ABCD] or [أبجد]) will match case-sensitively unless the IGNORECASE flag makes it not so.
+        # For English, we want to match "Final Answer: a" and normalize 'a' to 'A'.
+        match = re.search(pattern_str_final_answer, cleaned_output_for_final_answer_check, re.IGNORECASE if lang_alpa == 'en' else 0)
+        if match:
+            letter = match.group(1)
+            if lang_alpa == 'en': # Normalize case for English choice
+                letter = letter.upper()
+            
+            if letter in valid_choices_set: # Check if the (normalized) extracted letter is a valid choice
+                final_answer_letter = letter
+        
         if final_answer_letter:
             return final_answer_letter
-        # If CoT/ToT was used but "Final Answer: X" not found, it's likely a parse error for this mode.
-        # We could fall through to simpler parsing, but it might be less reliable for verbose CoT/ToT.
-        # For now, if is_cot_or_tot and pattern fails, return None.
-        # print(f"Warning: CoT/ToT mode - Could not parse 'Final Answer: X' from: '{llm_output}'")
-        # return None # Stricter for CoT/ToT if pattern fails.
+        # If CoT/ToT was used but "Final Answer: X" not found, fall through to simpler parsing.
 
-    # Standard parsing (Zero-shot or fallback if CoT/ToT pattern fails and we decide to allow fallback)
-    # Standardize: strip whitespace. For English, also uppercase.
-    cleaned_output_simple_parse = llm_output.strip().upper() if lang_alpa == 'en' else llm_output.strip()
-    if not cleaned_output_simple_parse: # If stripping results in an empty string
+    # Standard parsing (Zero-shot or fallback if CoT/ToT pattern fails)
+    text_to_parse = llm_output.strip()
+    if lang_alpa == 'en': # Uppercase for English to match 'A', 'B', 'C', 'D'
+        text_to_parse = text_to_parse.upper()
+
+    if not text_to_parse: # If stripping results in an empty string
         return None
 
-    # 1. Exact match (single character that is a valid choice)
-    if cleaned_output_simple_parse in valid_choices_set:
-        return cleaned_output_simple_parse
+    # Fallback 1: Exact match (single character that is a valid choice after cleaning)
+    if text_to_parse in valid_choices_set:
+        return text_to_parse
 
-    # 2. Single unique valid character in the output (handles "A.", "(A)", "Answer: A")
-    present_valid_chars = set()
-    # Use the appropriately cased output for character iteration
-    # For English, valid_choices_set is {'A', 'B'}, cleaned_output_simple_parse is uppercased.
-    # For Arabic, valid_choices_set is {'أ', 'ب'}, cleaned_output_simple_parse is not uppercased.
-    # So, iterate over cleaned_output_simple_parse for this logic.
-    for char_token in cleaned_output_simple_parse: 
+    # Fallback 2: Single unique valid character in the entire cleaned output
+    # (handles "A.", "(A)", "Answer: A", etc.)
+    present_valid_choices = set()
+    for char_token in text_to_parse: 
+        # char_token is already uppercased if lang_alpa == 'en'
         if char_token in valid_choices_set: 
-            present_valid_chars.add(char_token)
+            present_valid_choices.add(char_token)
     
-    if len(present_valid_chars) == 1:
-        return list(present_valid_chars)[0]
+    if len(present_valid_choices) == 1:
+        return list(present_valid_choices)[0]
     
-    # Fallback for CoT/ToT if the "Final Answer: X" was not found, try the simple parse on the whole output.
-    # This part is reached if is_cot_or_tot is true AND the regex failed, OR if is_cot_or_tot is false.
-    # The above simple parsing (exact match, unique char) would have already run.
-    # If we are here and is_cot_or_tot was true, it means the regex failed, and the simple parse also failed.
-    # If is_cot_or_tot was false, it means simple parse failed.
-    # So, if we reach here, it's likely unparseable by current methods.
+    # Fallback 3: Check if the last "word" (token) of the output is a valid choice.
+    # This is for cases like "The answer is clearly A" or "أعتقد أن الإجابة هي ب"
+    # Split by whitespace and common punctuation that might separate words.
+    # For Arabic, \w includes Arabic letters.
+    words = re.split(r'\s+|[^\w\s]', text_to_parse) 
+    words = [word for word in words if word] # Filter out empty strings
+
+    if words:
+        last_word = words[-1]
+        # last_word is already uppercased if lang_alpa == 'en' because text_to_parse was.
+        if last_word in valid_choices_set:
+            return last_word
 
     return None
 
 
 
 # --- Main Function ---
-# --- Main Function ---
 def main():
-    parser = argparse.ArgumentParser(description="Deduce hypothesis plausibility using a rule library and LLMs.")
-    parser.add_argument("--eval_data_file", type=str, required=True, help="Path to evaluation CSV (obs1, obs2, hyp1, hyp2, label).")
-    parser.add_argument("--rule_library_file", type=str, required=True, help="Path to JSON rule library.")
-    parser.add_argument("--output_results_file", type=str, default="deduction_results.csv", help="Filename for results CSV.")
-    parser.add_argument("--output_folder", type=str, default="results_deduction", help="Folder for results CSV.")
+    parser = argparse.ArgumentParser(description="Deduce hypothesis plausibility or solve deductive problems using a rule library and LLMs.")
+    parser.add_argument("--eval_data_file", type=str, required=True, help="Path to evaluation CSV.")
+    parser.add_argument("--rule_library_file", type=str, required=True, help="Path to JSON rule library (abductive/general).")
+    parser.add_argument("--deductive_rule_file", type=str, default=None, help="Path to XML rule library for deductive reasoning (optional).")
+    parser.add_argument("--output_results_file", type=str, default="reasoning_results.csv", help="Filename for results CSV.")
+    parser.add_argument("--output_folder", type=str, default="results_reasoning", help="Folder for results CSV.")
     parser.add_argument("--lang_prompt", type=str, default="en", choices=["en", "ar"], help="Prompt language.")
-    parser.add_argument("--lang_alpa", type=str, default="en", choices=["en", "ar"], help="Hypothesis label language (A/B vs أ/ب).")
+    parser.add_argument("--lang_alpa", type=str, default="en", choices=["en", "ar"], help="Hypothesis/Option label language (A/B or A/B/C/D).")
     parser.add_argument("--max_examples", type=int, default=None, help="Max evaluation examples (for testing).")
+    parser.add_argument("--reasoning_type", type=str, default="abductive", choices=["abductive", "deductive"], help="Type of reasoning to perform (abductive or deductive).")
 
     # Prompting strategy
     parser.add_argument("--use_cot", action='store_true', help="Use Chain of Thought prompting for deduction.")
@@ -477,111 +744,114 @@ def main():
     
     llm_config = {"type": None}
     model_identifier_suffix = "" # For filename
+    if args.reasoning_type == "deductive":
+        model_identifier_suffix += "_deductive"
+    else:
+        model_identifier_suffix += "_abductive"
+
 
     is_cot_or_tot_enabled = args.use_tot or args.use_cot # ToT takes precedence if both are somehow true
     llm_config["is_cot_or_tot"] = is_cot_or_tot_enabled
 
-    # Determine max tokens based on prompting strategy
-    if args.use_tot:
-        hf_max_new_tokens = 350  # Increased for ToT
-        groq_max_tokens = 2048    # Increased for ToT
-        model_identifier_suffix += "_tot"
-    elif args.use_cot:
-        hf_max_new_tokens = 300  # Increased for CoT
-        groq_max_tokens = 2048    # Increased for CoT
-        model_identifier_suffix += "_cot"
-    else: # Zero-shot
-        hf_max_new_tokens = 3    # Short for zero-shot (A, B, or أ, ب)
-        groq_max_tokens = 10     # Short for zero-shot, Groq might need a bit more for safety
+    # Define max tokens based on prompting strategy and LLM type
+    MAX_TOKENS_COT_TOT_HF = 4096 
+    MAX_TOKENS_ZERO_SHOT_HF = 4096  # Increased slightly for safety
+    MAX_TOKENS_COT_TOT_GROQ = 4096
+    MAX_TOKENS_ZERO_SHOT_GROQ = 4096 # Increased for Groq zero-shot, as it might add small phrases
 
     if args.use_hf_model:
+        llm_config["type"] = "hf"
+        llm_config["model_path"] = args.hf_model_path
+        llm_config["lora_weights"] = args.lora_weights
+        llm_config["load_8bit"] = args.load_8bit
+        llm_config["max_length"] = args.hf_max_length # Tokenizer max length
+        model_name_for_file = os.path.basename(args.hf_model_path) if args.hf_model_path else "hf_default"
+        # Sanitize model_name_for_file further for any other problematic characters if necessary
+        model_name_for_file = model_name_for_file.replace("/", "_").replace(":", "_")
+        model_identifier_suffix += f"_hf_{model_name_for_file}"
+        if is_cot_or_tot_enabled:
+            llm_config["max_tokens_to_generate"] = MAX_TOKENS_COT_TOT_HF
+        else:
+            llm_config["max_tokens_to_generate"] = MAX_TOKENS_ZERO_SHOT_HF
+        
         if not HF_AVAILABLE:
-            print("Error: Hugging Face Transformers library not found. Please install it (`pip install transformers peft accelerate bitsandbytes`).")
+            print("Error: --use_hf_model selected, but Hugging Face Transformers library is not available. Please install it.")
             return
         if not args.hf_model_path:
-            print("Error: --hf_model_path must be specified when using --use_hf_model.")
+            print("Error: --use_hf_model selected, but --hf_model_path not provided.")
             return
         
-        print(f"Using Hugging Face model: {args.hf_model_path}")
-        llm_config["type"] = "hf"
-        model_name_for_file = args.hf_model_path.split("/")[-1]
+        print(f"Loading Hugging Face model: {args.hf_model_path}...")
+        tokenizer = AutoTokenizer.from_pretrained(args.hf_model_path, trust_remote_code=True)
+        model_load_params = {"trust_remote_code": True}
+        if args.load_8bit:
+            model_load_params["load_in_8bit"] = True
+        
+        model = AutoModelForCausalLM.from_pretrained(args.hf_model_path, **model_load_params)
+
         if args.lora_weights:
-            model_name_for_file += f"_{args.lora_weights.split('/')[-1]}"
-        model_identifier_for_filename = f"hf_{model_name_for_file}{model_identifier_suffix}"
-        llm_config["max_tokens_to_generate"] = hf_max_new_tokens
+            print(f"Loading LoRA weights from {args.lora_weights}...")
+            model = PeftModel.from_pretrained(model, args.lora_weights)
+        
+        model.to(device)
+        model.eval()
+        llm_config["model"] = model
+        llm_config["tokenizer"] = tokenizer
+        print("Hugging Face model loaded.")
 
-
-        try:
-            tokenizer = AutoTokenizer.from_pretrained(args.hf_model_path, trust_remote_code=True)
-            
-            quantization_config = None
-            if args.load_8bit:
-                quantization_config = BitsAndBytesConfig(
-                    load_in_8bit=True,
-                    bnb_4bit_compute_dtype=torch.float16 
-                )
-                print("Loading HF model in 8-bit.")
-
-            model = AutoModelForCausalLM.from_pretrained(
-                args.hf_model_path,
-                quantization_config=quantization_config,
-                device_map="auto", 
-                trust_remote_code=True,
-                torch_dtype=torch.float16 if args.load_8bit or "cuda" in device else None
-            )
-
-            if args.lora_weights:
-                print(f"Loading LoRA weights from: {args.lora_weights}")
-                model = PeftModel.from_pretrained(model, args.lora_weights)
-                print("LoRA weights loaded.")
-            
-            if tokenizer.pad_token is None and tokenizer.pad_token_id is None:
-                print("Setting pad_token to eos_token for HF model.")
-                tokenizer.pad_token = tokenizer.eos_token
-                if hasattr(model.config, 'pad_token_id'):
-                    model.config.pad_token_id = tokenizer.eos_token_id
-
-            tokenizer.padding_side = "left" 
-            model.eval()
-            
-            llm_config["model"] = model
-            llm_config["tokenizer"] = tokenizer
-            llm_config["max_length"] = args.hf_max_length
-            print(f"Hugging Face model '{args.hf_model_path}' loaded. Max new tokens: {hf_max_new_tokens}")
-
-        except Exception as e:
-            print(f"Error loading Hugging Face model '{args.hf_model_path}': {e}")
-            return
-    else: # Default to Groq
-        if not GROQ_AVAILABLE:
-            print("Error: Groq SDK not found. Please install it (`pip install groq`) or use --use_hf_model.")
-            return
-        print(f"Using Groq model: {args.groq_model}")
+    else: # Groq LLM
         llm_config["type"] = "groq"
-        model_identifier_for_filename = f"groq_{args.groq_model.replace('/', '-')}{model_identifier_suffix}"
-        llm_config["max_tokens_to_generate"] = groq_max_tokens
+        sanitized_groq_model_name = args.groq_model.replace("/", "_").replace(":", "_")
+        llm_config["model_name"] = args.groq_model # Keep original for API call
+        model_identifier_suffix += f"_groq_{sanitized_groq_model_name}" # Use sanitized for filename
+        if is_cot_or_tot_enabled:
+            llm_config["max_tokens_to_generate"] = MAX_TOKENS_COT_TOT_GROQ
+        else:
+            llm_config["max_tokens_to_generate"] = MAX_TOKENS_ZERO_SHOT_GROQ
+
+        if not GROQ_AVAILABLE:
+            print("Error: Groq LLM selected, but Groq library is not available. Please install it.")
+            return
         try:
-            groq_api_key = os.environ.get("GROQ_API_KEY")
-            if not groq_api_key:
-                print("Error: GROQ_API_KEY environment variable not set.")
-                return
-            llm_config["client"] = Groq(api_key=groq_api_key)
-            llm_config["model_name"] = args.groq_model
-            print(f"Groq client initialized for model: {args.groq_model}. Max tokens: {groq_max_tokens}")
+            llm_config['client'] = Groq()
+            print(f"Using Groq LLM with model: {args.groq_model}")
         except Exception as e:
             print(f"Error initializing Groq client: {e}")
             return
 
-    # Construct output filename
-    base_output_filename = os.path.splitext(args.output_results_file)[0]
-    ext_output_filename = os.path.splitext(args.output_results_file)[1] if os.path.splitext(args.output_results_file)[1] else ".csv"
-    full_output_path = os.path.join(args.output_folder, f"{base_output_filename}_{model_identifier_for_filename}{ext_output_filename}")
+    # Determine prompting strategy for filename
+    prompt_strategy_suffix = ""
+    if args.use_tot:
+        prompt_strategy_suffix = "_tot"
+    elif args.use_cot:
+        prompt_strategy_suffix = "_cot"
+    else:
+        prompt_strategy_suffix = "_zeroshot" # Explicitly state zero-shot
 
-    rule_library_texts = load_rule_library(args.rule_library_file)
-    if not rule_library_texts:
-        print(f"Exiting due to issues loading rule library from {args.rule_library_file}.")
+    # Construct output filename
+    base_output_filename = f"deduction_results_{args.lang_prompt}{prompt_strategy_suffix}{model_identifier_suffix}.csv"
+    output_file_path = os.path.join(args.output_folder, base_output_filename)
+
+    abductive_rule_library_texts = load_rule_library(args.rule_library_file)
+    if not abductive_rule_library_texts:
+        print(f"Warning: Main rule library from {args.rule_library_file} is empty or failed to load.")
+    
+    deductive_xml_rules = []
+    if args.deductive_rule_file:
+        deductive_xml_rules = load_deductive_xml_rules(args.deductive_rule_file)
+        if not deductive_xml_rules:
+            print(f"Warning: Deductive XML rule library from {args.deductive_rule_file} is empty or failed to load.")
+
+    all_rules_for_prompt = abductive_rule_library_texts + deductive_xml_rules
+    
+    if not all_rules_for_prompt:
+        print("Error: No rules were loaded from any source. Exiting, as rules are required for reasoning.")
         return
-    print(f"Loaded {len(rule_library_texts)} rules.")
+
+    print(f"Loaded {len(abductive_rule_library_texts)} rules from JSON library.")
+    if args.deductive_rule_file:
+        print(f"Loaded {len(deductive_xml_rules)} rules from XML library.")
+    print(f"Total {len(all_rules_for_prompt)} rules will be used for prompting.")
 
     try:
         eval_df = pd.read_csv(args.eval_data_file)
@@ -599,25 +869,48 @@ def main():
     data_errors = 0
     llm_call_errors = 0
 
-    print("Starting deduction process...")
-    for index, row in tqdm(eval_df.iterrows(), total=len(eval_df), desc="Deducing"):
-        data_item = get_abductive_data_from_row(row, args.lang_alpa)
-        if not data_item:
-            data_errors += 1
-            results_data.append({
-                "obs1": row.get('observation_1', ''), "obs2": row.get('observation_2', ''),
-                "hyp1": row.get('hypothesis_1', ''), "hyp2": row.get('hypothesis_2', ''),
-                "gold_label_original": row.get('label', ''), "gold_label_letter": "DATA_ERROR",
-                "predicted_label_letter": "DATA_ERROR", "is_correct": False,
-                "llm_raw_response": "Skipped due to data error."
-            })
-            continue
+    print(f"Starting {args.reasoning_type} reasoning process...")
+    for index, row in tqdm(eval_df.iterrows(), total=len(eval_df), desc=f"{args.reasoning_type.capitalize()} Reasoning"):
+        prompt = None
+        data_item = None
+        # expected_options_str = "" # For logging/error messages (can be re-added if needed)
 
-        prompt = format_deduction_abductive_prompt(
-            rule_library_texts, data_item["obs1"], data_item["obs2"],
-            data_item["hyp1_text"], data_item["hyp2_text"], args.lang_prompt,
-            use_cot=args.use_cot, use_tot=args.use_tot # Pass CoT/ToT flags
-        )
+        if args.reasoning_type == "abductive":
+            data_item = get_abductive_data_from_row(row, args.lang_alpa)
+            if data_item:
+                prompt = format_deduction_abductive_prompt(
+                    all_rules_for_prompt, data_item["obs1"], data_item["obs2"],
+                    data_item["hyp1_text"], data_item["hyp2_text"], args.lang_prompt,
+                    use_cot=args.use_cot, use_tot=args.use_tot
+                )
+        elif args.reasoning_type == "deductive":
+            data_item = get_deductive_data_from_row(row, args.lang_alpa)
+            if data_item:
+                prompt = format_deductive_prompt(
+                    all_rules_for_prompt,
+                    data_item["question_text"],
+                    data_item["option_A_text"], data_item["option_B_text"],
+                    data_item["option_C_text"], data_item["option_D_text"],
+                    args.lang_prompt,
+                    use_cot=args.use_cot, use_tot=args.use_tot
+                )
+        else: # Should not happen due to choices in argparse
+            print(f"Critical Error: Unknown reasoning type '{args.reasoning_type}'. Exiting.")
+            # Consider `parser.error()` or `sys.exit(1)` if this path is reachable
+            return
+
+        if not data_item or not prompt:
+            data_errors += 1
+            error_log_item = {k: row.get(k, '') for k in row.index}
+            error_log_item.update({
+                "gold_label_original": row.get('label', row.get('answer', '')), # Handle both abductive/deductive original label
+                "gold_label_letter": "DATA_ERROR",
+                "predicted_label_letter": "DATA_ERROR", "is_correct": False,
+                "llm_raw_response": "Skipped due to data error or prompt formatting issue.",
+                "reasoning_type": args.reasoning_type
+            })
+            results_data.append(error_log_item)
+            continue
 
         llm_response = call_llm_for_deduction(prompt, llm_config)
         
@@ -628,33 +921,52 @@ def main():
             llm_call_errors +=1
             predicted_letter_for_csv = "LLM_CALL_ERROR"
         else:
-            predicted_letter = parse_deduction_response(llm_response, args.lang_alpa, is_cot_or_tot=is_cot_or_tot_enabled)
+            predicted_letter = parse_deduction_response(
+                llm_response, 
+                args.lang_alpa, 
+                is_cot_or_tot=is_cot_or_tot_enabled,
+                reasoning_type=args.reasoning_type # Pass the reasoning type
+            )
             if predicted_letter is None:
                 parse_errors += 1
                 predicted_letter_for_csv = "PARSE_ERROR"
-            elif data_item["gold_answer_letter"]: # Parsed successfully
+            elif data_item.get("gold_answer_letter"): # Check if gold_answer_letter exists
                 is_correct = (predicted_letter == data_item["gold_answer_letter"])
                 if is_correct:
                     correct_predictions += 1
                 predicted_letter_for_csv = predicted_letter
             else: # Parsed successfully but no gold answer (should not happen if data_item is valid)
                 predicted_letter_for_csv = predicted_letter 
+                print(f"Warning: Parsed LLM response to '{predicted_letter}' but no gold_answer_letter in data_item for row {index}.")
         
         total_processed +=1
 
-        results_data.append({
-            "obs1": data_item["obs1"], "obs2": data_item["obs2"],
-            "hyp1": data_item["hyp1_text"], "hyp2": data_item["hyp2_text"],
-            "gold_label_original": row.get('label', ''),
-            "gold_label_letter": data_item["gold_answer_letter"],
+        current_result = {
+            "gold_label_original": row.get('label', row.get('answer', '')), # original label from CSV
+            "gold_label_letter": data_item.get("gold_answer_letter", "N/A_IF_DATA_ERROR"), # Use .get for safety
             "predicted_label_letter": predicted_letter_for_csv,
             "is_correct": is_correct,
-            "llm_raw_response": llm_response if llm_response else "LLM_ERROR_NO_RESPONSE"
-        })
+            "llm_raw_response": llm_response if llm_response else "LLM_ERROR_NO_RESPONSE",
+            "reasoning_type": args.reasoning_type
+        }
+        if args.reasoning_type == "abductive":
+            current_result.update({
+                "obs1": data_item.get("obs1",""), "obs2": data_item.get("obs2",""), # Use .get for safety
+                "hyp1": data_item.get("hyp1_text",""), "hyp2": data_item.get("hyp2_text",""),
+            })
+        else: # deductive
+            current_result.update({
+                "question": data_item.get("question_text",""),
+                "option_a": data_item.get("option_A_text",""),
+                "option_b": data_item.get("option_B_text",""),
+                "option_c": data_item.get("option_C_text",""),
+                "option_d": data_item.get("option_D_text",""),
+            })
+        results_data.append(current_result)
 
     results_df = pd.DataFrame(results_data)
-    results_df.to_csv(full_output_path, index=False, encoding='utf-8')
-    print(f"\nDeduction results saved to: {full_output_path}")
+    results_df.to_csv(output_file_path, index=False, encoding='utf-8')
+    print(f"\nReasoning results saved to: {output_file_path}")
 
     if data_errors > 0:
         print(f"Note: {data_errors} rows skipped due to input data errors.")
@@ -665,7 +977,7 @@ def main():
         
     if total_processed > 0:
         accuracy = (correct_predictions / total_processed) * 100
-        print(f"Deduction Accuracy: {accuracy:.2f}% ({correct_predictions}/{total_processed} correctly predicted examples)")
+        print(f"Reasoning Accuracy: {accuracy:.2f}% ({correct_predictions}/{total_processed} correctly predicted examples)")
     else:
         print("No examples were successfully processed to calculate accuracy.")
 

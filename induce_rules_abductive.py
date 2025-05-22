@@ -92,6 +92,52 @@ RULE_VERIFICATION_PROMPT_ABDUCTIVE_AR = (
     "أجب فقط بـ 'نعم' أو 'لا'. لا تقدم أي تفسيرات أو نصوص أخرى."
 )
 
+# --- Prompts for Deductive Reasoning ---
+RULE_GENERATION_PROMPT_DEDUCTIVE_EN = (
+    "Given the following question and options, where one option is the correct answer:\n\n"
+    "Question: {question_text}\n"
+    "Options:\n{options_formatted_text}\n"
+    "The correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
+    "What is a general rule or reasoning principle that explains why Option {correct_option_letter} is the correct answer, based on the question and options? "
+    "The rule should be concise and broadly applicable if possible. "
+    "Output the rule directly, starting with 'Rule: ' and then the rule text on the same line. "
+    "If you can identify multiple distinct rules, output each on a new line, each starting with 'Rule: '.\n"
+    "Example:\nRule: If the question asks for the capital of a country, and an option is the known capital, it is correct."
+)
+
+RULE_GENERATION_PROMPT_DEDUCTIVE_AR = (
+    "بالنظر إلى السؤال والخيارات التالية، حيث يكون أحد الخيارات هو الإجابة الصحيحة:\n\n"
+    "السؤال: {question_text}\n"
+    "الخيارات:\n{options_formatted_text}\n"
+    "الإجابة الصحيحة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
+    "ما هي القاعدة العامة أو مبدأ الاستدلال الذي يفسر لماذا الخيار {correct_option_letter} هو الإجابة الصحيحة، بناءً على السؤال والخيارات؟ "
+    "يجب أن تكون القاعدة موجزة وقابلة للتطبيق على نطاق واسع إن أمكن. "
+    "أخرج القاعدة مباشرة، بادئًا بـ 'Rule: ' ثم نص القاعدة على نفس السطر. "
+    "إذا كان بإمكانك تحديد قواعد متعددة ومتميزة، فأخرج كل قاعدة على سطر جديد، تبدأ كل منها بـ 'Rule: '.\n"
+    "مثال:\nRule: إذا كان السؤال يطلب عاصمة دولة ما، وكان أحد الخيارات هو العاصمة المعروفة، فهو صحيح."
+)
+
+RULE_VERIFICATION_PROMPT_DEDUCTIVE_EN = (
+    "Consider the following question and options:\n\n"
+    "Question: {question_text}\n"
+    "Options:\n{options_formatted_text}\n"
+    "The known correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
+    "Now, consider the following rule: \"{rule_to_verify}\"\n\n"
+    "If you strictly apply ONLY this rule to the question and options, does it help you correctly identify Option {correct_option_letter} as the correct answer? "
+    "Answer with only 'Yes' or 'No'. Do not provide explanations or any other text."
+)
+
+RULE_VERIFICATION_PROMPT_DEDUCTIVE_AR = (
+    "بالنظر إلى السؤال والخيارات التالية:\n\n"
+    "السؤال: {question_text}\n"
+    "الخيارات:\n{options_formatted_text}\n"
+    "الإجابة الصحيحة المعروفة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
+    "الآن، ضع في اعتبارك القاعدة التالية: \"{rule_to_verify}\"\n\n"
+    "إذا طبقت هذه القاعدة فقط بصرامة على السؤال والخيارات، فهل تساعدك في تحديد الخيار {correct_option_letter} بشكل صحيح على أنه الإجابة الصحيحة؟ "
+    "أجب فقط بـ 'نعم' أو 'لا'. لا تقدم أي تفسيرات أو نصوص أخرى."
+)
+# --- End Deductive Prompts ---
+
 # Alphabet maps for hypotheses (A/B or أ/ب)
 hyp_alpa_en = {1: 'A', 2: 'B'}
 hyp_alpa_ar = {1: 'أ', 2: 'ب'} # Assuming 'أ' for hypothesis_1, 'ب' for hypothesis_2
@@ -132,6 +178,46 @@ def get_abductive_data_from_row(row, lang_alpa):
     return obs1, obs2, hyp1_text, hyp2_text, correct_hypothesis_letter, correct_hypothesis_text
 
 
+def get_deductive_data_from_row(row):
+    """
+    Extracts question, options, and correct answer details from a row
+    for deductive reasoning tasks.
+    CSV format: question,option_a,option_b,option_c,option_d,answer
+    Handles both English (A,B,C,D) and Arabic (أ,ب,ج,د) answer letters.
+    """
+    question = str(row.get('question', '')).strip()
+    option_a = str(row.get('option_a', '')).strip()
+    option_b = str(row.get('option_b', '')).strip()
+    option_c = str(row.get('option_c', '')).strip()
+    option_d = str(row.get('option_d', '')).strip()
+    raw_answer_letter = str(row.get('answer', '')).strip()
+
+    if not all([question, option_a, option_b, option_c, option_d, raw_answer_letter]):
+        print(f"Warning: Missing data in deductive row: Q:{question[:20]}, A:{option_a[:10]}, B:{option_b[:10]}, C:{option_c[:10]}, D:{option_d[:10]}, Ans:{raw_answer_letter}. Skipping row.")
+        return None, None, None, None
+
+    options = {'A': option_a, 'B': option_b, 'C': option_c, 'D': option_d}
+    
+    # Map Arabic answer letters to English equivalents
+    ar_to_en_option_map = {'أ': 'A', 'ب': 'B', 'ج': 'C', 'د': 'D'}
+    
+    normalized_answer_letter = raw_answer_letter.upper() # Default to uppercase for English letters
+    if raw_answer_letter in ar_to_en_option_map: # Check if it's an Arabic letter needing mapping
+        normalized_answer_letter = ar_to_en_option_map[raw_answer_letter]
+
+    if normalized_answer_letter not in options: # Check against the English keys 'A', 'B', 'C', 'D'
+        print(f"Warning: Invalid answer letter '{raw_answer_letter}' (normalized to '{normalized_answer_letter}') in deductive row. Expected A, B, C, D or أ, ب, ج, د. Skipping row.")
+        return None, None, None, None
+
+    correct_option_text = options[normalized_answer_letter]
+    
+    # Format options using the standard A, B, C, D keys for consistency in prompts
+    options_formatted_list = [f"{key}: {value}" for key, value in options.items()]
+    options_formatted_text = "\n".join(options_formatted_list)
+
+    return question, options_formatted_text, normalized_answer_letter, correct_option_text
+
+
 def format_rule_generation_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text, correct_hyp_letter, correct_hyp_text, lang_prompt):
     """Formats the prompt for rule generation in abductive reasoning."""
     template = RULE_GENERATION_PROMPT_ABDUCTIVE_AR if lang_prompt == 'ar' else RULE_GENERATION_PROMPT_ABDUCTIVE_EN
@@ -144,6 +230,18 @@ def format_rule_generation_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text, 
         correct_hypothesis_text=correct_hyp_text
     )
 
+def format_rule_generation_deductive_prompt(question, options_fmt_text, correct_opt_letter, correct_opt_text, lang_prompt):
+    """Formats the prompt for rule generation in deductive reasoning."""
+    if lang_prompt == 'ar':
+        template = RULE_GENERATION_PROMPT_DEDUCTIVE_AR
+    else:
+        template = RULE_GENERATION_PROMPT_DEDUCTIVE_EN
+    return template.format(
+        question_text=question,
+        options_formatted_text=options_fmt_text,
+        correct_option_letter=correct_opt_letter,
+        correct_option_text=correct_opt_text
+    )
 
 
 def format_rule_verification_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text, rule_to_verify, correct_hyp_letter, correct_hyp_text, lang_prompt):
@@ -158,8 +256,21 @@ def format_rule_verification_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text
         correct_hypothesis_letter=correct_hyp_letter,
         correct_hypothesis_text=correct_hyp_text
     )
-# --- End Prompts and Formatters ---
 
+def format_rule_verification_deductive_prompt(question, options_fmt_text, rule_to_verify, correct_opt_letter, correct_opt_text, lang_prompt):
+    """Formats the prompt for rule verification in deductive reasoning."""
+    if lang_prompt == 'ar':
+        template = RULE_VERIFICATION_PROMPT_DEDUCTIVE_AR
+    else:
+        template = RULE_VERIFICATION_PROMPT_DEDUCTIVE_EN
+    return template.format(
+        question_text=question,
+        options_formatted_text=options_fmt_text,
+        rule_to_verify=rule_to_verify,
+        correct_option_letter=correct_opt_letter,
+        correct_option_text=correct_opt_text
+    )
+# --- End Prompts and Formatters ---
 
 def prepend_rule_library_to_prompt(prompt, rule_library):
     """
@@ -294,8 +405,10 @@ def parse_verification_response(llm_output):
 def main():
     """Main function to run the rule induction process."""
     parser = argparse.ArgumentParser(description="Induce a rule library for Abductive Reasoning using H->T (Groq Focused).")
-    parser.add_argument("--training_data_file", type=str, required=True, help="Path to the training data CSV file for abductive reasoning (e.g., obs1, obs2, hyp1, hyp2, label).")
-    parser.add_argument("--output_rule_library_file", type=str, default="results/abductive_rule_library.json", help="Path to save the induced rule library.")
+    parser.add_argument("--task_type", type=str, default="abductive", choices=["abductive", "deductive"], help="Type of reasoning task for rule induction.")
+    parser.add_argument("--abductive_data_file", type=str, help="Path to the training data CSV file for abductive reasoning (e.g., obs1, obs2, hyp1, hyp2, label).")
+    parser.add_argument("--deductive_data_file", type=str, help="Path to the training data CSV file for deductive reasoning (question,option_a,option_b,option_c,option_d,answer).")
+    parser.add_argument("--output_rule_library_file", type=str, default="results/rule_library.json", help="Path to save the induced rule library.")
     parser.add_argument("--output_folder", type=str, default="results", help="Folder to save the rule library.")
 
     # Groq Configuration Arguments
@@ -340,30 +453,62 @@ def main():
     # Ensure output directory exists
     os.makedirs(args.output_folder, exist_ok=True)
     # Construct full output path
-    args.output_rule_library_file = os.path.join(args.output_folder, os.path.basename(args.output_rule_library_file))
+    if not os.path.isabs(args.output_rule_library_file) and args.output_folder:
+        args.output_rule_library_file = os.path.join(args.output_folder, os.path.basename(args.output_rule_library_file))
+    elif not os.path.dirname(args.output_rule_library_file): # If it's a filename in current dir
+        args.output_rule_library_file = os.path.join(os.getcwd(), args.output_rule_library_file)
+    # Ensure the directory for the output file exists
+    os.makedirs(os.path.dirname(args.output_rule_library_file), exist_ok=True)
+
 
     # --- Rule Induction Process ---
-    # rule_stats = defaultdict(...) # Old
     rule_clusters = {} # New: canonical_rule_text -> {occurrence, correct_association, task_types, embedding}
-    task_name = "abductive_reasoning" 
-
-    print("Starting rule induction for abductive reasoning...")
-    # ... (Load Training Data as before) ...
-    try:
-        df_train = pd.read_csv(args.training_data_file)
+    
+    if args.task_type == "abductive":
+        if not args.abductive_data_file:
+            print("Error: --abductive_data_file is required for task_type 'abductive'.")
+            return
+        training_file = args.abductive_data_file
         required_cols = ['observation_1', 'observation_2', 'hypothesis_1', 'hypothesis_2', 'label']
+        task_name = "abductive_reasoning"
+    elif args.task_type == "deductive":
+        if not args.deductive_data_file:
+            print("Error: --deductive_data_file is required for task_type 'deductive'.")
+            return
+        training_file = args.deductive_data_file
+        required_cols = ['question', 'option_a', 'option_b', 'option_c', 'option_d', 'answer']
+        task_name = "deductive_reasoning"
+    else: # Should not happen due to choices in argparse
+        print(f"Error: Unknown task_type '{args.task_type}'.")
+        return
+
+    print(f"Starting rule induction for {task_name} from {training_file}...")
+    
+    try:
+        abs_training_file_path = os.path.abspath(training_file)
+        print(f"Attempting to load training data from absolute path: {abs_training_file_path}")
+
+        df_train = pd.read_csv(abs_training_file_path)
         if not all(col in df_train.columns for col in required_cols):
             missing = [col for col in required_cols if col not in df_train.columns]
-            print(f"Error: Training data file '{args.training_data_file}' missing required columns: {missing}")
+            print(f"Error: Training data file '{abs_training_file_path}' missing required columns: {missing}")
             return
         if args.max_examples:
             df_train = df_train.head(args.max_examples)
-        print(f"Loaded {len(df_train)} abductive reasoning examples from {args.training_data_file}")
+        print(f"Loaded {len(df_train)} {task_name} examples from {abs_training_file_path}")
     except FileNotFoundError:
-        print(f"Error: Training data file not found at {args.training_data_file}")
+        # abs_training_file_path is defined above, so it can be used here
+        print(f"Error: Training data file not found at the resolved absolute path: {abs_training_file_path}")
+        print(f"(Original path provided in argument: {training_file})")
+        print(f"Current working directory: {os.getcwd()}")
+        print("Please ensure the file path is correct relative to the current working directory, or provide an absolute path.")
         return
     except Exception as e:
-        print(f"Error loading training data: {e}"); return
+        # In case abs_training_file_path wasn't set due to an error before its assignment (unlikely here)
+        # or for other generic exceptions, try to resolve it again or use the original.
+        resolved_path_for_error = os.path.abspath(training_file) if 'training_file' in locals() else "<unknown>"
+        print(f"Error loading training data from {resolved_path_for_error}: {e}")
+        return
     
     # --- Initialize Groq LLM ---
     llm_config = {'type': 'groq', 'model_name': args.groq_model}
@@ -380,17 +525,42 @@ def main():
     processed_count = 0
     skipped_count = 0
     # Iterate through training data with a progress bar
-    for index, row in tqdm(df_train.iterrows(), total=len(df_train), desc="Processing Examples"):
-        obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text = \
-            get_abductive_data_from_row(row, args.lang_alpa)
+    for index, row in tqdm(df_train.iterrows(), total=len(df_train), desc=f"Processing {args.task_type} Examples"):
+        gen_prompt = None
+        # Variables to store data extracted from the row, to be used for verification prompt
+        row_data_for_verification = {}
 
-        if not correct_hyp_letter:
-            skipped_count += 1
+        if args.task_type == "abductive":
+            obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text = \
+                get_abductive_data_from_row(row, args.lang_alpa)
+            if not correct_hyp_letter: # Or any other critical missing data
+                skipped_count += 1
+                continue
+            gen_prompt = format_rule_generation_abductive_prompt(
+                obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text, args.lang_prompt
+            )
+            row_data_for_verification = {
+                "obs1": obs1, "obs2": obs2, "hyp1_text": hyp1_text, "hyp2_text": hyp2_text,
+                "correct_hyp_letter": correct_hyp_letter, "correct_hyp_text": correct_hyp_text
+            }
+        elif args.task_type == "deductive":
+            question, options_fmt, correct_opt_letter, correct_opt_text = \
+                get_deductive_data_from_row(row)
+            if not correct_opt_letter: # Or any other critical missing data
+                skipped_count += 1
+                continue
+            gen_prompt = format_rule_generation_deductive_prompt(
+                question, options_fmt, correct_opt_letter, correct_opt_text, args.lang_prompt
+            )
+            row_data_for_verification = {
+                "question": question, "options_fmt": options_fmt,
+                "correct_opt_letter": correct_opt_letter, "correct_opt_text": correct_opt_text
+            }
+
+        if not gen_prompt: # Should not happen if data extraction was successful
+            skipped_count +=1
             continue
 
-        gen_prompt = format_rule_generation_abductive_prompt(
-            obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text, args.lang_prompt
-        )
         llm_gen_output = call_llm_for_induction(gen_prompt, llm_config)
         if not llm_gen_output:
             skipped_count += 1
@@ -471,9 +641,28 @@ def main():
 
 
             # Verify the rule (using text_for_verification_prompt)
-            ver_prompt = format_rule_verification_abductive_prompt(
-                obs1, obs2, hyp1_text, hyp2_text, text_for_verification_prompt, correct_hyp_letter, correct_hyp_text, args.lang_prompt
-            )
+            ver_prompt = None
+            if args.task_type == "abductive":
+                ver_prompt = format_rule_verification_abductive_prompt(
+                    row_data_for_verification["obs1"], row_data_for_verification["obs2"],
+                    row_data_for_verification["hyp1_text"], row_data_for_verification["hyp2_text"],
+                    text_for_verification_prompt, # This is the current rule text being verified
+                    row_data_for_verification["correct_hyp_letter"], row_data_for_verification["correct_hyp_text"],
+                    args.lang_prompt
+                )
+            elif args.task_type == "deductive":
+                ver_prompt = format_rule_verification_deductive_prompt(
+                    row_data_for_verification["question"], row_data_for_verification["options_fmt"],
+                    text_for_verification_prompt, # This is the current rule text being verified
+                    row_data_for_verification["correct_opt_letter"], row_data_for_verification["correct_opt_text"],
+                    args.lang_prompt
+                )
+
+            if not ver_prompt: # Should not happen
+                # Log error or skip if ver_prompt could not be created
+                print(f"Error: Could not create verification prompt for rule: {text_for_verification_prompt}")
+                continue
+
             llm_ver_output = call_llm_for_induction(ver_prompt, llm_config)
             if llm_ver_output is not None and parse_verification_response(llm_ver_output):
                 rule_clusters[target_key_for_stats]["correct_association"] += 1
