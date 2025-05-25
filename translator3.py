@@ -6,14 +6,14 @@ import sys # For checking if running in Colab
 from tqdm import tqdm # For progress bars
 
 # --- Configuration ---
-INPUT_DATA_FOLDER = 'tobetranslated5'  # Folder containing input CSV files
-OUTPUT_DATA_FOLDER = 'tobetranslated5' # Folder to save translated CSV files
+INPUT_DATA_FOLDER = 'tobetranslated7'  # Folder containing input CSV files
+OUTPUT_DATA_FOLDER = 'tobetranslated7' # Folder to save translated CSV files
 
 # Ensure your GROQ_API_KEY is set as an environment variable.
 # In Google Colab, you can set this in the "Secrets" tab (recommended)
 API_KEY = os.environ.get("GROQ_API_KEY")
 
-MODEL_NAME = "meta-llama/llama-4-maverick-17b-128e-instruct" # Groq model for translation
+MODEL_NAME = "llama-3.1-8b-instant" # Groq model for translation
 
 # --- Retry Configuration ---
 MAX_RETRIES = 5  # Maximum number of retries for API calls

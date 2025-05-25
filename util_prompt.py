@@ -380,16 +380,74 @@ def format_question(row, lang_prompt, lang_alpa, task_type="mmlu", use_cot=False
             return input_text, labels # Return formatted prompt and the list of raw option texts
 
         elif task_type == "abductive":
-            question_text = row['question'] # Assuming 'question' column holds the full abductive problem text
-            subject = row.get('subject', 'logical reasoning') 
-            if lang_prompt == 'ar':
-                prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_AR
-            else:
-                prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_EN
+            obs1 = str(row.get('observation_1', '')).strip()
+            obs2 = str(row.get('observation_2', '')).strip()
+
+            if not obs1 and not obs2:
+                print(f"Warning: Abductive task - Missing 'observation_1' and 'observation_2' for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None, None, None # Ensure four values are returned for unpacking
+
+            # Construct the question text for the prompt template
+            # This part is for the {question_text} field in the abductive prompt templates
+            question_for_template_parts = []
+            if obs1:
+                question_for_template_parts.append(f"Observation 1: {obs1}" if lang_prompt == 'en' else f"الملاحظة ١: {obs1}")
+            if obs2:
+                question_for_template_parts.append(f"Observation 2: {obs2}" if lang_prompt == 'en' else f"الملاحظة ٢: {obs2}")
             
-            formatted_prompt = prompt_template.format(question_text=question_text, subject=subject)
-            options_list = [row['hyp1'], row['hyp2']] 
-            gold_index = row['gold_index'] 
+            # Add hypothesis to the question text that will be formatted into the prompt
+            hyp1_text_for_prompt = str(row.get('hypothesis_1', '')).strip()
+            hyp2_text_for_prompt = str(row.get('hypothesis_2', '')).strip()
+
+            if not hyp1_text_for_prompt or not hyp2_text_for_prompt:
+                print(f"Warning: Abductive task - Missing 'hypothesis_1' or 'hypothesis_2' for prompt construction for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None, None, None
+
+            question_for_template_parts.append(f"Which of the following hypotheses is more plausible?" if lang_prompt == 'en' else "أي من الفرضيات التالية هي الأكثر قبولاً؟")
+            question_for_template_parts.append(f"(A) {hyp1_text_for_prompt}" if lang_prompt == 'en' else f"(أ) {hyp1_text_for_prompt}")
+            question_for_template_parts.append(f"(B) {hyp2_text_for_prompt}" if lang_prompt == 'en' else f"(ب) {hyp2_text_for_prompt}")
+            question_text_for_template = "\n".join(question_for_template_parts)
+
+            # options_list should contain the raw text of the hypotheses for matching model output
+            options_list = [hyp1_text_for_prompt, hyp2_text_for_prompt]
+
+            gold_index_val = row.get('label')
+            if gold_index_val is None:
+                print(f"Warning: Abductive task - Missing 'label' (for gold_index) for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None, None, None
+            try:
+                # The 'label' column in the CSV is 1-indexed (1 or 2), convert to 0-indexed for internal use
+                gold_index = int(gold_index_val) - 1 
+                if gold_index not in [0, 1]:
+                    print(f"Warning: Abductive task - 'label' value '{gold_index_val}' (0-indexed: {gold_index}) is out of bounds for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                    return None, None, None, None
+            except ValueError:
+                print(f"Warning: Abductive task - 'label' value '{gold_index_val}' is not a valid integer for gold_index for row index {row.name if hasattr(row, 'name') else 'unknown'}. Skipping.")
+                return None, None, None, None
+
+            subject = str(row.get('subject', 'logical reasoning')).strip()
+            
+            prompt_template = None
+            if lang_prompt == 'ar':
+                if use_tot:
+                    prompt_template = TOT_PROMPT_ABDUCTIVE_AR
+                elif use_cot:
+                    prompt_template = COT_PROMPT_ABDUCTIVE_AR
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_AR
+            else: # lang_prompt == 'en'
+                if use_tot:
+                    prompt_template = TOT_PROMPT_ABDUCTIVE_EN
+                elif use_cot:
+                    prompt_template = COT_PROMPT_ABDUCTIVE_EN
+                else:
+                    prompt_template = ZERO_SHOT_PROMPT_ABDUCTIVE_EN
+            
+            if prompt_template is None: # Should not happen if prompts are defined
+                print(f"Error: Abductive prompt template not found for lang_prompt='{lang_prompt}', use_tot={use_tot}, use_cot={use_cot}")
+                return None, None, None, None
+
+            formatted_prompt = prompt_template.format(question_text=question_text_for_template, subject=subject)
             return formatted_prompt, options_list, gold_index, subject
 
         elif task_type == "deductive":
@@ -495,7 +553,7 @@ def load_and_format_data(args):
         if args.task_type == "mmlu":
             data_file_path = 'data/cleaned_output3.csv'  
         elif args.task_type == "abductive":
-            data_file_path = 'data/abductive_data2.csv'  
+            data_file_path = 'data/abductive_data3.csv'  
         elif args.task_type == "deductive":
             data_file_path = 'data/deductive_data.csv'  
         else:
@@ -563,7 +621,7 @@ def load_and_format_data(args):
             abilities.append(row.get('ABILITY', 'Unknown_MMLU_Ability'))
 
     elif args.task_type == "abductive":
-        required_cols = ['question', 'hyp1', 'hyp2', 'gold_index']
+        required_cols = ['observation_1', 'observation_2', 'hypothesis_1', 'hypothesis_2', 'label']
         if not all(col in data_df.columns for col in required_cols):
             missing_cols = [col for col in required_cols if col not in data_df.columns]
             print(f"Error: Abductive task - Missing required columns in {data_file_path}: {missing_cols}")
@@ -579,6 +637,9 @@ def load_and_format_data(args):
                 use_cot=args.chain_of_thought, 
                 use_tot=args.tree_of_thought
             )
+            if formatted_prompt is None or options is None or gold_idx is None or subj is None:
+                continue
+
             prompts.append(formatted_prompt)
             golds.append(gold_idx)
             labels_list.append(options)

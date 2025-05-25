@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_prompt_ar_alpa_arcot__groq_meta-llama-llama-4-maverick-17b-128e-instruct.csv",
+    "overall_accuracy": 80.55,
+    "accuracy_by_subject": {
+        "abductive reasoning": 80.55
+    },
+    "accuracy_by_ability": {
+        "reasoning_ability": 80.55
+    },
+    "counts_by_subject": {
+        "abductive reasoning": 1532
+    },
+    "counts_by_ability": {
+        "reasoning_ability": 1532
+    }
+}

@@ -69,6 +69,7 @@ def parse_args():
     parser.add_argument("--use_openai", action='store_true', help="Use OpenAI API instead of local/Gemini/Groq models")
     parser.add_argument("--openai_model", type=str, default="gpt-3.5-turbo", help="OpenAI model ID to use (e.g., 'gpt-3.5-turbo', 'gpt-4')")
     # --- End of OpenAI arguments ---
+    parser.add_argument("--filename_word", type=str, default="", help="Custom word to add to the output filename") # <-- Add custom filename word argument
 
     args = parser.parse_args()
 
@@ -137,20 +138,22 @@ def main():
 
     # --- Define SAVE_FILE based on task type and model ---
     task_specific_name_part = ""
+    language_info_suffix = f"_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}" # Consistent suffix for language info
+
     if args.task_type == "mmlu":
-        task_specific_name_part = f"mmlu_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}"
+        task_specific_name_part = f"mmlu{language_info_suffix}"
     elif args.task_type == "abductive":
         data_file_basename = os.path.basename(args.data_file).replace('.csv', '') if args.data_file else "abductive_data"
-        task_specific_name_part = f"abductive_{data_file_basename}"
-    elif args.task_type == "deductive": # <-- Added deductive case
+        task_specific_name_part = f"abductive_{data_file_basename}{language_info_suffix}"
+    elif args.task_type == "deductive":
         data_file_basename = os.path.basename(args.data_file).replace('.csv', '') if args.data_file else "deductive_data"
-        task_specific_name_part = f"deductive_{data_file_basename}"
+        task_specific_name_part = f"deductive_{data_file_basename}{language_info_suffix}"
     else:
         # Fallback for any new task types not explicitly handled, or if task_type is somehow None
-        task_specific_name_part = f"{args.task_type or 'unknown_task'}_prompt_{args.lang_prompt}_alpa_{args.lang_alpa}"
+        task_specific_name_part = f"{args.task_type or 'unknown_task'}{language_info_suffix}"
 
 
-    SAVE_FILE = f"result_{task_specific_name_part}{prompt_method_suffix}_{model_name_suffix}.csv"
+    SAVE_FILE = f"result_{task_specific_name_part}{prompt_method_suffix}_{model_name_suffix}{'_' + args.filename_word if args.filename_word else ''}.csv"
     # --- End of SAVE_FILE definition ---
 
     # Join with the output folder

@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_prompt_ar_alpa_ar_tot_groq_qwen-qwq-32b.csv",
+    "overall_accuracy": 79.37,
+    "accuracy_by_subject": {
+        "abductive reasoning": 79.37
+    },
+    "accuracy_by_ability": {
+        "reasoning_ability": 79.37
+    },
+    "counts_by_subject": {
+        "abductive reasoning": 1532
+    },
+    "counts_by_ability": {
+        "reasoning_ability": 1532
+    }
+}

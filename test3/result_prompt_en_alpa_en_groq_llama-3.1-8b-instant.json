@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_prompt_en_alpa_en_groq_llama-3.1-8b-instant.csv",
+    "overall_accuracy": 74.8,
+    "accuracy_by_subject": {
+        "abductive reasoning": 74.8
+    },
+    "accuracy_by_ability": {
+        "reasoning_ability": 74.8
+    },
+    "counts_by_subject": {
+        "abductive reasoning": 1532
+    },
+    "counts_by_ability": {
+        "reasoning_ability": 1532
+    }
+}

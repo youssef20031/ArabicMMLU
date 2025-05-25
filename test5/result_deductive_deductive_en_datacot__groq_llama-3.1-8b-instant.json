@@ -1,0 +1,16 @@
+{
+    "source_csv": "result_deductive_deductive_en_datacot__groq_llama-3.1-8b-instant.csv",
+    "overall_accuracy": 42.5,
+    "accuracy_by_subject": {
+        "logical reasoning": 42.5
+    },
+    "accuracy_by_ability": {
+        "deductive_reasoning": 42.5
+    },
+    "counts_by_subject": {
+        "logical reasoning": 640
+    },
+    "counts_by_ability": {
+        "deductive_reasoning": 640
+    }
+}

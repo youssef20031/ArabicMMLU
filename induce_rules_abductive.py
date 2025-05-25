@@ -426,7 +426,7 @@ def main():
     # Processing Control
     parser.add_argument("--max_examples", type=int, default=None, help="Maximum training examples to process (for testing).")
     # SBERT model name argument
-    parser.add_argument("--sbert_model_name", type=str, default="all-MiniLM-L6-v2", help="Name of the Sentence Transformer model to use for semantic similarity.")
+    parser.add_argument("--sbert_model_name", type=str, default="UBC-NLP/ARBERTv2", help="Name of the Sentence Transformer model to use for semantic similarity.")
 
 
     args = parser.parse_args()
