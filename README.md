@@ -1,81 +1,97 @@
-<p align="left"> <img src="https://raw.githubusercontent.com/fajri91/eval_picts/master/ArabicMMLU-Bar.png" style="width: 100%;" id="title-icon">  </p>
-<p align="left"> <i>Fajri Koto, Haonan Li, Sara Shatnawi, Jad Doughman, Abdelrahman Boda Sadallah, Aisha Alraeesi, Khalid Almubarak, Zaid Alyafeai, Neha Sengupta, Shady Shehata, Nizar Habash, Preslav Nakov, and Timothy Baldwin </i></p>
+# Arabic Reasoning Benchmark: Abductive and Deductive Analysis
 
-<h4 align="left">
-    MBZUAI, Prince Sattam bin Abdulaziz University, KFUPM, Core42, NYU Abu Dhabi, The University of Melbourne
-</h4>
+## Overview
 
----
+This project focuses on benchmarking the abductive and deductive reasoning capabilities of Large Language Models (LLMs) in the Arabic language. It evaluates various models using different reasoning strategies to understand their performance on complex reasoning tasks.
 
-### :fire: News
-<!---
--->
-* **[2024-02.21]** The preprint of our paper can be found [here](https://arxiv.org/abs/2402.12840).
-* **[2024-06.16]** ArabicMMLU has been accepted at ACL 2024.
+## Key Focus Areas
 
-## Introduction
+* **Abductive Reasoning:** Assessing the ability of models to infer the most plausible explanation for a set of observations.
+* **Deductive Reasoning:** Evaluating models' capacity to derive logically certain conclusions from given premises.
+* **Reasoning Strategies:**
+  * Zero-Shot
+  * Chain-of-Thought (CoT)
+  * Tree-of-Thought (ToT) (as defined in `util_prompt.py`)
+* **Models Evaluated:** The framework supports evaluation of various models, including:
+  * Models via Groq API (e.g., Llama 3.1)
+  * Models via Gemini API
+  * Models via OpenAI API
+  * Hugging Face Hub models
+  (Implementations for these can be found in `util_compute.py` and `evaluate.py`)
 
-We present ArabicMMLU, the first multi-task language understanding benchmark for Arabic language, sourced from school exams across diverse educational levels in different countries spanning North Africa, the Levant, and the Gulf regions. Our data comprises 40 tasks and 14,575 multiple-choice questions in Modern Standard Arabic (MSA), and is carefully constructed by collaborating with native speakers in the region. 
-<p align="left"> <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-circle.png?raw=true" style="width: 45%;" id="title-icon">       </p>
+## Dataset
 
-## Data
-Each question in the dataset is a multiple-choice question with up to 5 choices and only one choice as the correct answer. 
-The dataset can be accessed in [data](data) folder, and [Hugging Face](https://huggingface.co/datasets/MBZUAI/ArabicMMLU).
+The benchmarks utilize custom datasets for abductive and deductive reasoning tasks in Arabic.
 
+* **Abductive Data:** Primarily located in `data/abductive_data_SM.csv` and other `data/abductive_data*.csv` files.
+* **Deductive Data:** Primarily located in `data/deductive_data_SM.csv`, `data/deductive_data_english.csv` (potentially for translation comparison), and other `data/deductive_data*.csv` files.
+
+The data consists of questions or scenarios designed to test specific reasoning skills.
+
+## Setup and Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   ```
+
+2. **Install dependencies:**
+   It's recommended to use a virtual environment.
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   pip install -r requirements.txt
+   ```
+
+   Ensure `requirements.txt` is up-to-date based on `requirements.in`.
+
+3. **API Keys:**
+   For models accessed via APIs (Groq, Gemini, OpenAI), you will need to set up the respective API keys. These are typically configured via environment variables or directly in the scripts (see `util_compute.py` for Gemini key handling).
+
+## Running the Benchmarks
+
+The primary script for running evaluations is `evaluate.py`. Additional scripts for specific reasoning tasks include:
+
+* `deduce_rules_abductive.py`
+* `induce_rules_abductive.py`
+
+A `run.sh` script might contain example commands for executing these evaluations.
+
+**Example (conceptual):**
+
+```bash
+python evaluate.py --model_provider groq --model_name llama-3.1-8b-instant --task abductive --reasoning_strategy cot --data_path data/abductive_data_SM.csv
 ```
-import datasets
-data = datasets.load_dataset('MBZUAI/ArabicMMLU', 'All')
-```
 
-## Statistics
+Refer to the scripts themselves or `run.sh` for detailed command-line arguments and configuration options.
 
-The data construction process involved a total of 10 Arabic native speakers from different countries: 6 internal workers (1 Jordanian, 1 Egyptian, 1 Lebanese, 1 from UAE, and 2 from KSA) and 4 external workers (3 Jordanian and 1 Egyptian).
-The resulting corpus is sourced from the eight countries, with Jordan, Egypt, and Palestine being the top three sources.
-We categorize the collected questions into different subject areas, including: (1) STEM (Science, Technology, Engineering, and Mathematics); (2) Social Science; (3) Humanities; (4) Arabic Language; and (5) Others. 
+## Prompts and Computation
 
-<p align="left"> <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-country.png?raw=true" style="width: 45%;" id="title-icon">       </p>
+* **Prompt Engineering:** Different prompt templates for various reasoning strategies (Zero-Shot, CoT, ToT) in both English and Arabic are defined in `util_prompt.py`.
+* **Model Interaction:** The `util_compute.py` script handles the logic for interacting with different LLM APIs (Gemini, Groq, OpenAI) and local Hugging Face models, including error handling, retries, and API key management.
 
-## Examples
+## Results
 
-These questions are written in Arabic.
+Evaluation results are typically saved in CSV files or JSON format.
 
-<p align="left"> 
-    <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-ex2.png?raw=true" style="width: 45%;" id="title-icon"> 
-    <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-ex1.png?raw=true" style="width: 45%;" id="title-icon">
-</p>
+* Folders like `results_deduction_groq/` store outputs for specific model and task combinations.
+* Scripts like `graphs.py`, `new_graph.py`, `super_new_graphs.py` suggest that visualization of results is part of the workflow, potentially generating images like `accuracy_chart.png`.
+* Aggregated results might be found in files like `results.json` or generated by scripts like `new_results.py`.
 
-## Evaluation
+## Key Scripts
 
-We evaluate 22 open-source multilingual models, 11 open-source Arabic-centric models, and 2 closed-source models. We experimented with different prompts in Arabic and English, and found the English prompt is the best. Below is the examples of input with the prompt.
-
-<p align="left"> <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-prompt.png?raw=true" style="width: 30%;" id="title-icon">       </p>
-
-
-#### Zero-shot Evaluation
-
- 
-<p align="left"> <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-result.png?raw=true" style="width: 70%;" id="title-icon">       </p>
-
-#### Few-shot Evaluation
-
-<p align="left"> 
-    <img src="https://github.com/fajri91/eval_picts/blob/master/ArabicMMLU-fewshot.png?raw=true" style="width: 45%;" id="title-icon">
-</p>
-
-#### Evaluation
-The code for the evaluation of each model we used is in `evaluate.py`, and the code to run them is listed in `run.sh`.
-
-## Citation
-```
-@inproceedings{koto2024arabicmmlu,
-  title={ArabicMMLU: Assessing Massive Multitask Language Understanding in Arabic},
-  author={"Fajri Koto and Haonan Li and Sara Shatanawi and Jad Doughman and Abdelrahman Boda Sadallah and Aisha Alraeesi and Khalid Almubarak and Zaid Alyafeai and Neha Sengupta and Shady Shehata and Nizar Habash and Preslav Nakov and Timothy Baldwin"},
-  booktitle={Findings of the Association for Computational Linguistics: ACL 2024},
-  year={2024}
-}
-```
+* `evaluate.py`: Core script for running benchmark evaluations.
+* `util_prompt.py`: Defines prompt structures for different reasoning strategies.
+* `util_compute.py`: Manages API calls and computations for various LLMs.
+* `deduce_rules_abductive.py`: Script for deductive reasoning tasks, possibly related to abductive rule generation.
+* `induce_rules_abductive.py`: Script for inductive reasoning tasks, possibly related to abductive rule generation.
+* `run.sh`: Shell script likely containing commands to execute various evaluation pipelines.
+* Data files in `data/` (e.g., `abductive_data_SM.csv`, `deductive_data_SM.csv`).
+* Result analysis/visualization scripts: `graphs.py`, `new_results.py`, etc.
 
 ## License
 
-The ArabicMMLU dataset is licensed under a
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+(Please add your project's license information here, e.g., MIT, Apache 2.0, or specify if it's proprietary.)
