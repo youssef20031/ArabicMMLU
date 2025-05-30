@@ -94,4 +94,4 @@ Evaluation results are typically saved in CSV files or JSON format.
 
 ## License
 
-(Please add your project's license information here, e.g., MIT, Apache 2.0, or specify if it's proprietary.)
+This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
