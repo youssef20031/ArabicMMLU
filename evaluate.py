@@ -7,6 +7,8 @@ from transformers import LlamaForCausalLM, LlamaTokenizer, AutoTokenizer, AutoMo
 from tqdm import tqdm
 import torch
 import time # Import time for potential delays/timing
+from sklearn.metrics import classification_report, f1_score, precision_score, recall_score, accuracy_score # <-- Add sklearn imports
+import json # <-- Add json import
 
 # Import utility functions
 from util_prompt import load_and_format_data
@@ -356,6 +358,7 @@ def main():
 
     preds = []
     raw_preds = [] # Store raw model outputs for debugging
+    reasoning_consistency_heuristics = [] # For storing consistency metric
 
     print("Starting predictions...")
     start_time = time.time()
@@ -371,26 +374,101 @@ def main():
         preds.append(pred) # Store the parsed prediction (e.g., 'A', 'B', 'أ', 'ب')
         raw_preds.append(raw_pred) # Store the raw output
 
+        # --- Add consistency heuristic ---
+        current_consistency_metric = "N/A" # Default
+        if (args.chain_of_thought or args.tree_of_thought):
+            if raw_pred and pred:
+                # Check if raw_pred seems to contain reasoning (is longer than just the answer)
+                # Heuristic: 15 chars of reasoning minimum beyond the prediction length
+                if len(raw_pred.strip()) > len(pred.strip()) + 15:
+                    tail_length = 50 # Look at the last 50 characters of the raw prediction
+                    raw_pred_tail = raw_pred.strip()[-tail_length:]
+                    if pred in raw_pred_tail:
+                        current_consistency_metric = "Consistent_heuristic"
+                    else:
+                        current_consistency_metric = "Inconsistent_heuristic" # Or "Review_Consistency"
+                else:
+                    current_consistency_metric = "Reasoning_absent_or_too_short"
+            elif not raw_pred:
+                current_consistency_metric = "Error_no_raw_pred_for_CoT_ToT"
+            elif not pred: # pred is None or empty
+                current_consistency_metric = "Error_no_parsed_pred_for_CoT_ToT"
+        reasoning_consistency_heuristics.append(current_consistency_metric)
+        # --- End of consistency heuristic ---
+
     end_time = time.time()
     print(f"Predictions finished in {end_time - start_time:.2f} seconds.")
 
+    # --- Calculate and Print Classification Metrics ---
+    if golds and preds:
+        # Ensure all elements in golds and preds are strings for consistent processing
+        golds_str = [str(g) for g in golds]
+        preds_str = [str(p) if p is not None else "None" for p in preds] # Handle potential None in preds
+
+        # Get unique labels from both true and predicted values to handle all cases
+        labels_for_report = sorted(list(set(golds_str) | set(preds_str)))
+
+        print("\n--- Classification Metrics ---")
+        try:
+            report = classification_report(golds_str, preds_str, labels=labels_for_report, zero_division=0)
+            print(report)
+
+            # Calculate overall accuracy
+            accuracy = accuracy_score(golds_str, preds_str)
+            print(f"Overall Accuracy: {accuracy:.4f}")
+
+            # Calculate macro-averaged F1-score
+            macro_f1 = f1_score(golds_str, preds_str, average='macro', zero_division=0)
+            print(f"Macro F1-Score: {macro_f1:.4f}")
+
+            # Calculate weighted-averaged F1-score
+            weighted_f1 = f1_score(golds_str, preds_str, average='weighted', zero_division=0)
+            print(f"Weighted F1-Score: {weighted_f1:.4f}")
+
+        except Exception as e:
+            print(f"Error calculating classification metrics: {e}")
+            print("Ensure 'golds' and 'preds' lists are populated correctly.")
+        print("-----------------------------\n")
+    else:
+        print("Warning: 'golds' or 'preds' list is empty. Skipping classification metrics calculation.")
+    # --- End of Classification Metrics ---
+
+    # --- Save Metrics to JSON File ---
+    if golds and preds: # Ensure metrics were calculated
+        metrics_summary = {
+            "overall_accuracy": accuracy_score(golds_str, preds_str),
+            "macro_f1_score": f1_score(golds_str, preds_str, average='macro', zero_division=0),
+            "weighted_f1_score": f1_score(golds_str, preds_str, average='weighted', zero_division=0),
+            "classification_report": classification_report(golds_str, preds_str, labels=labels_for_report, zero_division=0, output_dict=False), # Save report as string
+            "classification_report_dict": classification_report(golds_str, preds_str, labels=labels_for_report, zero_division=0, output_dict=True) # Save report as dict
+        }
+        metrics_filename = SAVE_FILE.replace('.csv', '_metrics.json')
+        try:
+            with open(metrics_filename, 'w', encoding='utf-8') as f_metrics:
+                json.dump(metrics_summary, f_metrics, ensure_ascii=False, indent=4)
+            print(f"Classification metrics saved to {metrics_filename}")
+        except Exception as e:
+            print(f"Error saving classification metrics to JSON: {e}")
+    # --- End of Save Metrics to JSON File ---
+
     # --- Save Results ---
-    if len(inputs) == len(golds) == len(preds) == len(raw_preds) == len(subjects) == len(outputs_options) == len(abilities):
+    if len(inputs) == len(golds) == len(preds) == len(raw_preds) == len(subjects) == len(outputs_options) == len(abilities) == len(reasoning_consistency_heuristics):
         out = pd.DataFrame({
-            'index': indices, # Use the indices list from load_and_format_data
+            'index': indices, 
             'prompt': inputs,
             'golds': golds,
             'preds': preds,
             'raw_preds': raw_preds,
+            'reasoning_consistency_heuristic': reasoning_consistency_heuristics, # New column
             'subject': subjects,
             'options': outputs_options,
-            'ABILITY': abilities # Added ABILITY column
+            'ABILITY': abilities 
         })
         out.to_csv(SAVE_FILE, index=False, encoding='utf-8')
         print(f"Results saved to {SAVE_FILE}")
     else:
         print("Error: Mismatch in lengths of data lists. Cannot save results.")
-        print(f"Lengths: Inputs={len(inputs)}, Golds={len(golds)}, Preds={len(preds)}, RawPreds={len(raw_preds)}, Subjects={len(subjects)}, Options={len(outputs_options)}, Abilities={len(abilities)}")
+        print(f"Lengths: Inputs={len(inputs)}, Golds={len(golds)}, Preds={len(preds)}, RawPreds={len(raw_preds)}, Consistency={len(reasoning_consistency_heuristics)}, Subjects={len(subjects)}, Options={len(outputs_options)}, Abilities={len(abilities)}")
 
 
 if __name__ == "__main__":

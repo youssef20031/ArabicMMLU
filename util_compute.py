@@ -448,16 +448,16 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
             # Build character class dynamically from expected labels
             expected_chars_pattern_str = "".join(re.escape(l) for l in expected_labels)
 
-            # English pattern: Look for "Final Answer: ... is" followed by one of the expected chars
-            final_answer_pattern = rf"Final Answer:\s*The final answer is\s*\(\s*([{expected_chars_pattern_str}])\s*\)"
-            # Arabic pattern: Look for "الإجابة النهائية: ... هي" followed by one of the expected chars
-            final_answer_pattern_ar = rf"الإجابة النهائية:\s*الإجابة النهائية هي\s*(?:\[\[)?([{expected_chars_pattern_str}])(?:\]\])?"
+            # Improved English pattern: look for 'Final Answer' then 'is' or ':' and optional [[ ]]
+            final_answer_pattern = rf"(?:##\s*)?Final Answer.*?(?:is|:)\s*(?:\[\[)?\s*([{expected_chars_pattern_str}])\s*(?:\]\])?"
 
-            match = re.search(final_answer_pattern, raw_response, re.IGNORECASE | re.DOTALL)
+            # Improved Arabic pattern: look for 'الإجابة النهائية' then 'هي' and optional [[ ]]
+            final_answer_pattern_ar = rf"(?:##\s*)?الإجابة النهائية.*?هي\s*(?:\[\[)?\s*([{expected_chars_pattern_str}])\s*(?:\]\])?"
 
+            # Try matching English then Arabic patterns
             match = re.search(final_answer_pattern, raw_response, re.IGNORECASE | re.DOTALL)
             if not match:
-                 match = re.search(final_answer_pattern_ar, raw_response, re.DOTALL)
+                match = re.search(final_answer_pattern_ar, raw_response, re.IGNORECASE | re.DOTALL)
 
             if match:
                 predicted_label = match.group(1).strip() # Get the captured character
@@ -496,6 +496,14 @@ def predict_classification_groq(client, model_name, input_text, labels, lang_alp
                     potential_label = match.group(1)
                     predicted_label = potential_label
                     print(f"Groq Parsed Prediction (regex fallback - last char match on '{raw_response[:50]}...'): '{predicted_label}'")
+                    return predicted_label, raw_response
+
+            # New fallback: match single label char at start before punctuation or dash
+            if predicted_label is None:
+                match = re.match(rf"^\s*([{expected_chars_pattern_str}])[\s\-\:\.\)\]\[]", raw_response)
+                if match:
+                    predicted_label = match.group(1)
+                    print(f"Groq Parsed Prediction (prefix char match on '{raw_response[:50]}...'): '{predicted_label}'")
                     return predicted_label, raw_response
 
             # 5. If still not found after all attempts

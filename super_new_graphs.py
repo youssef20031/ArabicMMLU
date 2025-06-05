@@ -268,7 +268,7 @@ def plot_model_performance(all_results, base_output_path):
                     continue
 
                 sorted_models = sorted(models_list, key=lambda x: x["accuracy"], reverse=True)
-                model_names = [res["model"] for res in sorted_models]
+                model_names = [res["model_name"] for res in sorted_models]
                 accuracies = [res["accuracy"] for res in sorted_models]
 
                 if not model_names: # Skip if no models after filtering
@@ -303,7 +303,7 @@ def plot_radar_performance(all_results, base_output_path):
     """Generates and saves radar charts showing each model's performance across strategies."""
     for lang, reasoning_types_map in all_results.items():
         for reasoning, strategies_map in reasoning_types_map.items():
-            # strategies_map: strategy_name -> [{"model": model_name, "accuracy": acc}, ...]
+            # strategies_map: strategy_name -> [{"model_name": model_name, "accuracy": acc}, ...]
 
             # 1. Collect all unique strategy names (radar axes)
             # Filter out strategies that might be empty or have no valid models_list
@@ -322,7 +322,7 @@ def plot_radar_performance(all_results, base_output_path):
                 if not models_list: # Should be caught by all_strategy_names filter, but double-check
                     continue
                 for res in models_list:
-                    model_name = res["model"]
+                    model_name = res["model_name"]
                     accuracy = res["accuracy"]
                     if model_name not in model_data:
                         model_data[model_name] = {}
@@ -413,28 +413,31 @@ def analyze_and_plot_model_performance(folder_path, output_graph_dir):
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                
+
                 model_name, language, strategy, reasoning_type = extract_info_from_filename(filename)
-                overall_accuracy = data.get("overall_accuracy")
                 
-                if overall_accuracy is not None:
-                    if language != "Unknown" and strategy != "Unknown":
-                        if language not in all_results:
-                            all_results[language] = {}
-                        if reasoning_type not in all_results[language]:
-                            all_results[language][reasoning_type] = {}
-                        if strategy not in all_results[language][reasoning_type]:
-                            all_results[language][reasoning_type][strategy] = []
-                        
-                        all_results[language][reasoning_type][strategy].append({"model": model_name, "accuracy": overall_accuracy})
-                    else:
-                        print(f"Warning: Could not determine language/strategy for {filename}. Model: {model_name}, Accuracy: {overall_accuracy}, Reasoning: {reasoning_type}")
-                else:
-                    print(f"Warning: 'overall_accuracy' not found in {filename}")
+                # Ensure keys exist in data or use defaults
+                accuracy = data.get("overall_accuracy_calculated_from_csv", 0.0)
+                metrics_data = data.get("metrics_from_json", {})
+                accuracy_by_subject = data.get("accuracy_by_subject", {})
+                accuracy_by_ability = data.get("accuracy_by_ability", {})
+
+                result_entry = {
+                    "model_name": model_name,
+                    "original_filename": filename,
+                    "accuracy": accuracy, # This is the one calculated from CSV by new_results.py
+                    "metrics_data": metrics_data, # Contains overall_accuracy, F1s, report from _metrics.json
+                    "accuracy_by_subject": accuracy_by_subject,
+                    "accuracy_by_ability": accuracy_by_ability
+                }
+
+                # Populate the all_results structure
+                all_results.setdefault(language, {}).setdefault(reasoning_type, {}).setdefault(strategy, []).append(result_entry)
+
             except json.JSONDecodeError:
-                print(f"Warning: Could not decode JSON from {filename}")
+                print(f"Error decoding JSON from file: {filename}")
             except Exception as e:
-                print(f"Warning: Error processing {filename}: {e}")
+                print(f"Error processing file {filename}: {e}")
                 
     if not all_results:
         print(f"\nNo valid categorized JSON files with 'overall_accuracy' found in '{folder_path}'.")
@@ -479,7 +482,7 @@ def analyze_and_plot_model_performance(folder_path, output_graph_dir):
                 sorted_models = sorted(models_list, key=lambda x: x["accuracy"], reverse=True)
                 
                 for i, res in enumerate(sorted_models):
-                    print(f"    {i+1:<5} {res['model']:<65} {res['accuracy']:<15.2f}")
+                    print(f"    {i+1:<5} {res['model_name']:<65} {res['accuracy']:<15.2f}")
                 print(f"    {'':<2}" + "-" * len(header))
 
     if not found_any_results_for_print and all_results: # Check if all_results was populated but print didn't run

@@ -425,11 +425,15 @@ def main():
     
     # Processing Control
     parser.add_argument("--max_examples", type=int, default=None, help="Maximum training examples to process (for testing).")
-    # SBERT model name argument
     parser.add_argument("--sbert_model_name", type=str, default="UBC-NLP/ARBERTv2", help="Name of the Sentence Transformer model to use for semantic similarity.")
-
+    parser.add_argument("--max_rules", type=int, default=None, help="Maximum number of rules to include in the final rule library (for ablation studies).")
+    parser.add_argument("--focus_only_deductive", action="store_true", help="If set, focus only on deductive reasoning and ignore abductive reasoning (simplify HtT). Overrides --task_type.")
 
     args = parser.parse_args()
+    # Enforce HtT simplification to deductive if requested
+    if args.focus_only_deductive:
+        print("Info: focus_only_deductive enabled. Overriding task_type to 'deductive' and ignoring abductive tasks.")
+        args.task_type = 'deductive'
 
     # Check if Groq library is actually available if needed
     if not GROQ_AVAILABLE:
@@ -694,6 +698,10 @@ def main():
     print(f"Filtered out {filtered_out_count} rules.")
     
     final_rule_library.sort(key=lambda x: (x['confidence'], x['coverage']), reverse=True)
+    # Truncate rule library for ablation studies if requested
+    if args.max_rules is not None:
+        final_rule_library = final_rule_library[:args.max_rules]
+        print(f"Truncated final_rule_library to top {args.max_rules} rules for ablation study.")
 
     # --- Save the Final Rule Library (JSON) ---
     try:

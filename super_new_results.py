@@ -325,68 +325,54 @@ def compare_model_performance(folder_path):
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                
+
                 model_name, language, strategy, reasoning_type = extract_info_from_filename(filename)
-                overall_accuracy = data.get("overall_accuracy")
                 
-                if overall_accuracy is not None:
-                    if language != "Unknown" and strategy != "Unknown": # Reasoning type can be "Not Specified"
-                        # Ensure path in dict exists according to the new structure
-                        if language not in all_results:
-                            all_results[language] = {}
-                        if reasoning_type not in all_results[language]:
-                            all_results[language][reasoning_type] = {}
-                        if strategy not in all_results[language][reasoning_type]:
-                            all_results[language][reasoning_type][strategy] = []
-                        
-                        all_results[language][reasoning_type][strategy].append({"model": model_name, "accuracy": overall_accuracy})
-                    else:
-                        print(f"Warning: Could not determine language/strategy for {filename}. Model: {model_name}, Accuracy: {overall_accuracy}, Reasoning: {reasoning_type}")
-                else:
-                    print(f"Warning: 'overall_accuracy' not found in {filename}")
+                # Ensure keys exist in data or use defaults
+                accuracy = data.get("overall_accuracy_calculated_from_csv", 0.0)
+                metrics_data = data.get("metrics_from_json", {})
+
+                result_entry = {
+                    "model_name": model_name,
+                    "original_filename": filename,
+                    "accuracy": accuracy,
+                    "metrics_data": metrics_data # Store the loaded metrics
+                }
+
+                # Populate the all_results structure
+                all_results.setdefault(language, {}).setdefault(reasoning_type, {}).setdefault(strategy, []).append(result_entry)
+
             except json.JSONDecodeError:
-                print(f"Warning: Could not decode JSON from {filename}")
+                print(f"Error decoding JSON from file: {filename}")
             except Exception as e:
-                print(f"Warning: Error processing {filename}: {e}")
+                print(f"Error processing file {filename}: {e}")
                 
     found_any_results = False
     for lang, reasoning_types_map in all_results.items():
-        # Check if there's any data for this language across all reasoning types and strategies
-        has_data_for_lang = any(
-            any(bool(models) for models in strategies_map.values()) 
-            for strategies_map in reasoning_types_map.values()
-        )
-        if not has_data_for_lang:
-            continue
-        
-        found_any_results = True
-        print(f"\n\n--- {lang.upper()} MODELS PERFORMANCE ---")
-        
-        for reasoning, strategies_map in reasoning_types_map.items():
-            # Check if there's any data for this reasoning type across all strategies
-            has_data_for_reasoning = any(bool(models) for models in strategies_map.values())
-            if not has_data_for_reasoning:
-                continue
+        print(f"\nLanguage: {lang}")
+        for reasoning_type, strategies_map in reasoning_types_map.items():
+            print(f"  Reasoning Type: {reasoning_type}")
+            for strategy, results_list in strategies_map.items():
+                print(f"    Strategy: {strategy}")
+                if results_list:
+                    found_any_results = True
+                    for result in sorted(results_list, key=lambda x: x['model_name']): # Sort by model name for consistent output
+                        print(f"      Model: {result['model_name']} (Source: {result['original_filename']})")
+                        print(f"        Accuracy (calc. from CSV): {result['accuracy']:.2f}%")
+                        
+                        current_metrics = result.get("metrics_data", {})
+                        accuracy_from_metrics = current_metrics.get("overall_accuracy") # This is 0-1 float
+                        macro_f1 = current_metrics.get("macro_f1_score")
+                        weighted_f1 = current_metrics.get("weighted_f1_score")
 
-            print(f"\nReasoning Type: {reasoning}")
-            
-            for strat, models_list in strategies_map.items():
-                if not models_list: # Skip if no models for this strategy under this reasoning type
-                    continue
-
-                print(f"  Strategy: {strat}")
-                header = f"{'Rank':<5} {'Model Name':<65} {'Accuracy (%)':<15}"
-                # Indent header and lines appropriately
-                print(f"    {'':<2}" + "-" * len(header)) 
-                print(f"    {'':<2}{header}")
-                print(f"    {'':<2}" + "-" * len(header))
-                
-                sorted_models = sorted(models_list, key=lambda x: x["accuracy"], reverse=True)
-                
-                for i, res in enumerate(sorted_models):
-                    print(f"    {i+1:<5} {res['model']:<65} {res['accuracy']:<15.2f}")
-                print(f"    {'':<2}" + "-" * len(header))
-            # print("-" * (len(header) + 4)) # Separator for strategies within a reasoning type if needed
+                        if accuracy_from_metrics is not None:
+                            print(f"        Accuracy (from _metrics.json): {accuracy_from_metrics * 100:.2f}%")
+                        if macro_f1 is not None:
+                            print(f"        Macro F1 (from _metrics.json): {macro_f1:.4f}")
+                        if weighted_f1 is not None:
+                            print(f"        Weighted F1 (from _metrics.json): {weighted_f1:.4f}")
+                else:
+                    print("      No results for this strategy.")
 
     if not found_any_results:
         print(f"\nNo valid categorized JSON files with 'overall_accuracy' found in '{folder_path}'.")

@@ -196,12 +196,31 @@ if __name__ == "__main__":
 
             results_file = {
                 "source_csv": os.path.basename(csv_filepath),
-                "overall_accuracy": overall_accuracy_file,
+                "overall_accuracy_calculated_from_csv": overall_accuracy_file, # Renamed for clarity
                 "accuracy_by_subject": dict(sorted(final_acc_subject_file.items())),
                 "accuracy_by_ability": dict(sorted(final_acc_ability_file.items())),
                 "counts_by_subject": dict(sorted(cnt_per_subject_file.items())),
                 "counts_by_ability": dict(sorted(cnt_per_ability_file.items()))
             }
+
+            # --- Load and integrate metrics from corresponding _metrics.json file ---
+            base_csv_name_no_ext = os.path.splitext(os.path.basename(csv_filepath))[0]
+            metrics_json_filename = base_csv_name_no_ext + "_metrics.json"
+            metrics_json_filepath = os.path.join(args.input_folder, metrics_json_filename)
+
+            if os.path.exists(metrics_json_filepath):
+                try:
+                    with open(metrics_json_filepath, 'r', encoding='utf-8') as f_metrics:
+                        metrics_data = json.load(f_metrics)
+                    results_file["metrics_from_json"] = metrics_data
+                    print(f"Successfully loaded and integrated metrics from {metrics_json_filepath}")
+                except Exception as e_metrics_load:
+                    print(f"Warning: Could not load or parse {metrics_json_filepath}: {e_metrics_load}")
+                    results_file["metrics_from_json"] = {"error": f"Failed to load: {e_metrics_load}"}
+            else:
+                print(f"Warning: Metrics file not found at {metrics_json_filepath}. Skipping integration for this file.")
+                results_file["metrics_from_json"] = {"status": "not_found"}
+            # --- End of metrics integration ---
 
             base_csv_name = os.path.basename(csv_filepath)
             output_filename = os.path.splitext(base_csv_name)[0] + ".json"
@@ -214,8 +233,15 @@ if __name__ == "__main__":
 
                 # More readable output:
                 print(f"\n--- Results for {base_csv_name} ---")
-                print(f"Overall Accuracy: {results_file['overall_accuracy']}%")
+                print(f"Overall Accuracy (calculated from CSV): {results_file['overall_accuracy_calculated_from_csv']}%")
                 
+                if "metrics_from_json" in results_file and "overall_accuracy" in results_file["metrics_from_json"]:
+                    print(f"Overall Accuracy (from _metrics.json): {results_file['metrics_from_json']['overall_accuracy'] * 100:.2f}%")
+                    if "macro_f1_score" in results_file["metrics_from_json"]:
+                        print(f"Macro F1-Score (from _metrics.json): {results_file['metrics_from_json']['macro_f1_score']:.4f}")
+                    if "weighted_f1_score" in results_file["metrics_from_json"]:
+                        print(f"Weighted F1-Score (from _metrics.json): {results_file['metrics_from_json']['weighted_f1_score']:.4f}")
+
                 print("\nAccuracy by Subject:")
                 if results_file['accuracy_by_subject']:
                     for subject, acc in results_file['accuracy_by_subject'].items():

@@ -32,8 +32,6 @@ results_file_path = Path("test/results.json")
 #results_file_path = Path("test/resultsnew.json")
 #results_file_path = Path("test/results2.json")
 
-
-
 # Load the JSON data
 try:
     with open(results_file_path, 'r', encoding='utf-8') as f:
@@ -47,6 +45,13 @@ except json.JSONDecodeError:
 
 accuracy_by_subject = data.get("accuracy_by_subject", {})
 accuracy_by_ability = data.get("accuracy_by_ability", {})
+
+# --- Extract metrics from the new structure ---
+metrics_from_json = data.get("metrics_from_json", {})
+overall_accuracy_from_metrics_json = metrics_from_json.get("overall_accuracy") # This is likely a float 0-1
+macro_f1_from_metrics_json = metrics_from_json.get("macro_f1_score")
+weighted_f1_from_metrics_json = metrics_from_json.get("weighted_f1_score")
+classification_report_str = metrics_from_json.get("classification_report") # String version
 
 # Prepare data for the chart
 chart_data = {}
@@ -127,8 +132,6 @@ if not plot_labels:
     print("No valid data found to plot.")
     exit()
 
-# ...existing code...
-
 # Create the bar chart
 plt.style.use('ggplot') # Use a style for better appearance
 plt.figure(figsize=(14, 8)) # Adjust figure size for better label visibility
@@ -136,13 +139,29 @@ bars = plt.bar(plot_labels, plot_values, color='steelblue')
 
 # Calculate and plot the overall average
 if plot_values:
-    overall_average = np.mean(plot_values)
-    plt.axhline(overall_average, color='red', linestyle='--', linewidth=2, label=f'Overall Average ({overall_average:.1f}%)')
+    overall_average = np.mean(plot_values) # This average is based on the plotted subject/ability categories
+    plt.axhline(overall_average, color='red', linestyle='--', linewidth=2, label=f'Avg. of Plotted Categories ({overall_average:.1f}%)')
     plt.legend() # Show the legend to label the average line
 
 plt.xlabel("Category Abbreviation", fontsize=12)
 plt.ylabel("Accuracy (%)", fontsize=12)
-plt.title("Accuracy by Subject and Ability Category", fontsize=14, fontweight='bold')
+
+# --- Updated Title to include F1 scores if available ---
+main_title = "Accuracy by Subject and Ability Category"
+sub_title_parts = []
+if overall_accuracy_from_metrics_json is not None:
+    sub_title_parts.append(f"Overall Acc: {overall_accuracy_from_metrics_json*100:.2f}%")
+if macro_f1_from_metrics_json is not None:
+    sub_title_parts.append(f"Macro F1: {macro_f1_from_metrics_json:.3f}")
+if weighted_f1_from_metrics_json is not None:
+    sub_title_parts.append(f"Weighted F1: {weighted_f1_from_metrics_json:.3f}")
+
+if sub_title_parts:
+    plt.title(f"{main_title}\n({' | '.join(sub_title_parts)})", fontsize=14, fontweight='bold')
+else:
+    plt.title(main_title, fontsize=14, fontweight='bold')
+# --- End of Updated Title ---
+
 plt.ylim(0, 100) # Set y-axis limit to 0-100 for percentage
 plt.xticks(rotation=45, ha='right', fontsize=10) # Rotate labels if they overlap
 plt.yticks(fontsize=10)
@@ -158,7 +177,14 @@ if missing_labels:
     missing_text = f"Note: Data not available or invalid for {', '.join(missing_labels)}"
     plt.figtext(0.5, 0.01, missing_text, wrap=True, horizontalalignment='center', fontsize=9, color='grey')
 
-plt.tight_layout(rect=[0, 0.03, 1, 0.95]) # Adjust layout to prevent title/label overlap
+# --- Add Classification Report to the bottom if available ---
+if classification_report_str:
+    plt.figtext(0.02, 0.01, "Classification Report (from _metrics.json):", fontsize=8, fontweight='bold')
+    plt.figtext(0.02, -0.15, classification_report_str, wrap=True, horizontalalignment='left', fontsize=6, family='monospace', va='top')
+    plt.tight_layout(rect=[0, 0.1, 1, 0.95]) # Adjust rect bottom to make space for report
+else:
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95]) # Adjust layout to prevent title/label overlap
+# --- End of Adding Classification Report ---
 
 # Save the plot to a file
 output_image_path = Path("accuracy_chartnew.png")
