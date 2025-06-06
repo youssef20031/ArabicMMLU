@@ -50,6 +50,23 @@ def softmax(x):
 
 
 def predict_classification_causal_by_letter(model, tokenizer, input_text, labels, device, lang_alpa):
+    # Handle offline Chain-of-Thought or Tree-of-Thought: generate full reasoning and extract final answer
+    if 'Final Answer' in input_text or 'الإجابة النهائية' in input_text:
+        import re
+        # Generate reasoning text
+        inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        gen_ids = model.generate(**inputs, max_new_tokens=512, do_sample=False)
+        raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
+        # Extract predicted label
+        alpa = alpa_ar if lang_alpa=='ar' else alpa_en
+        expected = ''.join(re.escape(l) for l in list(alpa.values())[:len(labels)])
+        pat_en = rf"Final Answer:.*?\[\[?([{expected}])\]?"
+        pat_ar = rf"الإجابة النهائية:.*?\[\[?([{expected}])\]?"
+        match = re.search(pat_en, raw_output) or re.search(pat_ar, raw_output)
+        pred = match.group(1) if match else raw_output.strip()[-1]
+        return pred, raw_output
+
     if not labels:
         print(f"Warning: Received empty labels list for input. Skipping prediction.")
         # Return values indicating failure/skip
