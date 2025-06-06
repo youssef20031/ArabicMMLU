@@ -74,7 +74,9 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
             inputs.pop("token_type_ids")
         outputs = model(**inputs, labels=input_ids)
         last_token_logits = outputs.logits[:, -1, :]
-        choice_logits = last_token_logits[:, choice_ids].detach().cpu().numpy()
+        # Ensure choice_ids is a tensor on the same device
+        choice_ids_tensor = torch.tensor(choice_ids, device=device)
+        choice_logits = last_token_logits[:, choice_ids_tensor].detach().cpu().numpy()
         conf = softmax(choice_logits[0])
         pred = alpa[np.argmax(choice_logits[0])]
     return conf, pred
@@ -95,8 +97,10 @@ def predict_classification_mt0_by_letter(model, tokenizer, input_text, labels, d
         inputs = tokenizer(input_text, return_tensors="pt").to(device)
         outputs = model(**inputs, decoder_input_ids=start_token['input_ids'])
         last_token_logits = outputs.logits[:, -1, :]
-        choice_logits = last_token_logits[:, choice_ids].detach().cpu().numpy()
-        if not choice_ids:
+        # Ensure choice_ids is a tensor on the same device
+        choice_ids_tensor = torch.tensor(choice_ids, device=device)
+        choice_logits = last_token_logits[:, choice_ids_tensor].detach().cpu().numpy()
+        if not choice_ids: # This check might be redundant now or could be choice_ids_tensor
             print(f"Warning: Generated empty choice_ids list. Skipping prediction.")
             return None, None
         conf = softmax(choice_logits[0])
