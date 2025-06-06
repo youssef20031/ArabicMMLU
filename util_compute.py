@@ -66,7 +66,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
         # Generate up to 5 tokens to capture the answer letter
-        gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False, temperature=0.0, top_p=1.0, generator=torch.Generator(device=device).manual_seed(42))
+        gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False, temperature=0.0, top_p=1.0)
         raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         # Try to extract the letter from the output
         import re
@@ -82,7 +82,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         # Generate reasoning text
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
-        gen_ids = model.generate(**inputs, max_new_tokens=512, do_sample=True)
+        gen_ids = model.generate(**inputs, max_new_tokens=512, do_sample=True, temperature=1.0, top_p=1.0)
         raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         # Extract predicted label
         alpa = alpa_ar if lang_alpa=='ar' else alpa_en
