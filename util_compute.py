@@ -51,7 +51,26 @@ def softmax(x):
 # Add global flag to control saving reasoning
 SAVE_THOUGHTS = False
 
+# Add global flag to control use of generation-based classification
+USE_GEN_CLASSIFICATION = True
+
 def predict_classification_causal_by_letter(model, tokenizer, input_text, labels, device, lang_alpa):
+    # If generation-based classification is enabled, generate a short token sequence and parse the label
+    if USE_GEN_CLASSIFICATION and labels:
+        # Generate the answer token(s) directly
+        inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        # Generate up to 5 tokens to capture the answer letter
+        gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False)
+        raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
+        # Try to extract the letter from the output
+        import re
+        alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
+        expected = ''.join(re.escape(l) for l in list(alpa.values())[:len(labels)])
+        match = re.search(rf"([{expected}])", raw_output)
+        pred = match.group(1) if match else raw_output.strip()[0]
+        return pred, raw_output
+
     # Handle offline Chain-of-Thought or Tree-of-Thought when enabled
     if SAVE_THOUGHTS and ('Final Answer' in input_text or 'الإجابة النهائية' in input_text):
         import re
