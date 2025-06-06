@@ -1,7 +1,8 @@
 import torch
 import numpy as np
 import os
-import time  # <--- Add this import
+import time
+import random  # add for seeding
 # import google.generativeai as genai
 from google.api_core import exceptions as google_exceptions # <-- Import google exceptions
 import math # <-- Add math import for ceil
@@ -24,6 +25,10 @@ except ImportError:
     OpenAI_RateLimitError = Exception
 # --- End OpenAI imports ---
 
+# seed for reproducibility
+torch.manual_seed(42)
+np.random.seed(42)
+random.seed(42)
 
 alpa_ar = {
     0: 'أ',
@@ -55,13 +60,13 @@ SAVE_THOUGHTS = False
 USE_GEN_CLASSIFICATION = True
 
 def predict_classification_causal_by_letter(model, tokenizer, input_text, labels, device, lang_alpa):
-    # If generation-based classification is enabled, generate a short token sequence and parse the label
+    # Handle generation-based classification for both direct and CoT/ToT
     if USE_GEN_CLASSIFICATION and labels:
         # Generate the answer token(s) directly
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
         # Generate up to 5 tokens to capture the answer letter
-        gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False)
+        gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False, temperature=0.0, top_p=1.0, generator=torch.Generator(device=device).manual_seed(42))
         raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         # Try to extract the letter from the output
         import re
@@ -71,8 +76,8 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         pred = match.group(1) if match else raw_output.strip()[0]
         return pred, raw_output
 
-    # Handle offline Chain-of-Thought or Tree-of-Thought when enabled
-    if SAVE_THOUGHTS and ('Final Answer' in input_text or 'الإجابة النهائية' in input_text):
+    # Handle offline Chain-of-Thought or Tree-of-Thought generation when detected
+    if USE_GEN_CLASSIFICATION and ('Final Answer' in input_text or 'الإجابة النهائية' in input_text):
         import re
         # Generate reasoning text
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
@@ -250,7 +255,7 @@ def get_gemini_model(model_name):
             print(f"Error initializing Gemini model {model_name} with {_current_key_type.upper()} key: {e}")
             # Clear cache entry if initialization failed
             if model_name in _gemini_model_cache:
-                del _gemini_model_cache[model_name]
+                del _gemini_model_cache
             raise # Re-raise the exception to be handled by the caller
     return _gemini_model_cache[model_name]
 
