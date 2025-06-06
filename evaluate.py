@@ -375,23 +375,23 @@ def main():
         raw_preds.append(raw_pred) # Store the raw output
 
         # --- Add consistency heuristic ---
-        current_consistency_metric = "N/A" # Default
+        current_consistency_metric = "N/A"  # Default
         if (args.chain_of_thought or args.tree_of_thought):
-            if raw_pred and pred:
+            if (raw_pred is not None) and (pred is not None):
                 # Check if raw_pred seems to contain reasoning (is longer than just the answer)
                 # Heuristic: 15 chars of reasoning minimum beyond the prediction length
                 if len(raw_pred.strip()) > len(pred.strip()) + 15:
-                    tail_length = 50 # Look at the last 50 characters of the raw prediction
+                    tail_length = 50  # Look at the last 50 characters of the raw prediction
                     raw_pred_tail = raw_pred.strip()[-tail_length:]
                     if pred in raw_pred_tail:
                         current_consistency_metric = "Consistent_heuristic"
                     else:
-                        current_consistency_metric = "Inconsistent_heuristic" # Or "Review_Consistency"
+                        current_consistency_metric = "Inconsistent_heuristic"  # Or "Review_Consistency"
                 else:
                     current_consistency_metric = "Reasoning_absent_or_too_short"
-            elif not raw_pred:
+            elif raw_pred is None:
                 current_consistency_metric = "Error_no_raw_pred_for_CoT_ToT"
-            elif not pred: # pred is None or empty
+            elif pred is None:  # pred is None or empty
                 current_consistency_metric = "Error_no_parsed_pred_for_CoT_ToT"
         reasoning_consistency_heuristics.append(current_consistency_metric)
         # --- End of consistency heuristic ---
