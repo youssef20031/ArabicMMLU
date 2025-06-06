@@ -48,10 +48,12 @@ def softmax(x):
     softmax = numerator/denominator
     return softmax
 
+# Add global flag to control saving reasoning
+SAVE_THOUGHTS = False
 
 def predict_classification_causal_by_letter(model, tokenizer, input_text, labels, device, lang_alpa):
-    # Handle offline Chain-of-Thought or Tree-of-Thought: generate full reasoning and extract final answer
-    if 'Final Answer' in input_text or 'الإجابة النهائية' in input_text:
+    # Handle offline Chain-of-Thought or Tree-of-Thought when enabled
+    if SAVE_THOUGHTS and ('Final Answer' in input_text or 'الإجابة النهائية' in input_text):
         import re
         # Generate reasoning text
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
