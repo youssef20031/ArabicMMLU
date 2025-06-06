@@ -60,8 +60,11 @@ SAVE_THOUGHTS = False
 USE_GEN_CLASSIFICATION = True
 
 def predict_classification_causal_by_letter(model, tokenizer, input_text, labels, device, lang_alpa):
-    # Handle generation-based classification for both direct and CoT/ToT
-    if USE_GEN_CLASSIFICATION and labels:
+    # Detect chain-of-thought prompts to handle reasoning separately
+    cot_triggers = ['Final Answer', 'الإجابة النهائية', 'خطوة بخطوة', 'تفكيرك خطوة بخطوة']
+    is_cot = any(trigger in input_text for trigger in cot_triggers)
+    # Direct answer classification when not CoT prompt
+    if USE_GEN_CLASSIFICATION and labels and not is_cot:
         # Generate the answer token(s) directly
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
@@ -69,7 +72,6 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         gen_ids = model.generate(**inputs, max_new_tokens=5, do_sample=False, temperature=0.0, top_p=1.0)
         raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         # Try to extract the letter from the output
-        import re
         alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
         expected = ''.join(re.escape(l) for l in list(alpa.values())[:len(labels)])
         match = re.search(rf"([{expected}])", raw_output)
@@ -77,7 +79,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         return pred, raw_output
 
     # Handle offline Chain-of-Thought or Tree-of-Thought generation when detected
-    if USE_GEN_CLASSIFICATION and ('Final Answer' in input_text or 'الإجابة النهائية' in input_text):
+    if USE_GEN_CLASSIFICATION and is_cot:
         # Generate reasoning text with sampling for thought traces
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
