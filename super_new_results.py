@@ -379,6 +379,7 @@ def compare_model_performance(folder_path):
 
 
 if __name__ == "__main__":
-    project_root = "/home/youssef/Projects/ArabicMMLU" 
-    target_folder = os.path.join(project_root, "test5") 
+    # Determine folder relative to this script’s location
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    target_folder = os.path.join(script_dir, "test5")
     compare_model_performance(target_folder)
