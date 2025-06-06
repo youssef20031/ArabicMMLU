@@ -376,22 +376,24 @@ def main():
 
         # --- Add consistency heuristic ---
         current_consistency_metric = "N/A"  # Default
-        if (args.chain_of_thought or args.tree_of_thought):
-            if (raw_pred is not None) and (pred is not None):
-                # Check if raw_pred seems to contain reasoning (is longer than just the answer)
-                # Heuristic: 15 chars of reasoning minimum beyond the prediction length
-                if len(raw_pred.strip()) > len(pred.strip()) + 15:
-                    tail_length = 50  # Look at the last 50 characters of the raw prediction
-                    raw_pred_tail = raw_pred.strip()[-tail_length:]
-                    if pred in raw_pred_tail:
+        if args.chain_of_thought or args.tree_of_thought:
+            if raw_pred is not None and pred is not None:
+                # Convert to strings to avoid numpy array methods
+                raw_text = str(raw_pred)
+                pred_text = str(pred)
+                # Heuristic: 15 chars of reasoning beyond the answer
+                if len(raw_text.strip()) > len(pred_text.strip()) + 15:
+                    tail_length = 50  # Look at last 50 characters
+                    raw_tail = raw_text.strip()[-tail_length:]
+                    if pred_text in raw_tail:
                         current_consistency_metric = "Consistent_heuristic"
                     else:
-                        current_consistency_metric = "Inconsistent_heuristic"  # Or "Review_Consistency"
+                        current_consistency_metric = "Inconsistent_heuristic"
                 else:
                     current_consistency_metric = "Reasoning_absent_or_too_short"
             elif raw_pred is None:
                 current_consistency_metric = "Error_no_raw_pred_for_CoT_ToT"
-            elif pred is None:  # pred is None or empty
+            elif pred is None:
                 current_consistency_metric = "Error_no_parsed_pred_for_CoT_ToT"
         reasoning_consistency_heuristics.append(current_consistency_metric)
         # --- End of consistency heuristic ---
