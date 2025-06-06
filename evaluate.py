@@ -259,7 +259,7 @@ def main():
         print(f"Using Tokenizer: {tokenizer_class.__name__}, Model: {model_class.__name__}")
 
         try:
-            tokenizer = tokenizer_class.from_pretrained(args.base_model, trust_remote_code=True, use_auth_token=TOKEN)
+            tokenizer = tokenizer_class.from_pretrained(args.base_model, trust_remote_code=True, token=TOKEN)
         except TypeError as e:
             # Check if the error is the specific sentencepiece error for LlamaTokenizer
             if "expected str, bytes or os.PathLike object, not NoneType" in str(e) and tokenizer_class == LlamaTokenizer:
@@ -287,7 +287,7 @@ def main():
              print("Warning: 8-bit loading might behave differently for Seq2Seq models. Attempting anyway.")
              # For T5/MT0, device_map='auto' often handles distribution better than explicit 8-bit
              # model = model_class.from_pretrained(args.base_model, device_map="auto", load_in_8bit=load_in_8bit, trust_remote_code=True, use_auth_token=TOKEN)
-             model = model_class.from_pretrained(args.base_model, device_map="auto", trust_remote_code=True, use_auth_token=TOKEN) # Try without 8bit first for T5
+             model = model_class.from_pretrained(args.base_model, device_map="auto", trust_remote_code=True, token=TOKEN) # Try without 8bit first for T5
              load_in_8bit = False # Disable explicit 8bit flag if using device_map for T5
         else:
              model = model_class.from_pretrained(
@@ -295,7 +295,7 @@ def main():
                  load_in_8bit=load_in_8bit,
                  trust_remote_code=True,
                  device_map="auto", # Let HF handle device placement
-                 use_auth_token=TOKEN,
+                 token=TOKEN,
                  offload_folder=args.offload_folder if load_in_8bit else None # Only use offload with 8bit
              )
 
