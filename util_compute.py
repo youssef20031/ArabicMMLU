@@ -56,7 +56,7 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         # Generate reasoning text
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
-        gen_ids = model.generate(**inputs, max_new_tokens=512, do_sample=False)
+        gen_ids = model.generate(**inputs, max_new_tokens=512, do_sample=True)
         raw_output = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         # Extract predicted label
         alpa = alpa_ar if lang_alpa=='ar' else alpa_en
