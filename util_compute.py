@@ -78,8 +78,8 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
         pred = match.group(1) if match else raw_output.strip()[0]
         return pred, raw_output
 
-    # Handle offline Chain-of-Thought or Tree-of-Thought generation when detected
-    if USE_GEN_CLASSIFICATION and is_cot:
+    # Handle offline Chain-of-Thought or Tree-of-Thought generation when desired
+    if USE_GEN_CLASSIFICATION and is_cot and SAVE_THOUGHTS:
         # Generate reasoning text with sampling for thought traces
         inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=2048)
         inputs = {k: v.to(device) for k, v in inputs.items()}
