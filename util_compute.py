@@ -69,13 +69,16 @@ def predict_classification_causal_by_letter(model, tokenizer, input_text, labels
             inputs = tokenizer(input_text, return_tensors="pt", truncation=True, max_length=1024)
         else:
             inputs = tokenizer(input_text, return_tensors="pt")
-        input_ids = inputs["input_ids"].to(device)
+        # Move all input tensors to the specified device
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        # Prepare labels on the same device
+        input_ids = inputs["input_ids"]
         if model.config._name_or_path in ['FreedomIntelligence/AceGPT-13B', 'FreedomIntelligence/AceGPT-7B', 'FreedomIntelligence/AceGPT-7B-chat', 'FreedomIntelligence/AceGPT-13B-chat', 'abdo-Mansour/jais-adapted-7b-chat-BNB-4bit']:
-            inputs.pop("token_type_ids")
+            inputs.pop("token_type_ids", None)
         outputs = model(**inputs, labels=input_ids)
         last_token_logits = outputs.logits[:, -1, :]
-        # Ensure choice_ids is a tensor on the same device
-        choice_ids_tensor = torch.tensor(choice_ids, device=device)
+        # Ensure choice_ids tensor is created on the same device as logits
+        choice_ids_tensor = torch.tensor(choice_ids, device=last_token_logits.device)
         choice_logits = last_token_logits[:, choice_ids_tensor].detach().cpu().numpy()
         conf = softmax(choice_logits[0])
         pred = alpa[np.argmax(choice_logits[0])]
@@ -93,12 +96,16 @@ def predict_classification_mt0_by_letter(model, tokenizer, input_text, labels, d
         print(f"Warning: Generated empty choice_ids list. Skipping prediction.")
         return None, None
     with torch.no_grad():
-        start_token = tokenizer('<pad>', return_tensors="pt").to(device)
-        inputs = tokenizer(input_text, return_tensors="pt").to(device)
+        # Prepare start_token on the same device
+        start_token = tokenizer('<pad>', return_tensors="pt")
+        start_token = {k: v.to(device) for k, v in start_token.items()}
+        # Prepare model inputs on the same device
+        inputs = tokenizer(input_text, return_tensors="pt")
+        inputs = {k: v.to(device) for k, v in inputs.items()}
         outputs = model(**inputs, decoder_input_ids=start_token['input_ids'])
         last_token_logits = outputs.logits[:, -1, :]
-        # Ensure choice_ids is a tensor on the same device
-        choice_ids_tensor = torch.tensor(choice_ids, device=device)
+        # Ensure choice_ids tensor is on the same device as logits
+        choice_ids_tensor = torch.tensor(choice_ids, device=last_token_logits.device)
         choice_logits = last_token_logits[:, choice_ids_tensor].detach().cpu().numpy()
         if not choice_ids: # This check might be redundant now or could be choice_ids_tensor
             print(f"Warning: Generated empty choice_ids list. Skipping prediction.")
