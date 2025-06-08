@@ -1,6 +1,6 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_tot_openai_gpt-4o-mini-2024-07-18.csv",
-    "overall_accuracy": 75.26,
+    "overall_accuracy_calculated_from_csv": 75.26,
     "accuracy_by_subject": {
         "abductive reasoning": 75.26
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "reasoning_ability": 1532
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

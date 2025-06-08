@@ -1,6 +1,6 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_tot_groq_llama-3.1-8b-instant.csv",
-    "overall_accuracy": 60.7,
+    "overall_accuracy_calculated_from_csv": 60.7,
     "accuracy_by_subject": {
         "abductive reasoning": 60.7
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "reasoning_ability": 1532
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

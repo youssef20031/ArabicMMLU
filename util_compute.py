@@ -25,6 +25,16 @@ except ImportError:
     OpenAI_RateLimitError = Exception
 # --- End OpenAI imports ---
 
+# --- Add OpenAI Compatible (Ollama/LMStudio) imports ---
+try:
+    from openai import OpenAI as OpenAI_Compatible_Client, APIError as OpenAI_Compatible_APIError, RateLimitError as OpenAI_Compatible_RateLimitError, APIConnectionError as OpenAI_Compatible_APIConnectionError
+except ImportError:
+    OpenAI_Compatible_Client = None # Define OpenAI as None if import fails
+    OpenAI_Compatible_APIError = Exception
+    OpenAI_Compatible_RateLimitError = Exception
+    OpenAI_Compatible_APIConnectionError = Exception # Add this
+# --- End OpenAI Compatible imports ---
+
 # seed for reproducibility
 torch.manual_seed(42)
 np.random.seed(42)
@@ -453,6 +463,112 @@ def predict_classification_gemini(model_name, input_text, labels, lang_alpa):
     return None, None
 
 # --- End of New Gemini Functionality ---
+
+
+# --- New OpenAI Compatible (Ollama/LMStudio) Prediction Function ---
+def predict_classification_openai_compatible(client, model_name, input_text, labels, lang_alpa):
+    """
+    Predicts the classification using an OpenAI-compatible API (like Ollama or LM Studio).
+
+    Args:
+        client (OpenAI_Compatible_Client): The initialized OpenAI compatible client.
+        model_name (str): The specific model to use (model name as defined in your local server).
+        input_text (str): The formatted input prompt containing the question and choices.
+        labels (list): The list of possible label strings (used to determine number of choices).
+        lang_alpa (str): 'ar' or 'en' to select the alphabet for choices.
+
+    Returns:
+        tuple: (prediction, raw_response) - prediction is the predicted letter or None on failure.
+                                            raw_response is the full text output from the API.
+    """
+    if not client:
+        print("Error: OpenAI compatible client is not initialized.")
+        return None, None
+    if not labels:
+        print(f"Warning: Received empty labels list for input. Skipping prediction.")
+        return None, None
+
+    alpa = alpa_ar if lang_alpa == 'ar' else alpa_en
+    expected_labels = list(alpa.values())[:len(labels)]
+    expected_labels_str = ", ".join(f"'{label}'" for label in expected_labels)
+    expected_chars_set = set(expected_labels)
+
+    system_prompt = f"You are an assistant helping with multiple-choice questions. Your response must be only the single character representing your choice from {expected_labels_str}. Do not include any other text, explanations, or introductory phrases."
+
+    max_retries = 3
+    attempt = 0
+    backoff_time = 2  # Initial backoff time in seconds
+
+    while attempt < max_retries:
+        try:
+            print(f"Attempting OpenAI-compatible API call (Attempt {attempt + 1}/{max_retries}) to model '{model_name}'...")
+            # For LM Studio and some Ollama setups, the system prompt is part of the user message or a specific API param.
+            # Here, we'll include it in the user message for broader compatibility.
+            # If your specific setup uses a 'system' role, adjust accordingly.
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": input_text}
+            ]
+            
+            # If the model name is not provided or is a placeholder, some servers might not need it explicitly if a default is loaded.
+            # However, it's good practice to pass it.
+            chat_completion = client.chat.completions.create(
+                model=model_name, # Model name might be optional or required depending on the server
+                messages=messages,
+                temperature=0,
+                #format = 'json'
+                max_tokens=10  # Expecting a single letter, so a small number of tokens is sufficient
+            )
+
+            raw_response = chat_completion.choices[0].message.content.strip()
+            print(f"OpenAI-compatible Raw Response: '{raw_response}'")
+
+            # Normalize bare alef without hamza to hamza version for Arabic prompts
+            if lang_alpa == 'ar' and raw_response.strip() == 'ا' and 'أ' in expected_chars_set:
+                prediction = 'أ'
+                print("Normalized Arabic bare alef 'ا' to expected label 'أ'")
+                return prediction, raw_response
+
+            # Extract the first character that is an expected label
+            prediction = None
+            for char in raw_response:
+                if char in expected_chars_set:
+                    prediction = char
+                    break
+            
+            if prediction:
+                print(f"OpenAI-compatible Prediction: '{prediction}'")
+                return prediction, raw_response
+            else:
+                print(f"Warning: Could not extract a valid label from response: '{raw_response}'. Expected one of {expected_labels_str}")
+                # This might not be a retryable error if the model consistently gives bad format
+                # but we'll retry in case it was a fluke.
+                if attempt == max_retries -1:
+                     return None, raw_response # Return last raw response on final failed attempt
+
+        except OpenAI_Compatible_APIConnectionError as e: # Catch this specifically
+            print(f"OpenAI-compatible API connection error: {e}. Ensure the server is running and accessible. Retrying in {backoff_time}s...")
+            time.sleep(backoff_time)
+            backoff_time *= 2  # Exponential backoff
+        except OpenAI_Compatible_RateLimitError as e:
+            print(f"OpenAI-compatible API rate limit error: {e}. Retrying in {backoff_time}s...")
+            time.sleep(backoff_time)
+            backoff_time *= 2  # Exponential backoff
+        except OpenAI_Compatible_APIError as e: # General API errors (that are not connection/rate limit)
+            print(f"OpenAI-compatible API error (other): {e}. Retrying in {backoff_time}s...")
+            time.sleep(backoff_time)
+            backoff_time *= 2
+        except Exception as e: # Catch-all for other unexpected errors
+            print(f"An unexpected error occurred with OpenAI-compatible API: {e}. Retrying in {backoff_time}s...")
+            time.sleep(backoff_time)
+            backoff_time *= 2
+        
+        attempt += 1
+
+    print(f"Failed to get a valid response from OpenAI-compatible API after {max_retries} attempts.")
+    return None, None
+
+# --- End of New OpenAI Compatible (Ollama/LMStudio) Prediction Function ---
 
 
 # --- New Groq Prediction Function ---

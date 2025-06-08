@@ -17,7 +17,8 @@ from util_compute import (predict_classification_causal_by_letter,
                           predict_classification_gemini,
                           configure_gemini,
                           predict_classification_groq,
-                          predict_classification_openai) # <-- Import the Groq function
+                          predict_classification_openai,
+                          predict_classification_openai_compatible) # <-- Import the OpenAI compatible function
 
 # --- Add Groq import ---
 try:
@@ -38,6 +39,15 @@ except ImportError:
     OpenAI_APIError = Exception
     OpenAI_RateLimitError = Exception
 # --- End OpenAI import ---
+
+# --- Add OpenAI Compatible Client import ---
+try:
+    from openai import OpenAI as OpenAI_Compatible_Client, APIError as OpenAI_Compatible_APIError, RateLimitError as OpenAI_Compatible_RateLimitError
+except ImportError:
+    OpenAI_Compatible_Client = None
+    OpenAI_Compatible_APIError = Exception
+    OpenAI_Compatible_RateLimitError = Exception
+# --- End OpenAI Compatible Client import ---
 
 # Optional: Define Hugging Face token if needed for private models
 # TOKEN = 'YOUR_HF_TOKEN' # Replace with your token if necessary
@@ -73,6 +83,12 @@ def parse_args():
     # --- End of OpenAI arguments ---
     parser.add_argument("--filename_word", type=str, default="", help="Custom word to add to the output filename") # <-- Add custom filename word argument
 
+    # --- Add OpenAI Compatible (Ollama/LMStudio) arguments ---
+    parser.add_argument("--use_openai_compatible", action='store_true', help="Use an OpenAI-compatible API (e.g., Ollama, LMStudio) instead of other models")
+    parser.add_argument("--openai_compatible_model", type=str, default="local-model", help="OpenAI-compatible model ID to use (e.g., 'llama3:instruct', 'mistral')")
+    parser.add_argument("--openai_compatible_base_url", type=str, default="http://localhost:1234/v1", help="Base URL for the OpenAI-compatible API server")
+    # --- End of OpenAI Compatible arguments ---
+
     args = parser.parse_args()
 
     # --- Add validation ---
@@ -92,6 +108,8 @@ def parse_args():
             print("Warning: --load_8bit is ignored when --use_openai is specified.")
         if args.use_groq: # OpenAI takes precedence based on downstream logic
             print("Warning: Both --use_openai and --use_groq are specified. OpenAI will be used.")
+        if args.use_openai_compatible:
+            print("Warning: Both --use_openai and --use_openai_compatible are specified. OpenAI (--use_openai) will be used.")
 
     elif args.use_groq:  # This implies not args.use_openai due to elif
         if args.base_model:
@@ -102,10 +120,23 @@ def parse_args():
             args.lora_weights = "x"
         if args.load_8bit:
             print("Warning: --load_8bit is ignored when --use_groq is specified.")
+        if args.use_openai_compatible:
+            print("Warning: Both --use_groq and --use_openai_compatible are specified. Groq (--use_groq) will be used.")
+
+    elif args.use_openai_compatible: # This implies not args.use_openai and not args.use_groq
+        if args.base_model:
+            print("Warning: --base_model is ignored when --use_openai_compatible is specified.")
+            args.base_model = None
+        if args.lora_weights != "x":
+            print("Warning: --lora_weights are ignored when --use_openai_compatible is specified.")
+            args.lora_weights = "x"
+        if args.load_8bit:
+            print("Warning: --load_8bit is ignored when --use_openai_compatible is specified.")
+        # No need to check against OpenAI or Groq here as they are checked first
 
     else:  # Neither --use_openai nor --use_groq is specified, so base_model is for HF/Gemini
         if not args.base_model:
-            parser.error("--base_model (for HF/Gemini) is required unless --use_openai or --use_groq is specified.")
+            parser.error("--base_model (for HF/Gemini) is required unless --use_openai, --use_groq, or --use_openai_compatible is specified.")
         # For HF/Gemini models, --lora_weights and --load_8bit are relevant if provided.
         # No general warnings needed here for those flags at this stage.
     # --- End of validation ---
@@ -119,8 +150,9 @@ def main():
     # --- Determine model type and setup ---
     is_openai_model = args.use_openai
     is_groq_model = args.use_groq and not is_openai_model
-    is_gemini_model = not is_groq_model and not is_openai_model and args.base_model and args.base_model.startswith("gemini-")
-    is_hf_model = not is_groq_model and not is_openai_model and not is_gemini_model and args.base_model is not None
+    is_openai_compatible_model = args.use_openai_compatible and not is_openai_model and not is_groq_model
+    is_gemini_model = not is_groq_model and not is_openai_model and not is_openai_compatible_model and args.base_model and args.base_model.startswith("gemini-")
+    is_hf_model = not is_groq_model and not is_openai_model and not is_openai_compatible_model and not is_gemini_model and args.base_model is not None
 
     cot_suffix = "cot_" if args.chain_of_thought else ""
     tot_suffix = "_tot" if args.tree_of_thought else "" # <-- Add ToT suffix
@@ -131,6 +163,8 @@ def main():
         model_name_suffix = f"openai_{args.openai_model.replace('/', '_')}"
     elif is_groq_model:
         model_name_suffix = f"groq_{args.groq_model.replace('/', '_')}"
+    elif is_openai_compatible_model:
+        model_name_suffix = f"openai_compatible_{args.openai_compatible_model.replace('/', '_').replace(':', '_')}"
     elif is_gemini_model:
         model_name_suffix = f"gemini_{args.base_model.replace('/', '_')}"
     elif is_hf_model:
@@ -167,6 +201,7 @@ def main():
     predict_classification = None
     groq_client = None # Initialize Groq client variable
     openai_client = None # Initialize OpenAI client variable
+    openai_compatible_client = None # Initialize OpenAI compatible client variable
 
 
     if is_openai_model:
@@ -219,6 +254,22 @@ def main():
              sys.exit(1)
         except Exception as e: # Catch other potential initialization errors
             print(f"Error initializing Groq client: {e}")
+            sys.exit(1)
+
+    elif is_openai_compatible_model:
+        print(f"Using OpenAI-compatible model: {args.openai_compatible_model} via {args.openai_compatible_base_url}")
+        if OpenAI_Compatible_Client is None:
+            print("Error: The 'openai' library is required to use --use_openai_compatible. Please install it (`pip install openai`).")
+            sys.exit(1)
+        try:
+            # For local servers like LMStudio/Ollama, API key is often not strictly required or can be a placeholder.
+            openai_compatible_client = OpenAI_Compatible_Client(base_url=args.openai_compatible_base_url, api_key="local-placeholder")
+            print("OpenAI-compatible client initialized.")
+            predict_classification = lambda input_text, labels, lang_alpa: predict_classification_openai_compatible(
+                openai_compatible_client, args.openai_compatible_model, input_text, labels, lang_alpa
+            )
+        except Exception as e:
+            print(f"Error initializing OpenAI-compatible client: {e}")
             sys.exit(1)
 
     elif is_gemini_model:
@@ -346,7 +397,7 @@ def main():
         # --- End of Hugging Face Model Loading Logic ---
 
     else:
-        print("Error: No valid model type specified (HF, Gemini, or Groq).")
+        print("Error: No valid model type specified (HF, Gemini, Groq, or OpenAI-Compatible).")
         sys.exit(1)
 
 

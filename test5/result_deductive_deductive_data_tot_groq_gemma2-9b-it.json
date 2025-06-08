@@ -1,6 +1,6 @@
 {
     "source_csv": "result_deductive_deductive_data_tot_groq_gemma2-9b-it.csv",
-    "overall_accuracy": 42.19,
+    "overall_accuracy_calculated_from_csv": 42.19,
     "accuracy_by_subject": {
         "logical reasoning": 42.19
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "deductive_reasoning": 640
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

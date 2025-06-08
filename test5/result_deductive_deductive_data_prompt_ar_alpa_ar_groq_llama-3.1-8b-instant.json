@@ -1,6 +1,6 @@
 {
     "source_csv": "result_deductive_deductive_data_prompt_ar_alpa_ar_groq_llama-3.1-8b-instant.csv",
-    "overall_accuracy": 41.56,
+    "overall_accuracy_calculated_from_csv": 41.56,
     "accuracy_by_subject": {
         "logical reasoning": 41.56
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "deductive_reasoning": 640
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

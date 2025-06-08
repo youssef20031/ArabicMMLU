@@ -1,6 +1,6 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_groq_meta-llama-llama-4-scout-17b-16e-instruct.csv",
-    "overall_accuracy": 72.06,
+    "overall_accuracy_calculated_from_csv": 72.06,
     "accuracy_by_subject": {
         "abductive reasoning": 72.06
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "reasoning_ability": 1532
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

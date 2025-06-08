@@ -1,6 +1,6 @@
 {
     "source_csv": "result_deductive_deductive_datacot__openai_gpt-4o-mini-2024-07-18.csv",
-    "overall_accuracy": 35.94,
+    "overall_accuracy_calculated_from_csv": 35.94,
     "accuracy_by_subject": {
         "logical reasoning": 35.94
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "deductive_reasoning": 640
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

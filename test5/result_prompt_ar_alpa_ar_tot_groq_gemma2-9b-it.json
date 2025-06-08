@@ -1,6 +1,6 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_tot_groq_gemma2-9b-it.csv",
-    "overall_accuracy": 68.99,
+    "overall_accuracy_calculated_from_csv": 68.99,
     "accuracy_by_subject": {
         "abductive reasoning": 68.99
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "reasoning_ability": 1532
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

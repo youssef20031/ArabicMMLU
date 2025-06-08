@@ -1,6 +1,6 @@
 {
     "source_csv": "result_prompt_ar_alpa_ar_mt0-small.csv",
-    "overall_accuracy": 50.98,
+    "overall_accuracy_calculated_from_csv": 50.98,
     "accuracy_by_subject": {
         "abductive reasoning": 50.98
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "reasoning_ability": 1532
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }

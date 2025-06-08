@@ -1,6 +1,6 @@
 {
     "source_csv": "result_deductive_deductive_data_groq_mistral-saba-24b.csv",
-    "overall_accuracy": 27.66,
+    "overall_accuracy_calculated_from_csv": 27.66,
     "accuracy_by_subject": {
         "logical reasoning": 27.66
     },
@@ -12,5 +12,8 @@
     },
     "counts_by_ability": {
         "deductive_reasoning": 640
+    },
+    "metrics_from_json": {
+        "status": "not_found"
     }
 }
