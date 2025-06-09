@@ -13,6 +13,51 @@
     "counts_by_ability": {
         "deductive_reasoning": 640
     },
+    "metrics_self": {
+        "overall_accuracy": 0.359375,
+        "macro_f1_score": 0.35841224123763554,
+        "weighted_f1_score": 0.3643536811295166,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.25      0.48      0.32       106\n           B       0.30      0.46      0.36       122\n           C       0.40      0.34      0.36       148\n           D       0.61      0.28      0.38       264\n\n    accuracy                           0.36       640\n   macro avg       0.39      0.39      0.36       640\nweighted avg       0.44      0.36      0.36       640\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.24519230769230768,
+                "recall": 0.4811320754716981,
+                "f1-score": 0.3248407643312102,
+                "support": 106.0
+            },
+            "B": {
+                "precision": 0.3010752688172043,
+                "recall": 0.45901639344262296,
+                "f1-score": 0.36363636363636365,
+                "support": 122.0
+            },
+            "C": {
+                "precision": 0.3968253968253968,
+                "recall": 0.33783783783783783,
+                "f1-score": 0.36496350364963503,
+                "support": 148.0
+            },
+            "D": {
+                "precision": 0.6083333333333333,
+                "recall": 0.2765151515151515,
+                "f1-score": 0.3802083333333333,
+                "support": 264.0
+            },
+            "accuracy": 0.359375,
+            "macro avg": {
+                "precision": 0.3878565766670605,
+                "recall": 0.3886253645668276,
+                "f1-score": 0.35841224123763554,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.4407058220956911,
+                "recall": 0.359375,
+                "f1-score": 0.3643536811295166,
+                "support": 640.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

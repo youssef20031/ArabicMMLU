@@ -1,0 +1,51 @@
+{
+    "overall_accuracy": 0.0625,
+    "macro_f1_score": 0.08907272315348044,
+    "weighted_f1_score": 0.09882386719988605,
+    "classification_report": "              precision    recall  f1-score   support\n\n        None       0.00      0.00      0.00         0\n           أ       0.25      0.03      0.05       106\n           ب       0.46      0.09      0.15       122\n           ج       0.39      0.15      0.21       148\n           د       0.40      0.02      0.03       264\n\n    accuracy                           0.06       640\n   macro avg       0.30      0.06      0.09       640\nweighted avg       0.38      0.06      0.10       640\n",
+    "classification_report_dict": {
+        "None": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+        },
+        "أ": {
+            "precision": 0.25,
+            "recall": 0.02830188679245283,
+            "f1-score": 0.05084745762711865,
+            "support": 106.0
+        },
+        "ب": {
+            "precision": 0.4583333333333333,
+            "recall": 0.09016393442622951,
+            "f1-score": 0.1506849315068493,
+            "support": 122.0
+        },
+        "ج": {
+            "precision": 0.38596491228070173,
+            "recall": 0.14864864864864866,
+            "f1-score": 0.2146341463414634,
+            "support": 148.0
+        },
+        "د": {
+            "precision": 0.4,
+            "recall": 0.015151515151515152,
+            "f1-score": 0.029197080291970802,
+            "support": 264.0
+        },
+        "accuracy": 0.0625,
+        "macro avg": {
+            "precision": 0.298859649122807,
+            "recall": 0.05645319700376923,
+            "f1-score": 0.08907272315348044,
+            "support": 640.0
+        },
+        "weighted avg": {
+            "precision": 0.38303042763157896,
+            "recall": 0.0625,
+            "f1-score": 0.09882386719988605,
+            "support": 640.0
+        }
+    }
+}

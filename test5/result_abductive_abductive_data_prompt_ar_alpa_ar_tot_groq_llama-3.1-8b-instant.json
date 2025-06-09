@@ -1,0 +1,54 @@
+{
+    "source_csv": "result_abductive_abductive_data_prompt_ar_alpa_ar_tot_groq_llama-3.1-8b-instant.csv",
+    "overall_accuracy_calculated_from_csv": 61.42,
+    "accuracy_by_subject": {
+        "logical reasoning": 61.42
+    },
+    "accuracy_by_ability": {
+        "reasoning_ability": 61.42
+    },
+    "counts_by_subject": {
+        "logical reasoning": 1532
+    },
+    "counts_by_ability": {
+        "reasoning_ability": 1532
+    },
+    "metrics_self": {
+        "overall_accuracy": 0.6142297650130548,
+        "macro_f1_score": 0.5993750439712584,
+        "weighted_f1_score": 0.5978643943737875,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.71      0.41      0.52       781\n           B       0.57      0.82      0.68       751\n\n    accuracy                           0.61      1532\n   macro avg       0.64      0.62      0.60      1532\nweighted avg       0.64      0.61      0.60      1532\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.7083333333333334,
+                "recall": 0.41357234314980795,
+                "f1-score": 0.5222312045270816,
+                "support": 781.0
+            },
+            "B": {
+                "precision": 0.5743494423791822,
+                "recall": 0.8229027962716379,
+                "f1-score": 0.6765188834154351,
+                "support": 751.0
+            },
+            "accuracy": 0.6142297650130548,
+            "macro avg": {
+                "precision": 0.6413413878562577,
+                "recall": 0.618237569710723,
+                "f1-score": 0.5993750439712584,
+                "support": 1532.0
+            },
+            "weighted avg": {
+                "precision": 0.6426532405744773,
+                "recall": 0.6142297650130548,
+                "f1-score": 0.5978643943737875,
+                "support": 1532.0
+            }
+        }
+    },
+    "metrics_from_json": {
+        "overall_accuracy": 0.6142297650130548,
+        "macro_f1_score": 0.5993750439712584,
+        "weighted_f1_score": 0.5978643943737875
+    }
+}

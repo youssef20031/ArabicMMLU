@@ -13,6 +13,51 @@
     "counts_by_ability": {
         "deductive_reasoning": 640
     },
+    "metrics_self": {
+        "overall_accuracy": 0.3984375,
+        "macro_f1_score": 0.39582188870255547,
+        "weighted_f1_score": 0.4048594957654334,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.32      0.47      0.38       106\n           B       0.29      0.51      0.37       122\n           C       0.40      0.39      0.40       148\n           D       0.67      0.32      0.43       264\n\n    accuracy                           0.40       640\n   macro avg       0.42      0.42      0.40       640\nweighted avg       0.48      0.40      0.40       640\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.3184713375796178,
+                "recall": 0.4716981132075472,
+                "f1-score": 0.38022813688212925,
+                "support": 106.0
+            },
+            "B": {
+                "precision": 0.2938388625592417,
+                "recall": 0.5081967213114754,
+                "f1-score": 0.37237237237237236,
+                "support": 122.0
+            },
+            "C": {
+                "precision": 0.4,
+                "recall": 0.3918918918918919,
+                "f1-score": 0.39590443686006827,
+                "support": 148.0
+            },
+            "D": {
+                "precision": 0.6692913385826772,
+                "recall": 0.32196969696969696,
+                "f1-score": 0.43478260869565216,
+                "support": 264.0
+            },
+            "accuracy": 0.3984375,
+            "macro avg": {
+                "precision": 0.4204003846803842,
+                "recall": 0.4234391058451529,
+                "f1-score": 0.39582188870255547,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.477342525627334,
+                "recall": 0.3984375,
+                "f1-score": 0.4048594957654334,
+                "support": 640.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

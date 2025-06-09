@@ -1,0 +1,118 @@
+{
+    "source_csv": "result_deductive_deductive_data_prompt_ar_alpa_arcot__groq_llama3-70b-8192.csv",
+    "overall_accuracy_calculated_from_csv": 29.53,
+    "accuracy_by_subject": {
+        "logical reasoning": 29.53
+    },
+    "accuracy_by_ability": {
+        "deductive_reasoning": 29.53
+    },
+    "counts_by_subject": {
+        "logical reasoning": 640
+    },
+    "counts_by_ability": {
+        "deductive_reasoning": 640
+    },
+    "metrics_self": {
+        "overall_accuracy": 0.2953125,
+        "macro_f1_score": 0.23377160694127253,
+        "weighted_f1_score": 0.30221617086387226,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.21      0.56      0.31       106\n           B       0.28      0.25      0.26       122\n           C       0.29      0.22      0.25       148\n           D       0.56      0.25      0.35       264\n        None       0.00      0.00      0.00         0\n\n    accuracy                           0.30       640\n   macro avg       0.27      0.26      0.23       640\nweighted avg       0.39      0.30      0.30       640\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.2114695340501792,
+                "recall": 0.5566037735849056,
+                "f1-score": 0.3064935064935065,
+                "support": 106.0
+            },
+            "B": {
+                "precision": 0.2767857142857143,
+                "recall": 0.2540983606557377,
+                "f1-score": 0.26495726495726496,
+                "support": 122.0
+            },
+            "C": {
+                "precision": 0.28695652173913044,
+                "recall": 0.22297297297297297,
+                "f1-score": 0.2509505703422053,
+                "support": 148.0
+            },
+            "D": {
+                "precision": 0.5641025641025641,
+                "recall": 0.25,
+                "f1-score": 0.3464566929133858,
+                "support": 264.0
+            },
+            "None": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1-score": 0.0,
+                "support": 0.0
+            },
+            "accuracy": 0.2953125,
+            "macro avg": {
+                "precision": 0.26786286683551763,
+                "recall": 0.25673502144272325,
+                "f1-score": 0.23377160694127253,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.38683792170725684,
+                "recall": 0.2953125,
+                "f1-score": 0.30221617086387226,
+                "support": 640.0
+            }
+        }
+    },
+    "metrics_from_json": {
+        "overall_accuracy": 0.0671875,
+        "macro_f1_score": 0.08650713347933568,
+        "weighted_f1_score": 0.11565774575583716,
+        "classification_report": "              precision    recall  f1-score   support\n\n        None       0.00      0.00      0.00         0\n           أ       0.31      0.04      0.07       106\n           ب       0.41      0.07      0.12       122\n           ج       0.31      0.06      0.10       148\n           د       0.54      0.08      0.14       264\n\n    accuracy                           0.07       640\n   macro avg       0.31      0.05      0.09       640\nweighted avg       0.42      0.07      0.12       640\n",
+        "classification_report_dict": {
+            "None": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1-score": 0.0,
+                "support": 0.0
+            },
+            "أ": {
+                "precision": 0.3076923076923077,
+                "recall": 0.03773584905660377,
+                "f1-score": 0.06722689075630252,
+                "support": 106.0
+            },
+            "ب": {
+                "precision": 0.4090909090909091,
+                "recall": 0.07377049180327869,
+                "f1-score": 0.125,
+                "support": 122.0
+            },
+            "ج": {
+                "precision": 0.3103448275862069,
+                "recall": 0.060810810810810814,
+                "f1-score": 0.1016949152542373,
+                "support": 148.0
+            },
+            "د": {
+                "precision": 0.5384615384615384,
+                "recall": 0.07954545454545454,
+                "f1-score": 0.13861386138613863,
+                "support": 264.0
+            },
+            "accuracy": 0.0671875,
+            "macro avg": {
+                "precision": 0.3131179165661925,
+                "recall": 0.050372521243229565,
+                "f1-score": 0.08650713347933568,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.422827119001688,
+                "recall": 0.0671875,
+                "f1-score": 0.11565774575583716,
+                "support": 640.0
+            }
+        }
+    }
+}

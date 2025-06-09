@@ -1,0 +1,45 @@
+python evaluate.py --use_groq --task_type='abductive' --groq_model='gemma2-9b-it' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --chain_of_thought --task_type='abductive' --groq_model='gemma2-9b-it' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --tree_of_thought --task_type='abductive' --groq_model='gemma2-9b-it' --lang_alpa='ar' --lang_prompt='ar'
+
+python evaluate.py --use_groq --task_type='abductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --chain_of_thought --task_type='abductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --tree_of_thought --task_type='abductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar' --chain_of_thought
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama-3.1-8b-instant' --lang_alpa='ar' --lang_prompt='ar' --tree_of_thought
+
+python evaluate.py --use_groq --task_type='abductive' --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='abductive' --chain_of_thought --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='abductive' --tree_of_thought --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar' --tree_of_thought
+python evaluate.py --use_groq --task_type='deductive' --groq_model='llama3-70b-8192' --lang_alpa='ar' --lang_prompt='ar' --chain_of_thought
+
+python evaluate.py --use_groq --task_type='abductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --chain_of_thought --task_type='abductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --tree_of_thought --task_type='abductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar' --chain_of_thought
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-maverick-17b-128e-instruct' --lang_alpa='ar' --lang_prompt='ar' --tree_of_thought
+
+python evaluate.py --use_groq --task_type='abductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --chain_of_thought --task_type='abductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --tree_of_thought --task_type='abductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar' --chain_of_thought
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='meta-llama/llama-4-scout-17b-16e-instruct' --lang_alpa='ar' --lang_prompt='ar' --tree_of_thought
+
+python evaluate.py --use_groq --task_type='abductive' --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='abductive' --chain_of_thought --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='abductive' --tree_of_thought --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_groq --task_type='deductive' --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar' --tree_of_thought
+python evaluate.py --use_groq --task_type='deductive' --groq_model='mistral-saba-24b' --lang_alpa='ar' --lang_prompt='ar' --chain_of_thought
+
+python evaluate.py --use_openai --task_type='abductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --chain_of_thought --use_openai --task_type='abductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --tree_of_thought --use_openai --task_type='abductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --tree_of_thought --use_openai --task_type='deductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --chain_of_thought --use_openai --task_type='deductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'
+python evaluate.py --use_openai --task_type='deductive' --openai_model='gpt-4o-mini-2024-07-18' --lang_alpa='ar' --lang_prompt='ar'

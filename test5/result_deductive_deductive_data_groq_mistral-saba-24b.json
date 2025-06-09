@@ -13,6 +13,51 @@
     "counts_by_ability": {
         "deductive_reasoning": 640
     },
+    "metrics_self": {
+        "overall_accuracy": 0.2765625,
+        "macro_f1_score": 0.25567137197722023,
+        "weighted_f1_score": 0.28299781670612834,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.17      0.18      0.17       106\n           B       0.19      0.34      0.24       122\n           C       0.29      0.20      0.23       148\n           D       0.43      0.33      0.37       264\n\n    accuracy                           0.28       640\n   macro avg       0.27      0.26      0.26       640\nweighted avg       0.31      0.28      0.28       640\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.16521739130434782,
+                "recall": 0.1792452830188679,
+                "f1-score": 0.17194570135746606,
+                "support": 106.0
+            },
+            "B": {
+                "precision": 0.18834080717488788,
+                "recall": 0.3442622950819672,
+                "f1-score": 0.24347826086956523,
+                "support": 122.0
+            },
+            "C": {
+                "precision": 0.29,
+                "recall": 0.19594594594594594,
+                "f1-score": 0.23387096774193547,
+                "support": 148.0
+            },
+            "D": {
+                "precision": 0.4306930693069307,
+                "recall": 0.32954545454545453,
+                "f1-score": 0.37339055793991416,
+                "support": 264.0
+            },
+            "accuracy": 0.2765625,
+            "macro avg": {
+                "precision": 0.2685628169465416,
+                "recall": 0.2622497446480589,
+                "f1-score": 0.25567137197722023,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.3079899878916045,
+                "recall": 0.2765625,
+                "f1-score": 0.28299781670612834,
+                "support": 640.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

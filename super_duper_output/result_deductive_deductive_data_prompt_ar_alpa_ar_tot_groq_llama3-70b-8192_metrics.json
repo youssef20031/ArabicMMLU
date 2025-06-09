@@ -1,0 +1,51 @@
+{
+    "overall_accuracy": 0.034375,
+    "macro_f1_score": 0.04366790222919018,
+    "weighted_f1_score": 0.06369800772112841,
+    "classification_report": "              precision    recall  f1-score   support\n\n        None       0.00      0.00      0.00         0\n           أ       0.29      0.02      0.04       106\n           ب       0.22      0.02      0.03       122\n           ج       0.26      0.03      0.06       148\n           د       0.76      0.05      0.09       264\n\n    accuracy                           0.03       640\n   macro avg       0.31      0.02      0.04       640\nweighted avg       0.47      0.03      0.06       640\n",
+    "classification_report_dict": {
+        "None": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+        },
+        "أ": {
+            "precision": 0.2857142857142857,
+            "recall": 0.018867924528301886,
+            "f1-score": 0.035398230088495575,
+            "support": 106.0
+        },
+        "ب": {
+            "precision": 0.2222222222222222,
+            "recall": 0.01639344262295082,
+            "f1-score": 0.030534351145038167,
+            "support": 122.0
+        },
+        "ج": {
+            "precision": 0.2631578947368421,
+            "recall": 0.033783783783783786,
+            "f1-score": 0.059880239520958084,
+            "support": 148.0
+        },
+        "د": {
+            "precision": 0.7647058823529411,
+            "recall": 0.04924242424242424,
+            "f1-score": 0.09252669039145907,
+            "support": 264.0
+        },
+        "accuracy": 0.034375,
+        "macro avg": {
+            "precision": 0.3071600570052582,
+            "recall": 0.023657515035492148,
+            "f1-score": 0.04366790222919018,
+            "support": 640.0
+        },
+        "weighted avg": {
+            "precision": 0.4659789793110226,
+            "recall": 0.034375,
+            "f1-score": 0.06369800772112841,
+            "support": 640.0
+        }
+    }
+}

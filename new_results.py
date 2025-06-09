@@ -4,6 +4,7 @@ import json
 import os
 import glob
 from collections import Counter
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report
 
 def extract_answer(text):
     """
@@ -92,6 +93,9 @@ if __name__ == "__main__":
         acc_per_ability_file = {}
         cnt_per_ability_file = Counter()
         file_processed_rows = 0
+        # Lists for self metrics calculation
+        golds_list = []
+        preds_list = []
 
         try:
             with open(csv_filepath, 'r', encoding='utf-8') as csvfile:
@@ -155,6 +159,9 @@ if __name__ == "__main__":
                         cnt_per_subject_file[subject] += 1
                         cnt_per_ability_file[ability] += 1
                         file_processed_rows += 1
+                        # Append to lists for metrics
+                        golds_list.append(gold_answer)
+                        preds_list.append(predicted_answer if predicted_answer is not None else "None")
                 
                         # If no prediction was made, count as incorrect
                         if predicted_answer == gold_answer:
@@ -203,6 +210,18 @@ if __name__ == "__main__":
                 "counts_by_ability": dict(sorted(cnt_per_ability_file.items()))
             }
 
+            # --- Self metrics calculation for double check ---
+            labels_for_report = sorted(list(set(golds_list) | set(preds_list)))
+            self_metrics = {
+                "overall_accuracy": accuracy_score(golds_list, preds_list),
+                "macro_f1_score": f1_score(golds_list, preds_list, average='macro', zero_division=0),
+                "weighted_f1_score": f1_score(golds_list, preds_list, average='weighted', zero_division=0),
+                "classification_report": classification_report(golds_list, preds_list, labels=labels_for_report, zero_division=0, output_dict=False),
+                "classification_report_dict": classification_report(golds_list, preds_list, labels=labels_for_report, zero_division=0, output_dict=True)
+            }
+            results_file["metrics_self"] = self_metrics
+            # --- End self metrics ---
+
             # --- Load and integrate metrics from corresponding _metrics.json file ---
             base_csv_name_no_ext = os.path.splitext(os.path.basename(csv_filepath))[0]
             metrics_json_filename = base_csv_name_no_ext + "_metrics.json"
@@ -220,6 +239,16 @@ if __name__ == "__main__":
             else:
                 print(f"Warning: Metrics file not found at {metrics_json_filepath}. Skipping integration for this file.")
                 results_file["metrics_from_json"] = {"status": "not_found"}
+
+            # Fallback to self metrics if imported metrics are all zero
+            imported = results_file.get("metrics_from_json", {})
+            if all(isinstance(imported.get(key), (int, float)) and imported.get(key) == 0 for key in ["overall_accuracy", "macro_f1_score", "weighted_f1_score"]):
+                print(f"Warning: Imported metrics all zero, falling back to self metrics for {base_csv_name_no_ext}")
+                results_file["metrics_from_json"] = {
+                    "overall_accuracy": self_metrics["overall_accuracy"],
+                    "macro_f1_score": self_metrics["macro_f1_score"],
+                    "weighted_f1_score": self_metrics["weighted_f1_score"]
+                }
             # --- End of metrics integration ---
 
             base_csv_name = os.path.basename(csv_filepath)

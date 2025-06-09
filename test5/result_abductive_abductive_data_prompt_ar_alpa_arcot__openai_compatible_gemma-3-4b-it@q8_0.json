@@ -13,49 +13,42 @@
     "counts_by_ability": {
         "reasoning_ability": 1532
     },
-    "metrics_from_json": {
-        "overall_accuracy": 0.0,
-        "macro_f1_score": 0.0,
-        "weighted_f1_score": 0.0,
-        "classification_report": "              precision    recall  f1-score   support\n\n           0       0.00      0.00      0.00     781.0\n           1       0.00      0.00      0.00     751.0\n           أ       0.00      0.00      0.00       0.0\n           ب       0.00      0.00      0.00       0.0\n\n    accuracy                           0.00    1532.0\n   macro avg       0.00      0.00      0.00    1532.0\nweighted avg       0.00      0.00      0.00    1532.0\n",
+    "metrics_self": {
+        "overall_accuracy": 0.6449086161879896,
+        "macro_f1_score": 0.6440781910086831,
+        "weighted_f1_score": 0.6444148498651587,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.64      0.68      0.66       781\n           B       0.65      0.61      0.63       751\n\n    accuracy                           0.64      1532\n   macro avg       0.65      0.64      0.64      1532\nweighted avg       0.64      0.64      0.64      1532\n",
         "classification_report_dict": {
-            "0": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
+            "A": {
+                "precision": 0.6436363636363637,
+                "recall": 0.6798975672215108,
+                "f1-score": 0.6612702366127023,
                 "support": 781.0
             },
-            "1": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
+            "B": {
+                "precision": 0.6463932107496464,
+                "recall": 0.6085219707057257,
+                "f1-score": 0.6268861454046639,
                 "support": 751.0
             },
-            "أ": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
-                "support": 0.0
-            },
-            "ب": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
-                "support": 0.0
-            },
-            "accuracy": 0.0,
+            "accuracy": 0.6449086161879896,
             "macro avg": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
+                "precision": 0.645014787193005,
+                "recall": 0.6442097689636183,
+                "f1-score": 0.6440781910086831,
                 "support": 1532.0
             },
             "weighted avg": {
-                "precision": 0.0,
-                "recall": 0.0,
-                "f1-score": 0.0,
+                "precision": 0.6449877945646113,
+                "recall": 0.6449086161879896,
+                "f1-score": 0.6444148498651587,
                 "support": 1532.0
             }
         }
+    },
+    "metrics_from_json": {
+        "overall_accuracy": 0.6449086161879896,
+        "macro_f1_score": 0.6440781910086831,
+        "weighted_f1_score": 0.6444148498651587
     }
 }

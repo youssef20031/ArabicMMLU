@@ -1,0 +1,54 @@
+{
+    "source_csv": "result_abductive_abductive_data_prompt_ar_alpa_arcot__groq_meta-llama_llama-4-scout-17b-16e-instruct.csv",
+    "overall_accuracy_calculated_from_csv": 78.26,
+    "accuracy_by_subject": {
+        "logical reasoning": 78.26
+    },
+    "accuracy_by_ability": {
+        "reasoning_ability": 78.26
+    },
+    "counts_by_subject": {
+        "logical reasoning": 1532
+    },
+    "counts_by_ability": {
+        "reasoning_ability": 1532
+    },
+    "metrics_self": {
+        "overall_accuracy": 0.7826370757180157,
+        "macro_f1_score": 0.7826362422055249,
+        "weighted_f1_score": 0.7826279070806172,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.80      0.77      0.78       781\n           B       0.77      0.80      0.78       751\n\n    accuracy                           0.78      1532\n   macro avg       0.78      0.78      0.78      1532\nweighted avg       0.78      0.78      0.78      1532\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.7994652406417112,
+                "recall": 0.765685019206146,
+                "f1-score": 0.7822105951602355,
+                "support": 781.0
+            },
+            "B": {
+                "precision": 0.7665816326530612,
+                "recall": 0.800266311584554,
+                "f1-score": 0.7830618892508143,
+                "support": 751.0
+            },
+            "accuracy": 0.7826370757180157,
+            "macro avg": {
+                "precision": 0.7830234366473863,
+                "recall": 0.7829756653953499,
+                "f1-score": 0.7826362422055249,
+                "support": 1532.0
+            },
+            "weighted avg": {
+                "precision": 0.7833454040885284,
+                "recall": 0.7826370757180157,
+                "f1-score": 0.7826279070806172,
+                "support": 1532.0
+            }
+        }
+    },
+    "metrics_from_json": {
+        "overall_accuracy": 0.7826370757180157,
+        "macro_f1_score": 0.7826362422055249,
+        "weighted_f1_score": 0.7826279070806172
+    }
+}

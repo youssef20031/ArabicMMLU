@@ -1,0 +1,51 @@
+{
+    "overall_accuracy": 0.509375,
+    "macro_f1_score": 0.3912341993328433,
+    "weighted_f1_score": 0.5167960705692074,
+    "classification_report": "              precision    recall  f1-score   support\n\n        None       0.00      0.00      0.00         0\n           أ       0.41      0.44      0.43       106\n           ب       0.41      0.48      0.44       122\n           ج       0.45      0.51      0.48       148\n           د       0.68      0.55      0.61       264\n\n    accuracy                           0.51       640\n   macro avg       0.39      0.40      0.39       640\nweighted avg       0.53      0.51      0.52       640\n",
+    "classification_report_dict": {
+        "None": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+        },
+        "أ": {
+            "precision": 0.41228070175438597,
+            "recall": 0.44339622641509435,
+            "f1-score": 0.42727272727272725,
+            "support": 106.0
+        },
+        "ب": {
+            "precision": 0.4068965517241379,
+            "recall": 0.48360655737704916,
+            "f1-score": 0.4419475655430712,
+            "support": 122.0
+        },
+        "ج": {
+            "precision": 0.45180722891566266,
+            "recall": 0.5067567567567568,
+            "f1-score": 0.47770700636942676,
+            "support": 148.0
+        },
+        "د": {
+            "precision": 0.6839622641509434,
+            "recall": 0.5492424242424242,
+            "f1-score": 0.6092436974789915,
+            "support": 264.0
+        },
+        "accuracy": 0.509375,
+        "macro avg": {
+            "precision": 0.39098934930902596,
+            "recall": 0.3966003929582649,
+            "f1-score": 0.3912341993328433,
+            "support": 640.0
+        },
+        "weighted avg": {
+            "precision": 0.532463502049495,
+            "recall": 0.509375,
+            "f1-score": 0.5167960705692074,
+            "support": 640.0
+        }
+    }
+}

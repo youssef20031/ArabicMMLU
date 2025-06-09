@@ -13,6 +13,51 @@
     "counts_by_ability": {
         "reasoning_ability": 1532
     },
+    "metrics_self": {
+        "overall_accuracy": 0.7467362924281984,
+        "macro_f1_score": 0.3739948574100047,
+        "weighted_f1_score": 0.7475482979894708,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.82      0.65      0.73       781\n           B       0.70      0.85      0.77       751\n           C       0.00      0.00      0.00         0\n           D       0.00      0.00      0.00         0\n\n    accuracy                           0.75      1532\n   macro avg       0.38      0.37      0.37      1532\nweighted avg       0.77      0.75      0.75      1532\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.8241042345276873,
+                "recall": 0.647887323943662,
+                "f1-score": 0.7254480286738352,
+                "support": 781.0
+            },
+            "B": {
+                "precision": 0.7049723756906078,
+                "recall": 0.8495339547270306,
+                "f1-score": 0.7705314009661836,
+                "support": 751.0
+            },
+            "C": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1-score": 0.0,
+                "support": 0.0
+            },
+            "D": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1-score": 0.0,
+                "support": 0.0
+            },
+            "accuracy": 0.7467362924281984,
+            "macro avg": {
+                "precision": 0.3822691525545738,
+                "recall": 0.37435531966767316,
+                "f1-score": 0.3739948574100047,
+                "support": 1532.0
+            },
+            "weighted avg": {
+                "precision": 0.7657047397583355,
+                "recall": 0.7467362924281984,
+                "f1-score": 0.7475482979894708,
+                "support": 1532.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

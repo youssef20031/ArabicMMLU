@@ -13,6 +13,57 @@
     "counts_by_ability": {
         "deductive_reasoning": 640
     },
+    "metrics_self": {
+        "overall_accuracy": 0.43125,
+        "macro_f1_score": 0.3135561986966342,
+        "weighted_f1_score": 0.42948124544162536,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.31      0.33      0.32       106\n           B       0.35      0.31      0.33       122\n           C       0.37      0.35      0.36       148\n           D       0.55      0.57      0.56       264\n        None       0.00      0.00      0.00         0\n\n    accuracy                           0.43       640\n   macro avg       0.31      0.31      0.31       640\nweighted avg       0.43      0.43      0.43       640\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.30701754385964913,
+                "recall": 0.330188679245283,
+                "f1-score": 0.3181818181818182,
+                "support": 106.0
+            },
+            "B": {
+                "precision": 0.3486238532110092,
+                "recall": 0.3114754098360656,
+                "f1-score": 0.329004329004329,
+                "support": 122.0
+            },
+            "C": {
+                "precision": 0.37410071942446044,
+                "recall": 0.35135135135135137,
+                "f1-score": 0.3623693379790941,
+                "support": 148.0
+            },
+            "D": {
+                "precision": 0.5451263537906137,
+                "recall": 0.571969696969697,
+                "f1-score": 0.5582255083179297,
+                "support": 264.0
+            },
+            "None": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1-score": 0.0,
+                "support": 0.0
+            },
+            "accuracy": 0.43125,
+            "macro avg": {
+                "precision": 0.3149736940571465,
+                "recall": 0.31299702748047936,
+                "f1-score": 0.3135561986966342,
+                "support": 640.0
+            },
+            "weighted avg": {
+                "precision": 0.4286816150256376,
+                "recall": 0.43125,
+                "f1-score": 0.42948124544162536,
+                "support": 640.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

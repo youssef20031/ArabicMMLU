@@ -13,6 +13,39 @@
     "counts_by_ability": {
         "reasoning_ability": 1532
     },
+    "metrics_self": {
+        "overall_accuracy": 0.720626631853786,
+        "macro_f1_score": 0.7150669121008435,
+        "weighted_f1_score": 0.7142875121354778,
+        "classification_report": "              precision    recall  f1-score   support\n\n           A       0.83      0.57      0.68       781\n           B       0.66      0.88      0.75       751\n\n    accuracy                           0.72      1532\n   macro avg       0.75      0.72      0.72      1532\nweighted avg       0.75      0.72      0.71      1532\n",
+        "classification_report_dict": {
+            "A": {
+                "precision": 0.8286778398510242,
+                "recall": 0.5697823303457106,
+                "f1-score": 0.6752655538694993,
+                "support": 781.0
+            },
+            "B": {
+                "precision": 0.6623115577889447,
+                "recall": 0.877496671105193,
+                "f1-score": 0.7548682703321878,
+                "support": 751.0
+            },
+            "accuracy": 0.720626631853786,
+            "macro avg": {
+                "precision": 0.7454946988199844,
+                "recall": 0.7236395007254518,
+                "f1-score": 0.7150669121008435,
+                "support": 1532.0
+            },
+            "weighted avg": {
+                "precision": 0.7471236115033598,
+                "recall": 0.720626631853786,
+                "f1-score": 0.7142875121354778,
+                "support": 1532.0
+            }
+        }
+    },
     "metrics_from_json": {
         "status": "not_found"
     }

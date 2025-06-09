@@ -1,30 +1,48 @@
-# induce_rules_abductive.py
+# ==============================================================================
+# Rule Induction Script (Refactored)
+#
+# This script is designed to induce a library of reasoning rules from a given
+# dataset. It follows a structured, class-based approach inspired by modern
+# ML training scripts for better organization and scalability.
+#
+# The process involves:
+# 1. Loading configuration from command-line arguments.
+# 2. Setting up a dedicated working directory and logger.
+# 3. Instantiating a dataset handler for the specific reasoning task (abductive/deductive).
+# 4. Initializing an LLM client (e.g., for Groq).
+# 5. Using a PromptController to manage the interaction with the LLM, which:
+#    a. Generates potential rules based on data samples.
+#    b. Verifies each generated rule for its correctness using the LLM.
+# 6. Updating a RuleLibrary with the verified rules, which:
+#    a. Clusters semantically similar rules using sentence transformers.
+#    b. Tracks statistics like coverage and confidence for each rule cluster.
+# 7. Periodically saving the filtered, high-quality rule library to disk.
+# ==============================================================================
+
 import argparse
 import pandas as pd
 import os
 import json
-from collections import defaultdict
 import re
 import time
+import logging
+import pprint
+import random
 from tqdm import tqdm
 
+# --- Dependency Availability Checks ---
 # Attempt to import Groq and related errors
 try:
     from groq import Groq, RateLimitError, APIError
-    import httpx # Required by Groq client for timeouts
+    import httpx  # Required by Groq client for timeouts
     GROQ_AVAILABLE = True
 except ImportError:
     GROQ_AVAILABLE = False
-    # Define dummy classes if Groq is not installed, so the script can still be parsed
-    # The script will exit later if Groq is actually needed but not available.
+    # Define dummy classes if Groq is not installed for basic script parsing
     class Groq: pass
     class RateLimitError(Exception): pass
     class APIError(Exception): pass
-    # Define dummy Timeout class separately
-    class _DummyTimeout: pass 
-    # Define dummy httpx class and assign the dummy Timeout
-    class httpx: 
-        Timeout = _DummyTimeout
+    class httpx: Timeout = object
 
 # Attempt to import Sentence Transformers and PyTorch
 try:
@@ -33,696 +51,386 @@ try:
     SENTENCE_TRANSFORMER_AVAILABLE = True
 except ImportError:
     SENTENCE_TRANSFORMER_AVAILABLE = False
-    # Define dummy classes if not available, script will warn and use exact matching.
+    # Define dummy classes if not available
     class SentenceTransformer: pass
     class util: pass
-    class torch: pass # Basic dummy
-    print("Warning: 'sentence-transformers' or 'torch' not found. Rule matching will be exact string matching.")
+    class torch: pass
+    print("Warning: 'sentence-transformers' or 'torch' not found. Rule clustering will use exact string matching.")
 
-# --- Prompts and Formatters for Abductive Reasoning ---
-# You should move these to your util_prompt.py and import them.
+# --- Prompts ---
+PROMPTS = {
+    "abductive_generation_en": (
+        "Given the following observations and two hypotheses, where one hypothesis is known to be more plausible:\n\n"
+        "Observation 1: {observation_1}\n"
+        "Observation 2: {observation_2}\n\n"
+        "Hypothesis A: {hypothesis_A_text}\n"
+        "Hypothesis B: {hypothesis_B_text}\n\n"
+        "The more plausible hypothesis is: Hypothesis {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
+        "What is a general rule or reasoning principle that explains why Hypothesis {correct_hypothesis_letter} is more plausible? "
+        "The rule should be concise and broadly applicable. "
+        "Output the rule directly, starting with 'Rule: ' and then the rule text on the same line. "
+        "If you can identify multiple distinct rules, output each on a new line, each starting with 'Rule: '."
+    ),
+    "abductive_verification_en": (
+        "Consider the following observations and hypotheses:\n\n"
+        "Observation 1: {observation_1}\n"
+        "Observation 2: {observation_2}\n\n"
+        "Hypothesis A: {hypothesis_A_text}\n"
+        "Hypothesis B: {hypothesis_B_text}\n\n"
+        "The known more plausible hypothesis is: Hypothesis {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
+        "Now, consider the following rule: \"{rule_to_verify}\"\n\n"
+        "If you strictly apply ONLY this rule to the observations and hypotheses, does it help you correctly identify Hypothesis {correct_hypothesis_letter} as the more plausible one? "
+        "Answer with only 'Yes' or 'No'."
+    ),
+    "deductive_generation_en": (
+        "Given the following question and options, where one option is the correct answer:\n\n"
+        "Question: {question_text}\n"
+        "Options:\n{options_formatted_text}\n"
+        "The correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
+        "What is a general rule that explains why Option {correct_option_letter} is the correct answer? "
+        "The rule should be concise and broadly applicable. "
+        "Output the rule directly, starting with 'Rule: '."
+    ),
+    "deductive_verification_en": (
+        "Consider the following question and options:\n\n"
+        "Question: {question_text}\n"
+        "Options:\n{options_formatted_text}\n"
+        "The known correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
+        "Now, consider the following rule: \"{rule_to_verify}\"\n\n"
+        "If you strictly apply ONLY this rule, does it help you correctly identify Option {correct_option_letter} as the correct answer? "
+        "Answer with only 'Yes' or 'No'."
+    ),
+    "abductive_generation_ar": (
+        "بالنظر إلى الملاحظات والفرضيتين التاليتين، حيث من المعروف أن إحدى الفرضيات أكثر قبولاً:\n\n"
+        "الملاحظة الأولى: {observation_1}\n"
+        "الملاحظة الثانية: {observation_2}\n\n"
+        "الفرضية أ: {hypothesis_A_text}\n"
+        "الفرضية ب: {hypothesis_B_text}\n\n"
+        "الفرضية الأكثر قبولاً هي: الفرضية {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
+        "ما هي القاعدة العامة أو مبدأ الاستدلال الذي يفسر لماذا الفرضية {correct_hypothesis_letter} هي أكثر قبولاً من الأخرى، بناءً على الملاحظات؟ "
+        "يجب أن تكون القاعدة موجزة وقابلة للتطبيق على نطاق واسع إن أمكن. "
+        "أخرج القاعدة مباشرة، بادئًا بـ 'Rule: ' ثم نص القاعدة على نفس السطر. "
+        "إذا كان بإمكانك تحديد قواعد متعددة ومتميزة، فأخرج كل قاعدة على سطر جديد، تبدأ كل منها بـ 'Rule: '."
+    ),
+    "abductive_verification_ar": (
+        "بالنظر إلى الملاحظات والفرضيات التالية:\n\n"
+        "الملاحظة الأولى: {observation_1}\n"
+        "الملاحظة الثانية: {observation_2}\n\n"
+        "الفرضية أ: {hypothesis_A_text}\n"
+        "الفرضية ب: {hypothesis_B_text}\n\n"
+        "الفرضية المعروفة الأكثر قبولاً هي: الفرضية {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
+        "الآن، ضع في اعتبارك القاعدة التالية: \"{rule_to_verify}\"\n\n"
+        "إذا طبقت هذه القاعدة فقط بصرامة على الملاحظات والفرضيات، فهل تساعدك في تحديد الفرضية {correct_hypothesis_letter} بشكل صحيح على أنها الأكثر قبولاً؟ "
+        "أجب فقط بـ 'نعم' أو 'لا'."
+    ),
+    "deductive_generation_ar": (
+        "بالنظر إلى السؤال والخيارات التالية، حيث يكون أحد الخيارات هو الإجابة الصحيحة:\n\n"
+        "السؤال: {question_text}\n"
+        "الخيارات:\n{options_formatted_text}\n"
+        "الإجابة الصحيحة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
+        "ما هي القاعدة العامة أو مبدأ الاستدلال الذي يفسر لماذا الخيار {correct_option_letter} هو الإجابة الصحيحة، بناءً على السؤال والخيارات؟ "
+        "يجب أن تكون القاعدة موجزة وقابلة للتطبيق على نطاق واسع إن أمكن. "
+        "أخرج القاعدة مباشرة، بادئًا بـ 'Rule: ' ثم نص القاعدة على نفس السطر."
+    ),
+    "deductive_verification_ar": (
+        "بالنظر إلى السؤال والخيارات التالية:\n\n"
+        "السؤال: {question_text}\n"
+        "الخيارات:\n{options_formatted_text}\n"
+        "الإجابة الصحيحة المعروفة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
+        "الآن، ضع في اعتبارك القاعدة التالية: \"{rule_to_verify}\"\n\n"
+        "إذا طبقت هذه القاعدة فقط بصرامة على السؤال والخيارات، فهل تساعدك في تحديد الخيار {correct_option_letter} بشكل صحيح على أنه الإجابة الصحيحة؟ "
+        "أجب فقط بـ 'نعم' أو 'لا'."
+    ),
+}
 
-RULE_GENERATION_PROMPT_ABDUCTIVE_EN = (
-    "Given the following observations and two hypotheses, where one hypothesis is known to be more plausible:\n\n"
-    "Observation 1: {observation_1}\n"
-    "Observation 2: {observation_2}\n\n"
-    "Hypothesis A: {hypothesis_A_text}\n"
-    "Hypothesis B: {hypothesis_B_text}\n\n"
-    "The more plausible hypothesis is: Hypothesis {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
-    "What is a general rule or reasoning principle that explains why Hypothesis {correct_hypothesis_letter} is more plausible than the other, based on the observations? "
-    "The rule should be concise and broadly applicable if possible. "
-    "Output the rule directly, starting with 'Rule: ' and then the rule text on the same line. "
-    "If you can identify multiple distinct rules, output each on a new line, each starting with 'Rule: '.\n"
-    "Example:\nRule: If observation 1 suggests a cause and observation 2 is an effect consistent with that cause, a hypothesis linking them is plausible."
-)
-RULE_GENERATION_PROMPT_ABDUCTIVE_AR = (
-    "بالنظر إلى الملاحظات والفرضيتين التاليتين، حيث من المعروف أن إحدى الفرضيات أكثر قبولاً:\n\n"
-    "الملاحظة الأولى: {observation_1}\n"
-    "الملاحظة الثانية: {observation_2}\n\n"
-    "الفرضية أ: {hypothesis_A_text}\n"
-    "الفرضية ب: {hypothesis_B_text}\n\n"
-    "الفرضية الأكثر قبولاً هي: الفرضية {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
-    "ما هي القاعدة العامة أو مبدأ الاستدلال الذي يفسر لماذا الفرضية {correct_hypothesis_letter} هي أكثر قبولاً من الأخرى، بناءً على الملاحظات؟ "
-    "يجب أن تكون القاعدة موجزة وقابلة للتطبيق على نطاق واسع إن أمكن. "
-    "أخرج القاعدة مباشرة، بادئًا بـ 'Rule: ' ثم نص القاعدة على نفس السطر. "
-    "إذا كان بإمكانك تحديد قواعد متعددة ومتميزة، فأخرج كل قاعدة على سطر جديد، تبدأ كل منها بـ 'Rule: '.\n"
-    "مثال:\nRule: إذا كانت الملاحظة 1 تشير إلى سبب وكانت الملاحظة 2 نتيجة متوافقة مع هذا السبب، فإن الفرضية التي تربطهما تكون مقبولة."
-)
+# --- Utility Functions ---
+def create_logger(log_dir, name="inducer"):
+    """Creates a logger to save output to a file in the working directory."""
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.INFO)
+    log_file = os.path.join(log_dir, f"{name}_run.log")
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    logger.addHandler(file_handler)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(logging.Formatter("%(message)s"))
+    logger.addHandler(stream_handler)
+    return logger
 
-RULE_VERIFICATION_PROMPT_ABDUCTIVE_EN = (
-    "Consider the following observations and hypotheses:\n\n"
-    "Observation 1: {observation_1}\n"
-    "Observation 2: {observation_2}\n\n"
-    "Hypothesis A: {hypothesis_A_text}\n"
-    "Hypothesis B: {hypothesis_B_text}\n\n"
-    "The known more plausible hypothesis is: Hypothesis {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
-    "Now, consider the following rule: \"{rule_to_verify}\"\n\n"
-    "If you strictly apply ONLY this rule to the observations and hypotheses, does it help you correctly identify Hypothesis {correct_hypothesis_letter} as the more plausible one? "
-    "Answer with only 'Yes' or 'No'. Do not provide explanations or any other text."
-)
-RULE_VERIFICATION_PROMPT_ABDUCTIVE_AR = (
-    "بالنظر إلى الملاحظات والفرضيات التالية:\n\n"
-    "الملاحظة الأولى: {observation_1}\n"
-    "الملاحظة الثانية: {observation_2}\n\n"
-    "الفرضية أ: {hypothesis_A_text}\n"
-    "الفرضية ب: {hypothesis_B_text}\n\n"
-    "الفرضية المعروفة الأكثر قبولاً هي: الفرضية {correct_hypothesis_letter} ({correct_hypothesis_text})\n\n"
-    "الآن، ضع في اعتبارك القاعدة التالية: \"{rule_to_verify}\"\n\n"
-    "إذا طبقت هذه القاعدة فقط بصرامة على الملاحظات والفرضيات، فهل تساعدك في تحديد الفرضية {correct_hypothesis_letter} بشكل صحيح على أنها الأكثر قبولاً؟ "
-    "أجب فقط بـ 'نعم' أو 'لا'. لا تقدم أي تفسيرات أو نصوص أخرى."
-)
-
-# --- Prompts for Deductive Reasoning ---
-RULE_GENERATION_PROMPT_DEDUCTIVE_EN = (
-    "Given the following question and options, where one option is the correct answer:\n\n"
-    "Question: {question_text}\n"
-    "Options:\n{options_formatted_text}\n"
-    "The correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
-    "What is a general rule or reasoning principle that explains why Option {correct_option_letter} is the correct answer, based on the question and options? "
-    "The rule should be concise and broadly applicable if possible. "
-    "Output the rule directly, starting with 'Rule: ' and then the rule text on the same line. "
-    "If you can identify multiple distinct rules, output each on a new line, each starting with 'Rule: '.\n"
-    "Example:\nRule: If the question asks for the capital of a country, and an option is the known capital, it is correct."
-)
-
-RULE_GENERATION_PROMPT_DEDUCTIVE_AR = (
-    "بالنظر إلى السؤال والخيارات التالية، حيث يكون أحد الخيارات هو الإجابة الصحيحة:\n\n"
-    "السؤال: {question_text}\n"
-    "الخيارات:\n{options_formatted_text}\n"
-    "الإجابة الصحيحة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
-    "ما هي القاعدة العامة أو مبدأ الاستدلال الذي يفسر لماذا الخيار {correct_option_letter} هو الإجابة الصحيحة، بناءً على السؤال والخيارات؟ "
-    "يجب أن تكون القاعدة موجزة وقابلة للتطبيق على نطاق واسع إن أمكن. "
-    "أخرج القاعدة مباشرة، بادئًا بـ 'Rule: ' ثم نص القاعدة على نفس السطر. "
-    "إذا كان بإمكانك تحديد قواعد متعددة ومتميزة، فأخرج كل قاعدة على سطر جديد، تبدأ كل منها بـ 'Rule: '.\n"
-    "مثال:\nRule: إذا كان السؤال يطلب عاصمة دولة ما، وكان أحد الخيارات هو العاصمة المعروفة، فهو صحيح."
-)
-
-RULE_VERIFICATION_PROMPT_DEDUCTIVE_EN = (
-    "Consider the following question and options:\n\n"
-    "Question: {question_text}\n"
-    "Options:\n{options_formatted_text}\n"
-    "The known correct answer is: Option {correct_option_letter} ({correct_option_text})\n\n"
-    "Now, consider the following rule: \"{rule_to_verify}\"\n\n"
-    "If you strictly apply ONLY this rule to the question and options, does it help you correctly identify Option {correct_option_letter} as the correct answer? "
-    "Answer with only 'Yes' or 'No'. Do not provide explanations or any other text."
-)
-
-RULE_VERIFICATION_PROMPT_DEDUCTIVE_AR = (
-    "بالنظر إلى السؤال والخيارات التالية:\n\n"
-    "السؤال: {question_text}\n"
-    "الخيارات:\n{options_formatted_text}\n"
-    "الإجابة الصحيحة المعروفة هي: الخيار {correct_option_letter} ({correct_option_text})\n\n"
-    "الآن، ضع في اعتبارك القاعدة التالية: \"{rule_to_verify}\"\n\n"
-    "إذا طبقت هذه القاعدة فقط بصرامة على السؤال والخيارات، فهل تساعدك في تحديد الخيار {correct_option_letter} بشكل صحيح على أنه الإجابة الصحيحة؟ "
-    "أجب فقط بـ 'نعم' أو 'لا'. لا تقدم أي تفسيرات أو نصوص أخرى."
-)
-# --- End Deductive Prompts ---
-
-# Alphabet maps for hypotheses (A/B or أ/ب)
-hyp_alpa_en = {1: 'A', 2: 'B'}
-hyp_alpa_ar = {1: 'أ', 2: 'ب'} # Assuming 'أ' for hypothesis_1, 'ب' for hypothesis_2
-
-def get_abductive_data_from_row(row, lang_alpa):
-    """
-    Extracts observations, hypotheses, and correct hypothesis details from a row
-    for abductive reasoning tasks.
-    """
-    obs1 = str(row.get('observation_1', '')).strip()
-    obs2 = str(row.get('observation_2', '')).strip()
-    hyp1_text = str(row.get('hypothesis_1', '')).strip()
-    hyp2_text = str(row.get('hypothesis_2', '')).strip()
-    label = str(row.get('label', '')).strip() # Expected '0' or '1'
-
-    if not all([obs1, obs2, hyp1_text, hyp2_text, label]):
-        return None, None, None, None, None, None
-
-    current_hyp_alpa = hyp_alpa_ar if lang_alpa == 'ar' else hyp_alpa_en
-
-    try:
-        correct_hyp_idx = int(label) # 0 or 1
-        if correct_hyp_idx not in [1, 2]:
-             print(f"Warning: Invalid label '{label}' found. Expected '1' or '2'. Skipping row.")
-             return None, None, None, None, None, None
-    except ValueError:
-        print(f"Warning: Non-integer label '{label}' found. Skipping row.")
-        return None, None, None, None, None, None
-
-    correct_hypothesis_letter = current_hyp_alpa.get(correct_hyp_idx)
-
-    if correct_hypothesis_letter is None:
-        print(f"Warning: Could not map label index {correct_hyp_idx} to letter for lang_alpa '{lang_alpa}'.")
-        return None, None, None, None, None, None # Invalid label or lang_alpa mapping
-
-    correct_hypothesis_text = hyp1_text if correct_hyp_idx == 0 else hyp2_text
-
-    return obs1, obs2, hyp1_text, hyp2_text, correct_hypothesis_letter, correct_hypothesis_text
-
-
-def get_deductive_data_from_row(row):
-    """
-    Extracts question, options, and correct answer details from a row
-    for deductive reasoning tasks.
-    CSV format: question,option_a,option_b,option_c,option_d,answer
-    Handles both English (A,B,C,D) and Arabic (أ,ب,ج,د) answer letters.
-    """
-    question = str(row.get('question', '')).strip()
-    option_a = str(row.get('option_a', '')).strip()
-    option_b = str(row.get('option_b', '')).strip()
-    option_c = str(row.get('option_c', '')).strip()
-    option_d = str(row.get('option_d', '')).strip()
-    raw_answer_letter = str(row.get('answer', '')).strip()
-
-    if not all([question, option_a, option_b, option_c, option_d, raw_answer_letter]):
-        print(f"Warning: Missing data in deductive row: Q:{question[:20]}, A:{option_a[:10]}, B:{option_b[:10]}, C:{option_c[:10]}, D:{option_d[:10]}, Ans:{raw_answer_letter}. Skipping row.")
-        return None, None, None, None
-
-    options = {'A': option_a, 'B': option_b, 'C': option_c, 'D': option_d}
-    
-    # Map Arabic answer letters to English equivalents
-    ar_to_en_option_map = {'أ': 'A', 'ب': 'B', 'ج': 'C', 'د': 'D'}
-    
-    normalized_answer_letter = raw_answer_letter.upper() # Default to uppercase for English letters
-    if raw_answer_letter in ar_to_en_option_map: # Check if it's an Arabic letter needing mapping
-        normalized_answer_letter = ar_to_en_option_map[raw_answer_letter]
-
-    if normalized_answer_letter not in options: # Check against the English keys 'A', 'B', 'C', 'D'
-        print(f"Warning: Invalid answer letter '{raw_answer_letter}' (normalized to '{normalized_answer_letter}') in deductive row. Expected A, B, C, D or أ, ب, ج, د. Skipping row.")
-        return None, None, None, None
-
-    correct_option_text = options[normalized_answer_letter]
-    
-    # Format options using the standard A, B, C, D keys for consistency in prompts
-    options_formatted_list = [f"{key}: {value}" for key, value in options.items()]
-    options_formatted_text = "\n".join(options_formatted_list)
-
-    return question, options_formatted_text, normalized_answer_letter, correct_option_text
-
-
-def format_rule_generation_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text, correct_hyp_letter, correct_hyp_text, lang_prompt):
-    """Formats the prompt for rule generation in abductive reasoning."""
-    template = RULE_GENERATION_PROMPT_ABDUCTIVE_AR if lang_prompt == 'ar' else RULE_GENERATION_PROMPT_ABDUCTIVE_EN
-    return template.format(
-        observation_1=obs1,
-        observation_2=obs2,
-        hypothesis_A_text=hyp_A_text,
-        hypothesis_B_text=hyp_B_text,
-        correct_hypothesis_letter=correct_hyp_letter,
-        correct_hypothesis_text=correct_hyp_text
-    )
-
-def format_rule_generation_deductive_prompt(question, options_fmt_text, correct_opt_letter, correct_opt_text, lang_prompt):
-    """Formats the prompt for rule generation in deductive reasoning."""
-    if lang_prompt == 'ar':
-        template = RULE_GENERATION_PROMPT_DEDUCTIVE_AR
-    else:
-        template = RULE_GENERATION_PROMPT_DEDUCTIVE_EN
-    return template.format(
-        question_text=question,
-        options_formatted_text=options_fmt_text,
-        correct_option_letter=correct_opt_letter,
-        correct_option_text=correct_opt_text
-    )
-
-
-def format_rule_verification_abductive_prompt(obs1, obs2, hyp_A_text, hyp_B_text, rule_to_verify, correct_hyp_letter, correct_hyp_text, lang_prompt):
-    """Formats the prompt for rule verification in abductive reasoning."""
-    template = RULE_VERIFICATION_PROMPT_ABDUCTIVE_AR if lang_prompt == 'ar' else RULE_VERIFICATION_PROMPT_ABDUCTIVE_EN
-    return template.format(
-        observation_1=obs1,
-        observation_2=obs2,
-        hypothesis_A_text=hyp_A_text,
-        hypothesis_B_text=hyp_B_text,
-        rule_to_verify=rule_to_verify,
-        correct_hypothesis_letter=correct_hyp_letter,
-        correct_hypothesis_text=correct_hyp_text
-    )
-
-def format_rule_verification_deductive_prompt(question, options_fmt_text, rule_to_verify, correct_opt_letter, correct_opt_text, lang_prompt):
-    """Formats the prompt for rule verification in deductive reasoning."""
-    if lang_prompt == 'ar':
-        template = RULE_VERIFICATION_PROMPT_DEDUCTIVE_AR
-    else:
-        template = RULE_VERIFICATION_PROMPT_DEDUCTIVE_EN
-    return template.format(
-        question_text=question,
-        options_formatted_text=options_fmt_text,
-        rule_to_verify=rule_to_verify,
-        correct_option_letter=correct_opt_letter,
-        correct_option_text=correct_opt_text
-    )
-# --- End Prompts and Formatters ---
-
-def prepend_rule_library_to_prompt(prompt, rule_library):
-    """
-    Prepends the rule library to the deduction prompt.
-    """
-    rules_text = "\n".join(rule_library)
-    return f"{rules_text}\n\n{prompt}"
-
-# --- Groq LLM Interaction Function ---
-def call_llm_for_induction(prompt_text, llm_config, max_retries=5, initial_backoff=2):
-    """
-    Calls the configured Groq LLM and returns its text response, with retry logic.
-    Args:
-        prompt_text (str): The prompt to send to the LLM.
-        llm_config (dict): Configuration containing Groq 'client' and 'model_name'.
-        max_retries (int): Maximum number of retries for API calls.
-        initial_backoff (int): Initial backoff time in seconds.
-    Returns:
-        str: The LLM's text response, or None if an error occurs after retries.
-    """
-    if not GROQ_AVAILABLE:
-        print("Error: Groq library is not available. Cannot make LLM calls.")
-        return None
-
-    llm_type = llm_config.get('type')
-    if llm_type != 'groq':
-        print(f"Error: This function is configured only for Groq, but LLM type is '{llm_type}'.")
-        return None
-
-    client = llm_config.get('client')
-    model_name = llm_config.get('model_name')
-    if not client or not model_name:
-        print("Error: Groq client or model_name missing in llm_config.")
-        return None
-
-    current_attempt = 0
-    backoff_time = initial_backoff
-
-    # Debugging print statements (optional, can be commented out)
-    # print(f"\n--- Calling Groq ({model_name}) ---")
-    # print(f"Prompt (first 200 chars): {prompt_text[:200]}...")
-
-    while current_attempt < max_retries:
+# --- Model Classes ---
+class GroqModel:
+    """A wrapper for the Groq API client."""
+    def __init__(self, model_name, max_tokens=1024, max_retries=5, initial_backoff=2):
+        if not GROQ_AVAILABLE:
+            raise ImportError("Groq library is required. Please run `pip install groq`.")
         try:
-            # Determine temperature based on prompt type (heuristic)
-            # Use slightly higher temp for generation, lower for verification
-            is_generation = "general rule or reasoning principle" in prompt_text.lower() or \
-                            "ما هي القاعدة العامة أو مبدأ الاستدلال" in prompt_text
-            temp = 0.2 if is_generation else 0.0
-            # Determine max tokens based on prompt type
-            max_tok = 500 if is_generation else 50 # Shorter for verification (Yes/No)
-
-            # Make the API call to Groq
-            chat_completion = client.chat.completions.create(
-                messages=[{"role": "user", "content": prompt_text}],
-                model=model_name,
-                temperature=temp,
-                max_tokens=max_tok
-            )
-            # Extract the response text
-            response = chat_completion.choices[0].message.content.strip()
-            # Debugging print statement (optional)
-            # print(f"Groq Response (Attempt {current_attempt+1}): {response[:200]}...")
-            return response # Return successful response
-
-        except RateLimitError as e:
-            # Handle rate limit errors
-            current_attempt += 1
-            print(f"Groq Rate Limit Error (Attempt {current_attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
-        except APIError as e:
-            # Handle other API errors (e.g., server errors)
-            current_attempt += 1
-            print(f"Groq API Error (Attempt {current_attempt}/{max_retries}): Status {e.status_code}, Message: {e.message}. Retrying in {backoff_time} seconds...")
+            api_key = os.environ.get("GROQ_API_KEY")
+            if not api_key:
+                raise ValueError("GROQ_API_KEY environment variable not set.")
+            timeout_config = httpx.Timeout(60.0, read=300.0)
+            self.client = Groq(api_key=api_key, timeout=timeout_config)
         except Exception as e:
-            # Handle unexpected errors during the API call
-            current_attempt += 1
-            print(f"Unexpected Groq Error (Attempt {current_attempt}/{max_retries}): {e}. Retrying in {backoff_time} seconds...")
+            raise RuntimeError(f"Failed to initialize Groq client: {e}")
 
-        # If max retries reached, log failure and return None
-        if current_attempt >= max_retries:
-            print("LLM call failed after all retries.")
+        self.model_name = model_name
+        self.max_tokens = max_tokens
+        self.max_retries = max_retries
+        self.initial_backoff = initial_backoff
+
+    def __call__(self, prompt_text, temperature=0.1, max_tokens_override=None):
+        """Calls the Groq API with retry logic."""
+        current_attempt = 0
+        backoff_time = self.initial_backoff
+        while current_attempt < self.max_retries:
+            try:
+                max_tok = max_tokens_override if max_tokens_override is not None else self.max_tokens
+                chat_completion = self.client.chat.completions.create(
+                    messages=[{"role": "user", "content": prompt_text}],
+                    model=self.model_name,
+                    temperature=temperature,
+                    max_tokens=max_tok
+                )
+                response = chat_completion.choices[0].message.content.strip()
+                return response, 0.0
+            except (RateLimitError, APIError, Exception) as e:
+                current_attempt += 1
+                print(f"Groq API Error (Attempt {current_attempt}/{self.max_retries}): {e}. Retrying in {backoff_time}s...")
+                if current_attempt >= self.max_retries:
+                    print("LLM call failed after all retries.")
+                    return None, 0.0
+                time.sleep(backoff_time)
+                backoff_time = min(backoff_time * 2, 60)
+        return None, 0.0
+
+# --- Dataset Classes ---
+class BaseDataset:
+    """Base class for datasets."""
+    def __init__(self, path):
+        self.path = path
+        self.data = None
+    
+    def get_split(self):
+        raise NotImplementedError
+    
+    def _load_data(self):
+        if not os.path.exists(self.path):
+            raise FileNotFoundError(f"Dataset file not found at {self.path}")
+        self.data = pd.read_csv(self.path)
+        # Return python native types
+        self.data = self.data.astype(object).where(pd.notnull(self.data), None)
+
+class AbductiveDataset(BaseDataset):
+    """Handles abductive reasoning datasets."""
+    def get_split(self):
+        if self.data is None: self._load_data()
+        samples = [row.to_dict() for _, row in self.data.iterrows()]
+        return samples
+
+class DeductiveDataset(BaseDataset):
+    """Handles deductive reasoning datasets."""
+    def get_split(self):
+        if self.data is None: self._load_data()
+        samples = [row.to_dict() for _, row in self.data.iterrows()]
+        return samples
+
+# --- Rule Library and Prompt Controller ---
+class RuleLibrary:
+    """Manages the collection, clustering, and filtering of rules."""
+    def __init__(self, args):
+        self.args = args
+        self.sbert_model = None
+        if SENTENCE_TRANSFORMER_AVAILABLE and args.similarity_threshold < 1.0:
+            try:
+                self.sbert_model = SentenceTransformer(args.sbert_model_name)
+                print(f"Sentence Transformer model '{args.sbert_model_name}' loaded.")
+            except Exception as e:
+                print(f"Warning: Could not load SBERT model '{args.sbert_model_name}'. Defaulting to exact matching. Error: {e}")
+                self.sbert_model = None
+        self.clusters = {}
+
+    def _find_matching_rule(self, rule_text, rule_embedding):
+        if not self.sbert_model or rule_embedding is None or not self.clusters:
+            return rule_text
+
+        candidates = [(k, v["embedding"]) for k, v in self.clusters.items() if v.get("embedding") is not None]
+        if not candidates:
+            return rule_text
+        
+        candidate_keys, candidate_embeddings = zip(*candidates)
+        cosine_scores = util.pytorch_cos_sim(rule_embedding.unsqueeze(0), torch.stack(list(candidate_embeddings)))[0]
+        best_match_idx = cosine_scores.argmax()
+        
+        if cosine_scores[best_match_idx].item() >= self.args.similarity_threshold:
+            return candidate_keys[best_match_idx]
+        
+        return rule_text
+
+    def update(self, rule_text, is_verified, task_name):
+        if not rule_text: return
+        rule_embedding = self.sbert_model.encode(rule_text, convert_to_tensor=True) if self.sbert_model else None
+        canonical_key = self._find_matching_rule(rule_text, rule_embedding)
+        
+        if canonical_key not in self.clusters:
+            self.clusters[canonical_key] = {"occurrence": 0, "correct_association": 0, "task_types": set(), "embedding": rule_embedding}
+        
+        self.clusters[canonical_key]["occurrence"] += 1
+        self.clusters[canonical_key]["task_types"].add(task_name)
+        if is_verified:
+            self.clusters[canonical_key]["correct_association"] += 1
+
+    def get_filtered_rules(self):
+        final_rules = []
+        for rule, stats in self.clusters.items():
+            occurrence = stats["occurrence"]
+            confidence = (stats["correct_association"] / occurrence) if occurrence > 0 else 0
+            if occurrence >= self.args.min_coverage and confidence >= self.args.min_confidence:
+                final_rules.append({"rule": rule, "coverage": occurrence, "confidence": round(confidence, 4), "task_types": sorted(list(stats["task_types"]))})
+        
+        final_rules.sort(key=lambda x: (x['confidence'], x['coverage']), reverse=True)
+        return final_rules[:self.args.max_rules] if self.args.max_rules is not None else final_rules
+
+    def save(self, file_path):
+        filtered_rules = self.get_filtered_rules()
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(filtered_rules, f, ensure_ascii=False, indent=4)
+        except Exception as e: print(f"Error saving rule library: {e}")
+        return len(filtered_rules)
+
+class PromptController:
+    """Orchestrates LLM interactions."""
+    def __init__(self, args):
+        self.args = args
+        self.hyp_map = {'en': {1: 'A', 2: 'B'}, 'ar': {1: 'أ', 2: 'ب'}}
+        self.opt_map = {'أ': 'A', 'ب': 'B', 'ج': 'C', 'د': 'D'}
+        self.opt_map_ar_display = {'A': 'أ', 'B': 'ب', 'C': 'ج', 'D': 'د'}
+
+    def _parse(self, output, pattern): return re.findall(pattern, output, re.IGNORECASE | re.MULTILINE)
+    def _parse_verification(self, output): 
+        if not output: return False
+        return output.strip().lower().startswith("yes") or output.strip().lower().startswith("نعم")
+
+    def __call__(self, model, sample, library, logger):
+        prompt_data = self._prepare_prompt_data(sample)
+        if not prompt_data:
+            logger.warning(f"Skipping sample due to invalid data: {sample}")
+            return
+        
+        gen_prompt_key = f"{self.args.task_type}_generation_{self.args.lang_prompt}"
+        gen_prompt = PROMPTS[gen_prompt_key].format(**prompt_data)
+        gen_output, _ = model(gen_prompt, temperature=0.2, max_tokens_override=500)
+        generated_rules = self._parse(gen_output, r"^\s*Rule:\s*(.*)")
+        
+        if not generated_rules: return
+
+        for rule_text in generated_rules:
+            rule_text = rule_text.strip()
+            if not rule_text: continue
+            
+            ver_prompt_key = f"{self.args.task_type}_verification_{self.args.lang_prompt}"
+            ver_prompt = PROMPTS[ver_prompt_key].format(**prompt_data, rule_to_verify=rule_text)
+            ver_output, _ = model(ver_prompt, temperature=0.0, max_tokens_override=50)
+            is_verified = self._parse_verification(ver_output)
+            library.update(rule_text, is_verified, self.args.task_type)
+            logger.info(f"Rule: '{rule_text}' | Verified: {is_verified}")
+
+    def _prepare_prompt_data(self, sample):
+        try:
+            if self.args.task_type == "abductive":
+                hyp1_text, hyp2_text = str(sample['hypothesis_1']), str(sample['hypothesis_2'])
+                correct_idx = int(sample['label'])
+                correct_hyp_letter = self.hyp_map[self.args.lang_alpa][correct_idx]
+                return {
+                    "observation_1": str(sample['observation_1']), "observation_2": str(sample['observation_2']),
+                    "hypothesis_A_text": hyp1_text, "hypothesis_B_text": hyp2_text,
+                    "correct_hypothesis_letter": correct_hyp_letter,
+                    "correct_hypothesis_text": hyp1_text if correct_idx == 1 else hyp2_text
+                }
+            elif self.args.task_type == "deductive":
+                options = { 'A': str(sample['option_a']), 'B': str(sample['option_b']), 'C': str(sample['option_c']), 'D': str(sample['option_d']) }
+                answer_letter = str(sample['answer']).strip()
+                norm_letter = self.opt_map.get(answer_letter, answer_letter.upper())
+                
+                display_options = []
+                if self.args.lang_prompt == 'ar':
+                    for k, v in options.items(): display_options.append(f"{self.opt_map_ar_display[k]}: {v}")
+                else:
+                    for k, v in options.items(): display_options.append(f"{k}: {v}")
+
+                correct_option_letter_display = self.opt_map_ar_display.get(norm_letter, norm_letter) if self.args.lang_prompt == 'ar' else norm_letter
+
+                return {
+                    "question_text": str(sample['question']),
+                    "options_formatted_text": "\n".join(display_options),
+                    "correct_option_letter": correct_option_letter_display,
+                    "correct_option_text": options[norm_letter]
+                }
+        except (KeyError, ValueError) as e:
+            print(f"Error preparing prompt data for sample {sample}: {e}")
             return None
+        return None
 
-        # Wait before retrying with exponential backoff
-        time.sleep(backoff_time)
-        backoff_time = min(backoff_time * 2, 60) # Double backoff time, max 60 seconds
-
-    return None # Should not be reached if loop logic is correct
-# --- End Groq LLM Interaction ---
-
-def parse_generated_rules(llm_output):
-    """Parses rules from LLM output. Assumes each rule starts with 'Rule: '."""
-    if not llm_output: return []
-    rules = []
-    # Handle potential variations in capitalization and spacing, multiline output
-    rule_pattern = re.compile(r"^\s*Rule:\s*(.*)", re.IGNORECASE | re.MULTILINE)
-    matches = rule_pattern.findall(llm_output)
-    for match in matches:
-        rule_text = match.strip()
-        if rule_text: # Ensure rule is not empty after stripping
-            rules.append(rule_text)
-    return rules
-
-def organize_rules_with_tags(rules):
-    """
-    Organizes rules hierarchically with XML tags for efficient retrieval.
-    """
-    tagged_rules = []
-    for idx, rule in enumerate(rules):
-        tag = f"<RuleCluster id='{idx}'>"
-        tagged_rules.append(f"{tag}{rule['rule']}</RuleCluster>")
-    return tagged_rules
-
-def save_rule_library_with_tags(tagged_rules_list, output_file):
-    """
-    Saves the already tagged rule library (list of strings) to a file.
-    """
-    # tagged_rules = organize_rules_with_tags(rule_library) # Removed this line
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("\n".join(tagged_rules_list)) # Use the passed list of strings directly
-
-
-def parse_verification_response(llm_output):
-    """Parses 'Yes' or 'No' from verification LLM output."""
-    if not llm_output: return False
-    # More robust check for variations like "Yes.", "yes!", "نعم" etc.
-    cleaned_output = llm_output.strip().lower()
-    # Check for English "yes" or Arabic "نعم" at the beginning
-    return cleaned_output.startswith("yes") or cleaned_output.startswith("نعم")
-
-
+# --- Main Execution ---
 def main():
     """Main function to run the rule induction process."""
-    parser = argparse.ArgumentParser(description="Induce a rule library for Abductive Reasoning using H->T (Groq Focused).")
-    parser.add_argument("--task_type", type=str, default="abductive", choices=["abductive", "deductive"], help="Type of reasoning task for rule induction.")
-    parser.add_argument("--abductive_data_file", type=str, help="Path to the training data CSV file for abductive reasoning (e.g., obs1, obs2, hyp1, hyp2, label).")
-    parser.add_argument("--deductive_data_file", type=str, help="Path to the training data CSV file for deductive reasoning (question,option_a,option_b,option_c,option_d,answer).")
-    parser.add_argument("--output_rule_library_file", type=str, default="results/rule_library.json", help="Path to save the induced rule library.")
+    random.seed(0)
+    parser = argparse.ArgumentParser(description="Induce a rule library for Reasoning using H->T (Groq Focused).")
+    parser.add_argument("--task_type", type=str, default="abductive", choices=["abductive", "deductive"], help="Type of reasoning task.")
+    parser.add_argument("--abductive_data_file", type=str, help="Path to CSV for abductive reasoning.")
+    parser.add_argument("--deductive_data_file", type=str, help="Path to CSV for deductive reasoning.")
     parser.add_argument("--output_folder", type=str, default="results", help="Folder to save the rule library.")
-
-    # Groq Configuration Arguments
+    parser.add_argument("--output_rule_library_file", type=str, default="rule_library.json", help="Filename for the induced rule library.")
     parser.add_argument("--groq_model", type=str, default="llama3-70b-8192", help="Groq model ID.")
-
-    # Language Arguments
-    parser.add_argument("--lang_prompt", type=str, default="en", choices=["en", "ar"], help="Language of the prompts for rule induction.")
+    parser.add_argument("--lang_prompt", type=str, default="en", choices=["en", "ar"], help="Language of the prompts.")
     parser.add_argument("--lang_alpa", type=str, default="en", choices=["en", "ar"], help="Language of hypothesis labels (A/B vs أ/ب).")
-
-    # Filtering Arguments
     parser.add_argument("--min_coverage", type=int, default=2, help="Minimum number of times a rule must occur.")
-    parser.add_argument("--min_confidence", type=float, default=0.75, help="Minimum confidence (correct_associations / occurrences) for a rule.")
-    parser.add_argument("--similarity_threshold", type=float, default=0.9, help="Cosine similarity threshold for grouping rules (0.0 to 1.0). Effective only if sentence-transformers is available. Set to 1.0 for exact matching if SBERT is available.")
-    
-    # Processing Control
-    parser.add_argument("--max_examples", type=int, default=None, help="Maximum training examples to process (for testing).")
-    parser.add_argument("--sbert_model_name", type=str, default="UBC-NLP/ARBERTv2", help="Name of the Sentence Transformer model to use for semantic similarity.")
-    parser.add_argument("--max_rules", type=int, default=None, help="Maximum number of rules to include in the final rule library (for ablation studies).")
-    parser.add_argument("--focus_only_deductive", action="store_true", help="If set, focus only on deductive reasoning and ignore abductive reasoning (simplify HtT). Overrides --task_type.")
-
+    parser.add_argument("--min_confidence", type=float, default=0.75, help="Minimum confidence for a rule.")
+    parser.add_argument("--similarity_threshold", type=float, default=0.9, help="Cosine similarity threshold for grouping rules.")
+    parser.add_argument("--num_iterations", type=int, default=500, help="Total number of processing iterations.")
+    parser.add_argument("--save_interval", type=int, default=100, help="Save library every N iterations.")
+    parser.add_argument("--sbert_model_name", type=str, default="all-MiniLM-L6-v2", help="Sentence Transformer model name.")
+    parser.add_argument("--max_rules", type=int, default=None, help="Maximum number of rules in the final library.")
+    parser.add_argument("--focus_only_deductive", action="store_true", help="Overrides task_type to 'deductive'.")
     args = parser.parse_args()
-    # Enforce HtT simplification to deductive if requested
-    if args.focus_only_deductive:
-        print("Info: focus_only_deductive enabled. Overriding task_type to 'deductive' and ignoring abductive tasks.")
-        args.task_type = 'deductive'
 
-    # Check if Groq library is actually available if needed
-    if not GROQ_AVAILABLE:
-        print("Error: Groq library is required but not installed. Please run `pip install groq httpx`.")
-        return
-
-    # --- Initialize Sentence Transformer Model ---
-    sbert_model = None
-    if SENTENCE_TRANSFORMER_AVAILABLE:
-        try:
-            sbert_model = SentenceTransformer(args.sbert_model_name)
-            print(f"Sentence Transformer model '{args.sbert_model_name}' loaded.")
-        except Exception as e:
-            print(f"Warning: Could not load Sentence Transformer model '{args.sbert_model_name}': {e}. Falling back to exact string matching.")
-            # SENTENCE_TRANSFORMER_AVAILABLE = False # Effectively disable if model load fails
-            sbert_model = None # Ensure model is None
-    else:
-        print("Info: 'sentence-transformers' library not installed. Using exact string matching for rules.")
-
-
-    # Ensure output directory exists
+    if args.focus_only_deductive: args.task_type = 'deductive'
     os.makedirs(args.output_folder, exist_ok=True)
-    # Construct full output path
-    if not os.path.isabs(args.output_rule_library_file) and args.output_folder:
-        args.output_rule_library_file = os.path.join(args.output_folder, os.path.basename(args.output_rule_library_file))
-    elif not os.path.dirname(args.output_rule_library_file): # If it's a filename in current dir
-        args.output_rule_library_file = os.path.join(os.getcwd(), args.output_rule_library_file)
-    # Ensure the directory for the output file exists
-    os.makedirs(os.path.dirname(args.output_rule_library_file), exist_ok=True)
-
-
-    # --- Rule Induction Process ---
-    rule_clusters = {} # New: canonical_rule_text -> {occurrence, correct_association, task_types, embedding}
+    logger = create_logger(args.output_folder)
+    logger.info("--- Configuration ---\n" + pprint.pformat(vars(args)) + "\n---------------------\n")
     
-    if args.task_type == "abductive":
-        if not args.abductive_data_file:
-            print("Error: --abductive_data_file is required for task_type 'abductive'.")
-            return
-        training_file = args.abductive_data_file
-        required_cols = ['observation_1', 'observation_2', 'hypothesis_1', 'hypothesis_2', 'label']
-        task_name = "abductive_reasoning"
-    elif args.task_type == "deductive":
-        if not args.deductive_data_file:
-            print("Error: --deductive_data_file is required for task_type 'deductive'.")
-            return
-        training_file = args.deductive_data_file
-        required_cols = ['question', 'option_a', 'option_b', 'option_c', 'option_d', 'answer']
-        task_name = "deductive_reasoning"
-    else: # Should not happen due to choices in argparse
-        print(f"Error: Unknown task_type '{args.task_type}'.")
+    data_file = args.deductive_data_file if args.task_type == "deductive" else args.abductive_data_file
+    if not data_file: raise ValueError(f"--{args.task_type}_data_file is required.")
+    
+    dataset = DeductiveDataset(data_file) if args.task_type == "deductive" else AbductiveDataset(data_file)
+    model = GroqModel(args.groq_model)
+    controller = PromptController(args)
+    library = RuleLibrary(args)
+
+    initial_train_set = dataset.get_split()
+    logger.info(f"Loaded {len(initial_train_set)} unique examples for {args.task_type} induction.")
+
+    if len(initial_train_set) == 0:
+        logger.warning("Input data file is empty. Exiting.")
         return
 
-    print(f"Starting rule induction for {task_name} from {training_file}...")
-    
-    try:
-        abs_training_file_path = os.path.abspath(training_file)
-        print(f"Attempting to load training data from absolute path: {abs_training_file_path}")
+    # Create the processing list based on num_iterations (epochs)
+    num_epoch = args.num_iterations // len(initial_train_set)
+    remainder = args.num_iterations % len(initial_train_set)
+    train_set = initial_train_set * num_epoch + random.sample(initial_train_set, remainder)
+    logger.info(f"Processing a total of {len(train_set)} samples ({num_epoch} epochs and {remainder} random samples).")
 
-        df_train = pd.read_csv(abs_training_file_path)
-        if not all(col in df_train.columns for col in required_cols):
-            missing = [col for col in required_cols if col not in df_train.columns]
-            print(f"Error: Training data file '{abs_training_file_path}' missing required columns: {missing}")
-            return
-        if args.max_examples:
-            df_train = df_train.head(args.max_examples)
-        print(f"Loaded {len(df_train)} {task_name} examples from {abs_training_file_path}")
-    except FileNotFoundError:
-        # abs_training_file_path is defined above, so it can be used here
-        print(f"Error: Training data file not found at the resolved absolute path: {abs_training_file_path}")
-        print(f"(Original path provided in argument: {training_file})")
-        print(f"Current working directory: {os.getcwd()}")
-        print("Please ensure the file path is correct relative to the current working directory, or provide an absolute path.")
-        return
-    except Exception as e:
-        # In case abs_training_file_path wasn't set due to an error before its assignment (unlikely here)
-        # or for other generic exceptions, try to resolve it again or use the original.
-        resolved_path_for_error = os.path.abspath(training_file) if 'training_file' in locals() else "<unknown>"
-        print(f"Error loading training data from {resolved_path_for_error}: {e}")
-        return
-    
-    # --- Initialize Groq LLM ---
-    llm_config = {'type': 'groq', 'model_name': args.groq_model}
-    try:
-        groq_api_key = os.environ.get("GROQ_API_KEY")
-        if not groq_api_key: raise ValueError("GROQ_API_KEY environment variable not set.")
-        timeout_config = httpx.Timeout(60.0, read=300.0) 
-        llm_config['client'] = Groq(api_key=groq_api_key, timeout=timeout_config)
-        print(f"Groq client initialized for model: {args.groq_model}")
-    except Exception as e:
-        print(f"Error initializing Groq: {e}"); return
-
-
-    processed_count = 0
-    skipped_count = 0
-    # Iterate through training data with a progress bar
-    for index, row in tqdm(df_train.iterrows(), total=len(df_train), desc=f"Processing {args.task_type} Examples"):
-        gen_prompt = None
-        # Variables to store data extracted from the row, to be used for verification prompt
-        row_data_for_verification = {}
-
-        if args.task_type == "abductive":
-            obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text = \
-                get_abductive_data_from_row(row, args.lang_alpa)
-            if not correct_hyp_letter: # Or any other critical missing data
-                skipped_count += 1
-                continue
-            gen_prompt = format_rule_generation_abductive_prompt(
-                obs1, obs2, hyp1_text, hyp2_text, correct_hyp_letter, correct_hyp_text, args.lang_prompt
-            )
-            row_data_for_verification = {
-                "obs1": obs1, "obs2": obs2, "hyp1_text": hyp1_text, "hyp2_text": hyp2_text,
-                "correct_hyp_letter": correct_hyp_letter, "correct_hyp_text": correct_hyp_text
-            }
-        elif args.task_type == "deductive":
-            question, options_fmt, correct_opt_letter, correct_opt_text = \
-                get_deductive_data_from_row(row)
-            if not correct_opt_letter: # Or any other critical missing data
-                skipped_count += 1
-                continue
-            gen_prompt = format_rule_generation_deductive_prompt(
-                question, options_fmt, correct_opt_letter, correct_opt_text, args.lang_prompt
-            )
-            row_data_for_verification = {
-                "question": question, "options_fmt": options_fmt,
-                "correct_opt_letter": correct_opt_letter, "correct_opt_text": correct_opt_text
-            }
-
-        if not gen_prompt: # Should not happen if data extraction was successful
-            skipped_count +=1
-            continue
-
-        llm_gen_output = call_llm_for_induction(gen_prompt, llm_config)
-        if not llm_gen_output:
-            skipped_count += 1
-            continue
-
-        generated_rules_text_list = parse_generated_rules(llm_gen_output)
-        if not generated_rules_text_list:
-            processed_count += 1
-            continue
-
-        current_rules_embeddings = None
-        if sbert_model and generated_rules_text_list: # Check sbert_model is loaded
-            # Prepare texts for embedding: ensure they are stripped
-            texts_to_embed = [r.strip() for r in generated_rules_text_list if r.strip()]
-            if texts_to_embed:
-                current_rules_embeddings = sbert_model.encode(texts_to_embed, convert_to_tensor=True)
-
-        for i, new_rule_original_text in enumerate(generated_rules_text_list):
-            new_rule_text = new_rule_original_text.strip()
-            if not new_rule_text:
-                continue
-
-            current_rule_embedding = None
-            if sbert_model and current_rules_embeddings is not None and i < len(current_rules_embeddings):
-                 # Check if texts_to_embed was non-empty and embeddings were generated
-                if texts_to_embed and new_rule_text == texts_to_embed[i]: # Ensure correct mapping if some rules were empty
-                    current_rule_embedding = current_rules_embeddings[i]
-                elif not texts_to_embed and len(generated_rules_text_list) == len(current_rules_embeddings): # Fallback if all rules were empty then stripped
-                     current_rule_embedding = current_rules_embeddings[i]
-
-
-            matched_canonical_key = None
-            highest_similarity_score = -1.0
-
-            if sbert_model and current_rule_embedding is not None and rule_clusters:
-                candidate_keys = []
-                candidate_embeddings = []
-                for key, data in rule_clusters.items():
-                    if data.get("embedding") is not None:
-                        candidate_keys.append(key)
-                        candidate_embeddings.append(data["embedding"])
-                
-                if candidate_embeddings:
-                    stacked_candidate_embeddings = torch.stack(candidate_embeddings)
-                    cosine_scores = util.pytorch_cos_sim(current_rule_embedding.unsqueeze(0), stacked_candidate_embeddings)[0]
-
-                    for j, score_tensor in enumerate(cosine_scores):
-                        score = score_tensor.item()
-                        if score > highest_similarity_score:
-                            if score >= args.similarity_threshold:
-                                highest_similarity_score = score
-                                matched_canonical_key = candidate_keys[j]
-                            # If score is highest but below threshold, it's not a match for this rule.
-                            # We are looking for the best match *above* the threshold.
-            
-            target_key_for_stats = None
-            text_for_verification_prompt = None
-
-            if matched_canonical_key: # A semantic match was found above threshold
-                target_key_for_stats = matched_canonical_key
-                text_for_verification_prompt = matched_canonical_key # Verify using the canonical text
-            else: # No semantic match, or SBERT not used/available. Use exact text.
-                target_key_for_stats = new_rule_text
-                text_for_verification_prompt = new_rule_text
-                if new_rule_text not in rule_clusters:
-                    rule_clusters[new_rule_text] = {
-                        "occurrence": 0, # Will be incremented shortly
-                        "correct_association": 0,
-                        "task_types": set(),
-                        "embedding": current_rule_embedding if sbert_model else None
-                    }
-            
-            # Increment occurrence for the target cluster/rule
-            rule_clusters[target_key_for_stats]["occurrence"] += 1
-            rule_clusters[target_key_for_stats]["task_types"].add(task_name)
-            if sbert_model and current_rule_embedding is not None and rule_clusters[target_key_for_stats]["embedding"] is None:
-                 rule_clusters[target_key_for_stats]["embedding"] = current_rule_embedding
-
-
-            # Verify the rule (using text_for_verification_prompt)
-            ver_prompt = None
-            if args.task_type == "abductive":
-                ver_prompt = format_rule_verification_abductive_prompt(
-                    row_data_for_verification["obs1"], row_data_for_verification["obs2"],
-                    row_data_for_verification["hyp1_text"], row_data_for_verification["hyp2_text"],
-                    text_for_verification_prompt, # This is the current rule text being verified
-                    row_data_for_verification["correct_hyp_letter"], row_data_for_verification["correct_hyp_text"],
-                    args.lang_prompt
-                )
-            elif args.task_type == "deductive":
-                ver_prompt = format_rule_verification_deductive_prompt(
-                    row_data_for_verification["question"], row_data_for_verification["options_fmt"],
-                    text_for_verification_prompt, # This is the current rule text being verified
-                    row_data_for_verification["correct_opt_letter"], row_data_for_verification["correct_opt_text"],
-                    args.lang_prompt
-                )
-
-            if not ver_prompt: # Should not happen
-                # Log error or skip if ver_prompt could not be created
-                print(f"Error: Could not create verification prompt for rule: {text_for_verification_prompt}")
-                continue
-
-            llm_ver_output = call_llm_for_induction(ver_prompt, llm_config)
-            if llm_ver_output is not None and parse_verification_response(llm_ver_output):
-                rule_clusters[target_key_for_stats]["correct_association"] += 1
+    for i, sample in enumerate(tqdm(train_set, desc=f"Inducing {args.task_type.capitalize()} Rules")):
+        controller(model, sample, library, logger)
         
-        processed_count += 1
+        num_processed = i + 1
+        if num_processed % args.save_interval == 0 or num_processed == len(train_set):
+            output_path = os.path.join(args.output_folder, f"{os.path.splitext(args.output_rule_library_file)[0]}_{num_processed}.json")
+            num_saved_rules = library.save(output_path)
+            logger.info(f"\nSaved {num_saved_rules} rules at iteration {num_processed} to {output_path}")
 
-    print(f"\nFinished processing examples. Processed: {processed_count}, Skipped: {skipped_count}")
-    print(f"Total unique rule clusters/rules generated before filtering: {len(rule_clusters)}")
-
-    # --- Filter Rules Based on Coverage and Confidence ---
-    final_rule_library = []
-    print("\nFiltering rules...")
-    filtered_out_count = 0
-    for rule_text_key, stats in rule_clusters.items(): # Iterate over rule_clusters
-        occurrence = stats["occurrence"]
-        correct_association = stats["correct_association"]
-        confidence = (correct_association / occurrence) if occurrence > 0 else 0
-
-        if occurrence >= args.min_coverage and confidence >= args.min_confidence:
-            final_rule_library.append({
-                "rule": rule_text_key, # This is the canonical rule text
-                "coverage": occurrence,
-                "confidence": round(confidence, 4),
-                "task_types": sorted(list(stats["task_types"]))
-                # Embedding is not typically saved in the final JSON unless needed downstream
-            })
-        else:
-            filtered_out_count += 1
-    print(f"Filtered out {filtered_out_count} rules.")
-    
-    final_rule_library.sort(key=lambda x: (x['confidence'], x['coverage']), reverse=True)
-    # Truncate rule library for ablation studies if requested
-    if args.max_rules is not None:
-        final_rule_library = final_rule_library[:args.max_rules]
-        print(f"Truncated final_rule_library to top {args.max_rules} rules for ablation study.")
-
-    # --- Save the Final Rule Library (JSON) ---
-    try:
-        with open(args.output_rule_library_file, 'w', encoding='utf-8') as f:
-            json.dump(final_rule_library, f, ensure_ascii=False, indent=4)
-        print(f"\nSuccessfully saved {len(final_rule_library)} rules to {args.output_rule_library_file}")
-        if not final_rule_library and processed_count > 0:
-            print(f"Warning: No rules met the filtering criteria (Min Coverage: {args.min_coverage}, Min Confidence: {args.min_confidence}).")
-    except Exception as e:
-        print(f"Error saving rule library to {args.output_rule_library_file}: {e}")
-    
-    # --- Save Tagged Rule Library (XML-like) ---
-    # Ensure final_rule_library is used for tagging
-    if final_rule_library: # Only proceed if there are rules
-        tagged_rule_library_for_xml = organize_rules_with_tags(final_rule_library) # Pass the list of dicts
-        tagged_output_file = args.output_rule_library_file.replace(".json", "_tagged.xml")
-        save_rule_library_with_tags(tagged_rule_library_for_xml, tagged_output_file) # Pass the list of strings
-        print(f"Tagged rule library saved to {tagged_output_file}")
-    elif processed_count > 0 : # If rules were processed but none saved
-        print(f"No rules to save in tagged XML format as final_rule_library is empty.")
-
+    final_output_path = os.path.join(args.output_folder, args.output_rule_library_file)
+    num_saved_rules = library.save(final_output_path)
+    logger.info(f"\nRule induction process completed. Final library with {num_saved_rules} rules saved to {final_output_path}")
 
 if __name__ == "__main__":
     main()
